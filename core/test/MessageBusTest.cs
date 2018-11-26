@@ -115,5 +115,17 @@ namespace Adventure.Test
 
             received.Should().Equal("S2=hello");
         }
+
+        [Fact]
+        public void OneSubscriberThrowsOnReceive()
+        {
+            MessageBus bus = new MessageBus();
+            Action<string> subscriber = _ => throw new InvalidProgramException("whoops");
+
+            bus.Subscribe(subscriber);
+            Action act = () => bus.Send("hello");
+
+            act.Should().Throw<InvalidProgramException>().WithMessage("whoops");
+        }
     }
 }
