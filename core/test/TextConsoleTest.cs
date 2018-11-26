@@ -35,5 +35,19 @@ namespace Adventure.Test
 
             output.ToString().Should().Be("I saw 'one line'\r\n");
         }
+
+        [Fact]
+        public void ProducesNoOutputAfterRun()
+        {
+            MessageBus bus = new MessageBus();
+            StringBuilder output = new StringBuilder();
+            StringWriter writer = new StringWriter(output);
+            TextConsole con = new TextConsole(bus, TextReader.Null, writer);
+
+            con.Run();
+            bus.Send(new OutputMessage("do not print this"));
+
+            output.ToString().Should().BeEmpty();
+        }
     }
 }
