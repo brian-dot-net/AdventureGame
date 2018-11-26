@@ -48,5 +48,21 @@ namespace Adventure.Test
 
             received.Should().Equal("S1=hello", "S2=hello");
         }
+
+        [Fact]
+        public void SendIntAndStringOneSubscriberEach()
+        {
+            List<string> received = new List<string>();
+            MessageBus bus = new MessageBus();
+            Action<string> subscriber1 = m => received.Add("S1=" + m);
+            Action<int> subscriber2 = m => received.Add("S2=" + m);
+
+            bus.Subscribe(subscriber1);
+            bus.Subscribe(subscriber2);
+            bus.Send("hello");
+            bus.Send(123);
+
+            received.Should().Equal("S1=hello", "S2=123");
+        }
     }
 }
