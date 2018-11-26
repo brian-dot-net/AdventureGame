@@ -5,6 +5,7 @@
 namespace Adventure.Test
 {
     using System;
+    using System.Collections.Generic;
     using FluentAssertions;
     using Xunit;
 
@@ -18,6 +19,19 @@ namespace Adventure.Test
             Action act = () => bus.Send("hello");
 
             act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void SendStringOneSubscriber()
+        {
+            List<string> received = new List<string>();
+            MessageBus bus = new MessageBus();
+            Action<string> subscriber = m => received.Add("S1=" + m);
+
+            bus.Subscribe(subscriber);
+            bus.Send("hello");
+
+            received.Should().Equal("S1=hello");
         }
     }
 }
