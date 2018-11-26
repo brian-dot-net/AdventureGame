@@ -10,7 +10,7 @@ namespace Adventure.App
     {
         private static void Main()
         {
-            new Game(Console.In, Console.Out).Run();
+            new Game(new MessageBus(), Console.In, Console.Out).Run();
         }
     }
 }

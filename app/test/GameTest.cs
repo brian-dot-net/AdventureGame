@@ -19,7 +19,7 @@ namespace Adventure.App.Test
             using (StreamReader reader = new StreamReader("walkthrough.in"))
             using (StreamWriter writer = new StreamWriter(ActualOut))
             {
-                new Game(reader, writer).Run();
+                new Game(new MessageBus(), reader, writer).Run();
             }
 
             File.ReadAllLines(ActualOut).Should().Equal(File.ReadAllLines(ExpectedOut));

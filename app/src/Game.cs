@@ -8,27 +8,29 @@ namespace Adventure.App
 
     public sealed class Game
     {
-        private readonly TextReader reader;
-        private readonly TextWriter writer;
+        private readonly MessageBus bus;
+        private readonly TextConsole console;
 
-        public Game(TextReader reader, TextWriter writer)
+        public Game(MessageBus bus, TextReader reader, TextWriter writer)
         {
-            this.reader = reader;
-            this.writer = writer;
+            this.bus = bus;
+            this.console = new TextConsole(bus, reader, writer);
         }
 
         public void Run()
         {
-            string line;
-            do
+            using (this.bus.Subscribe<InputMessage>(m => this.ProcessInput(m.Line)))
             {
-                line = this.reader.ReadLine();
-                if (line == "hello")
-                {
-                    this.writer.WriteLine("world");
-                }
+                this.console.Run();
             }
-            while (line != null);
+        }
+
+        private void ProcessInput(string line)
+        {
+            if (line == "hello")
+            {
+                this.bus.Send(new OutputMessage("world"));
+            }
         }
     }
 }
