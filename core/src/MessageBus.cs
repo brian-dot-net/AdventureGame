@@ -34,7 +34,7 @@ namespace Adventure
             {
                 Action<object> next = o => subscriber((TMessage)o);
                 this.subscribers += next;
-                return new Subscription(this, next);
+                return new Disposable(() => this.subscribers -= next);
             }
 
             public void Invoke<TMessage>(TMessage message)
@@ -42,20 +42,18 @@ namespace Adventure
                 this.subscribers?.Invoke(message);
             }
 
-            private sealed class Subscription : IDisposable
+            private sealed class Disposable : IDisposable
             {
-                private readonly Subscribers parent;
-                private readonly Action<object> self;
+                private readonly Action onDispose;
 
-                public Subscription(Subscribers parent, Action<object> self)
+                public Disposable(Action onDispose)
                 {
-                    this.parent = parent;
-                    this.self = self;
+                    this.onDispose = onDispose;
                 }
 
                 public void Dispose()
                 {
-                    this.parent.subscribers -= this.self;
+                    this.onDispose();
                 }
             }
         }
