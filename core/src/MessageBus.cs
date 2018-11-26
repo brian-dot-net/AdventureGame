@@ -12,7 +12,7 @@ namespace Adventure
 
         public void Subscribe<TMessage>(Action<TMessage> subscriber)
         {
-            this.subscriber = o => subscriber((TMessage)o);
+            this.subscriber += o => subscriber((TMessage)o);
         }
 
         public void Send<TMessage>(TMessage message)
