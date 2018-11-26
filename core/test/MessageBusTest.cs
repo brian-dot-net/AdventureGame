@@ -159,5 +159,22 @@ namespace Adventure.Test
             act.Should().Throw<InvalidProgramException>().WithMessage("whoops");
             received.Should().Equal("S1=hello");
         }
+
+        [Fact]
+        public void ThreeSubscribersUnsubscribeSecond()
+        {
+            List<string> received = new List<string>();
+            MessageBus bus = new MessageBus();
+            Action<string> subscriber1 = m => received.Add("S1=" + m);
+            Action<string> subscriber2 = m => received.Add("S2=" + m);
+            Action<string> subscriber3 = m => received.Add("S3=" + m);
+
+            bus.Subscribe(subscriber1);
+            bus.Subscribe(subscriber2).Dispose();
+            bus.Subscribe(subscriber3);
+            bus.Send("hello");
+
+            received.Should().Equal("S1=hello", "S3=hello");
+        }
     }
 }
