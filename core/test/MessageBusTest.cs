@@ -143,5 +143,21 @@ namespace Adventure.Test
             act.Should().Throw<InvalidProgramException>().WithMessage("whoops");
             received.Should().BeEmpty();
         }
+
+        [Fact]
+        public void TwoSubscribersSecondThrowsOnReceive()
+        {
+            List<string> received = new List<string>();
+            MessageBus bus = new MessageBus();
+            Action<string> subscriber1 = m => received.Add("S1=" + m);
+            Action<string> subscriber2 = _ => throw new InvalidProgramException("whoops");
+
+            bus.Subscribe(subscriber1);
+            bus.Subscribe(subscriber2);
+            Action act = () => bus.Send("hello");
+
+            act.Should().Throw<InvalidProgramException>().WithMessage("whoops");
+            received.Should().Equal("S1=hello");
+        }
     }
 }
