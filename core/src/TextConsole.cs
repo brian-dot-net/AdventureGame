@@ -10,17 +10,27 @@ namespace Adventure
     {
         private readonly MessageBus bus;
         private readonly TextReader reader;
-        private readonly TextWriter writer;
 
         public TextConsole(MessageBus bus, TextReader reader, TextWriter writer)
         {
             this.bus = bus;
             this.reader = reader;
-            this.writer = writer;
+
+            this.bus.Subscribe<OutputMessage>(m => writer.WriteLine(m.Text));
         }
 
         public void Run()
         {
+            string line;
+            do
+            {
+                line = this.reader.ReadLine();
+                if (line != null)
+                {
+                    this.bus.Send(new InputMessage(line));
+                }
+            }
+            while (line != null);
         }
     }
 }
