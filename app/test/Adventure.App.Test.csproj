@@ -16,4 +16,12 @@
   <ItemGroup>
     <ProjectReference Include="..\src\Adventure.App.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="walkthrough.in">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="walkthrough.out">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
