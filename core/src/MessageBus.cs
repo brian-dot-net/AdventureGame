@@ -9,29 +9,48 @@ namespace Adventure
 
     public sealed class MessageBus
     {
-        private readonly Dictionary<Type, Action<object>> subscribers;
+        private readonly TypeMap<Action<object>> subscribers;
 
         public MessageBus()
         {
-            this.subscribers = new Dictionary<Type, Action<object>>();
+            this.subscribers = new TypeMap<Action<object>>();
         }
 
         public void Subscribe<TMessage>(Action<TMessage> subscriber)
         {
-            Type key = typeof(TMessage);
-            if (!this.subscribers.ContainsKey(key))
-            {
-                this.subscribers.Add(key, null);
-            }
-
-            this.subscribers[key] += o => subscriber((TMessage)o);
+            this.subscribers[typeof(TMessage)] += o => subscriber((TMessage)o);
         }
 
         public void Send<TMessage>(TMessage message)
         {
-            if (this.subscribers.TryGetValue(typeof(TMessage), out Action<object> value))
+            this.subscribers[typeof(TMessage)]?.Invoke(message);
+        }
+
+        private sealed class TypeMap<TValue>
+        {
+            private readonly Dictionary<Type, TValue> map;
+
+            public TypeMap()
             {
-                value(message);
+                this.map = new Dictionary<Type, TValue>();
+            }
+
+            public TValue this[Type key]
+            {
+                get
+                {
+                    if (!this.map.ContainsKey(key))
+                    {
+                        this.map.Add(key, default(TValue));
+                    }
+
+                    return this.map[key];
+                }
+
+                set
+                {
+                    this.map[key] = value;
+                }
             }
         }
     }
