@@ -98,5 +98,22 @@ namespace Adventure.Test
 
             received.Should().Equal("S2=hello");
         }
+
+        [Fact]
+        public void TwoSubscribersUnsubscribeOneDuringSend()
+        {
+            List<string> received = new List<string>();
+            MessageBus bus = new MessageBus();
+            IDisposable sub1 = null;
+            Action<string> subscriber1 = _ => sub1.Dispose();
+            Action<string> subscriber2 = m => received.Add("S2=" + m);
+
+            sub1 = bus.Subscribe(subscriber1);
+            bus.Subscribe(subscriber2);
+
+            bus.Send("hello");
+
+            received.Should().Equal("S2=hello");
+        }
     }
 }
