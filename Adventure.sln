@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.App", "app\src\Adventure.App.csproj", "{41A27CB2-30F1-445F-AC70-7758C012C552}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.Sample", "sample\src\Adventure.Sample.csproj", "{41A27CB2-30F1-445F-AC70-7758C012C552}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.App.Test", "app\test\Adventure.App.Test.csproj", "{96474F08-CC19-4C18-AD25-A1D325379742}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.Sample.Test", "sample\test\Adventure.Sample.Test.csproj", "{96474F08-CC19-4C18-AD25-A1D325379742}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adventure.Core", "core\src\Adventure.Core.csproj", "{E0F4161F-173E-4FA6-AF29-53D71BB78C34}"
 EndProject

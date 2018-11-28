@@ -14,7 +14,7 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Adventure.App.csproj" />
+    <ProjectReference Include="..\src\Adventure.Sample.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="walkthrough.in">

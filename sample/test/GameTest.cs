@@ -2,7 +2,7 @@
 // Copyright (c) Brian Rogers. All rights reserved.
 // </copyright>
 
-namespace Adventure.App.Test
+namespace Adventure.Sample.Test
 {
     using System.IO;
     using FluentAssertions;

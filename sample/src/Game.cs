@@ -2,7 +2,7 @@
 // Copyright (c) Brian Rogers. All rights reserved.
 // </copyright>
 
-namespace Adventure.App
+namespace Adventure.Sample
 {
     using System.IO;
 
