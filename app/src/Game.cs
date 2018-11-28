@@ -11,10 +11,10 @@ namespace Adventure.App
         private readonly MessageBus bus;
         private readonly TextConsole console;
 
-        public Game(MessageBus bus, TextReader reader, TextWriter writer)
+        public Game(TextReader reader, TextWriter writer)
         {
-            this.bus = bus;
-            this.console = new TextConsole(bus, reader, writer);
+            this.bus = new MessageBus();
+            this.console = new TextConsole(this.bus, reader, writer);
         }
 
         public void Run()
