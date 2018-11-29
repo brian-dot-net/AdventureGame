@@ -16,7 +16,15 @@ namespace Adventure
 
         private void ProcessInput(string line)
         {
-            this.bus.Send(new SentenceMessage(line));
+            string[] parts = line.Split(' ');
+            if (parts.Length == 1)
+            {
+                this.bus.Send(new SentenceMessage(parts[0], string.Empty));
+            }
+            else
+            {
+                this.bus.Send(new SentenceMessage(parts[0], parts[1]));
+            }
         }
     }
 }

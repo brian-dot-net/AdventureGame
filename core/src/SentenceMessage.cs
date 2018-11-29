@@ -6,13 +6,14 @@ namespace Adventure
 {
     public sealed class SentenceMessage
     {
-        private readonly string line;
-
-        public SentenceMessage(string line)
+        public SentenceMessage(string verb, string noun)
         {
-            this.line = line;
+            this.Verb = verb;
+            this.Noun = noun;
         }
 
-        public override string ToString() => this.line;
+        public string Verb { get; }
+
+        public string Noun { get; }
     }
 }

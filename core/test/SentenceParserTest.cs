@@ -16,13 +16,13 @@ namespace Adventure.Test
         {
             MessageBus bus = new MessageBus();
             List<string> sentences = new List<string>();
-            Action<SentenceMessage> onSentence = m => sentences.Add(m.ToString());
+            Action<SentenceMessage> onSentence = m => sentences.Add(m.Verb + ":" + m.Noun);
             bus.Subscribe(onSentence);
             SentenceParser parser = new SentenceParser(bus);
 
             bus.Send(new InputMessage("one"));
 
-            sentences.Should().ContainSingle().Which.Should().Be("one");
+            sentences.Should().ContainSingle().Which.Should().Be("one:");
         }
 
         [Fact]
@@ -30,13 +30,13 @@ namespace Adventure.Test
         {
             MessageBus bus = new MessageBus();
             List<string> sentences = new List<string>();
-            Action<SentenceMessage> onSentence = m => sentences.Add(m.ToString());
+            Action<SentenceMessage> onSentence = m => sentences.Add(m.Verb + ":" + m.Noun);
             bus.Subscribe(onSentence);
             SentenceParser parser = new SentenceParser(bus);
 
             bus.Send(new InputMessage("one two"));
 
-            sentences.Should().ContainSingle().Which.Should().Be("one two");
+            sentences.Should().ContainSingle().Which.Should().Be("one:two");
         }
     }
 }
