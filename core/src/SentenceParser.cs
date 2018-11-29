@@ -4,14 +4,22 @@
 
 namespace Adventure
 {
-    public sealed class SentenceParser
+    using System;
+
+    public sealed class SentenceParser : IDisposable
     {
         private readonly MessageBus bus;
+        private readonly IDisposable subscription;
 
         public SentenceParser(MessageBus bus)
         {
             this.bus = bus;
-            this.bus.Subscribe<InputMessage>(m => this.ProcessInput(m.Line));
+            this.subscription = this.bus.Subscribe<InputMessage>(m => this.ProcessInput(m.Line));
+        }
+
+        public void Dispose()
+        {
+            this.subscription.Dispose();
         }
 
         private void ProcessInput(string line)
