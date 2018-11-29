@@ -25,8 +25,9 @@ namespace Adventure.Test
             sentences.Should().ContainSingle().Which.Should().Be("one:");
         }
 
-        [Fact]
-        public void SendTwoWords()
+        [Theory]
+        [InlineData("one two", "one:two")]
+        public void SendTwoWords(string input, string output)
         {
             MessageBus bus = new MessageBus();
             List<string> sentences = new List<string>();
@@ -34,9 +35,9 @@ namespace Adventure.Test
             bus.Subscribe(onSentence);
             SentenceParser parser = new SentenceParser(bus);
 
-            bus.Send(new InputMessage("one two"));
+            bus.Send(new InputMessage(input));
 
-            sentences.Should().ContainSingle().Which.Should().Be("one:two");
+            sentences.Should().ContainSingle().Which.Should().Be(output);
         }
     }
 }
