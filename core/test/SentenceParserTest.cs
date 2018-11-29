@@ -24,5 +24,19 @@ namespace Adventure.Test
 
             sentences.Should().ContainSingle().Which.Should().Be("one");
         }
+
+        [Fact]
+        public void SendTwoWords()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> sentences = new List<string>();
+            Action<SentenceMessage> onSentence = m => sentences.Add(m.ToString());
+            bus.Subscribe(onSentence);
+            SentenceParser parser = new SentenceParser(bus);
+
+            bus.Send(new InputMessage("one two"));
+
+            sentences.Should().ContainSingle().Which.Should().Be("one two");
+        }
     }
 }
