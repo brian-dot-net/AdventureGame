@@ -19,15 +19,16 @@ namespace Adventure.Sample
 
         public void Run()
         {
-            using (this.bus.Subscribe<InputMessage>(m => this.ProcessInput(m.Line)))
+            using (new SentenceParser(this.bus))
+            using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessVerb(m.Verb)))
             {
                 this.console.Run();
             }
         }
 
-        private void ProcessInput(string line)
+        private void ProcessVerb(string verb)
         {
-            if (line == "hello")
+            if (verb == "hello")
             {
                 this.bus.Send(new OutputMessage("world"));
             }
