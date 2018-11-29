@@ -16,7 +16,7 @@ namespace Adventure
 
         private void ProcessInput(string line)
         {
-            string[] parts = line.Split(new char[] { ' ' }, 2);
+            string[] parts = line.Trim().Split(new char[] { ' ' }, 2);
             if (parts.Length == 1)
             {
                 this.bus.Send(new SentenceMessage(parts[0], string.Empty));
