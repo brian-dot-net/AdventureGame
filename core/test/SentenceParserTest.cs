@@ -13,6 +13,8 @@ namespace Adventure.Test
     {
         [Theory]
         [InlineData("one", "one:")]
+        [InlineData("one ", "one:")]
+        [InlineData(" one ", "one:")]
         [InlineData("one two", "one:two")]
         [InlineData("one  two", "one:two")]
         [InlineData(" one two", "one:two")]
