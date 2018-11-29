@@ -17,14 +17,14 @@ namespace Adventure
         private void ProcessInput(string line)
         {
             string[] parts = line.Trim().Split(new char[] { ' ' }, 2);
-            if (parts.Length == 1)
+            string verb = parts[0];
+            string noun = string.Empty;
+            if (parts.Length == 2)
             {
-                this.bus.Send(new SentenceMessage(parts[0], string.Empty));
+                noun = parts[1].Trim();
             }
-            else
-            {
-                this.bus.Send(new SentenceMessage(parts[0], parts[1].Trim()));
-            }
+
+            this.bus.Send(new SentenceMessage(verb, noun));
         }
     }
 }
