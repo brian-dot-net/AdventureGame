@@ -29,6 +29,7 @@ namespace Adventure.Test
         [InlineData("one two", "one:two")]
         [InlineData("one  two", "one:two")]
         [InlineData(" one two", "one:two")]
+        [InlineData("one two ", "one:two")]
         public void SendTwoWords(string input, string output)
         {
             MessageBus bus = new MessageBus();
