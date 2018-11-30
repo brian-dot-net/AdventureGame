@@ -20,26 +20,34 @@ namespace Adventure.Sample
 
         public void Run()
         {
+            using (CancellationTokenSource cts = new CancellationTokenSource())
             using (new SentenceParser(this.bus))
-            using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessVerb(m.Verb)))
+            using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessVerb(cts, m.Verb)))
             {
-                this.console.Run(CancellationToken.None);
+                this.console.Run(cts.Token);
             }
         }
 
-        private void ProcessVerb(string verb)
+        private void ProcessVerb(CancellationTokenSource cts, string verb)
         {
             string output = null;
             if (verb == "hello")
             {
                 output = "world";
             }
+            else if (verb == "quit")
+            {
+                cts.Cancel();
+            }
             else
             {
                 output = "I don't know what '" + verb + "' means.";
             }
 
-            this.bus.Send(new OutputMessage(output));
+            if (output != null)
+            {
+                this.bus.Send(new OutputMessage(output));
+            }
         }
     }
 }
