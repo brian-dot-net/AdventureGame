@@ -33,7 +33,7 @@ namespace Adventure
                         this.bus.Send(new InputMessage(line));
                     }
                 }
-                while (line != null);
+                while (!token.IsCancellationRequested && (line != null));
             }
         }
     }

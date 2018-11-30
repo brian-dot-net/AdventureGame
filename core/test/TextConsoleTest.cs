@@ -50,5 +50,30 @@ namespace Adventure.Test
 
             output.ToString().Should().BeEmpty();
         }
+
+        [Fact]
+        public void BreaksOutOfLoopAfterCancellation()
+        {
+            using (CancellationTokenSource cts = new CancellationTokenSource())
+            {
+                MessageBus bus = new MessageBus();
+                int calls = 0;
+                Action<InputMessage> subscriber = m =>
+                {
+                    ++calls;
+                    if (m.Line == "cancel")
+                    {
+                        cts.Cancel();
+                    }
+                };
+                bus.Subscribe(subscriber);
+                string[] lines = new string[] { "start", "cancel", "too late" };
+                TextConsole con = new TextConsole(bus, new StringReader(string.Join(Environment.NewLine, lines)), TextWriter.Null);
+
+                con.Run(cts.Token);
+
+                calls.Should().Be(2);
+            }
+        }
     }
 }
