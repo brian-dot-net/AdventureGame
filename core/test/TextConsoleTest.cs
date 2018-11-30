@@ -7,6 +7,7 @@ namespace Adventure.Test
     using System;
     using System.IO;
     using System.Text;
+    using System.Threading;
     using FluentAssertions;
     using Xunit;
 
@@ -17,7 +18,7 @@ namespace Adventure.Test
         {
             TextConsole con = new TextConsole(new MessageBus(), TextReader.Null, TextWriter.Null);
 
-            Action act = () => con.Run();
+            Action act = () => con.Run(CancellationToken.None);
 
             act.Should().NotThrow();
         }
@@ -31,7 +32,7 @@ namespace Adventure.Test
             bus.Subscribe<InputMessage>(m => bus.Send(new OutputMessage($"I saw '{m.Line}'")));
             TextConsole con = new TextConsole(bus, new StringReader("one line"), writer);
 
-            con.Run();
+            con.Run(CancellationToken.None);
 
             output.ToString().Should().Be("I saw 'one line'\r\n");
         }
@@ -44,7 +45,7 @@ namespace Adventure.Test
             StringWriter writer = new StringWriter(output);
             TextConsole con = new TextConsole(bus, TextReader.Null, writer);
 
-            con.Run();
+            con.Run(CancellationToken.None);
             bus.Send(new OutputMessage("do not print this"));
 
             output.ToString().Should().BeEmpty();

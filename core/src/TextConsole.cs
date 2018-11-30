@@ -5,6 +5,7 @@
 namespace Adventure
 {
     using System.IO;
+    using System.Threading;
 
     public sealed class TextConsole
     {
@@ -19,7 +20,7 @@ namespace Adventure
             this.writer = writer;
         }
 
-        public void Run()
+        public void Run(CancellationToken token)
         {
             using (this.bus.Subscribe<OutputMessage>(m => this.writer.WriteLine(m.Text)))
             {

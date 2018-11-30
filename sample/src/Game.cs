@@ -5,6 +5,7 @@
 namespace Adventure.Sample
 {
     using System.IO;
+    using System.Threading;
 
     public sealed class Game
     {
@@ -22,7 +23,7 @@ namespace Adventure.Sample
             using (new SentenceParser(this.bus))
             using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessVerb(m.Verb)))
             {
-                this.console.Run();
+                this.console.Run(CancellationToken.None);
             }
         }
 
