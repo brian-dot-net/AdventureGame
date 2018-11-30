@@ -4,6 +4,7 @@
 
 namespace Adventure
 {
+    using System;
     using System.IO;
     using System.Threading;
 
@@ -24,17 +25,36 @@ namespace Adventure
         {
             using (this.bus.Subscribe<OutputMessage>(m => this.writer.WriteLine(m.Text)))
             {
-                string line;
-                do
+                try
                 {
-                    line = this.reader.ReadLine();
-                    if (line != null)
-                    {
-                        this.bus.Send(new InputMessage(line));
-                    }
+                    this.ReadLines(token);
                 }
-                while (!token.IsCancellationRequested && (line != null));
+                catch (OperationCanceledException)
+                {
+                }
             }
+        }
+
+        private void ReadLines(CancellationToken token)
+        {
+            string line;
+            do
+            {
+                line = this.ReadLine(token);
+            }
+            while (line != null);
+        }
+
+        private string ReadLine(CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+            string line = this.reader.ReadLine();
+            if (line != null)
+            {
+                this.bus.Send(new InputMessage(line));
+            }
+
+            return line;
         }
     }
 }
