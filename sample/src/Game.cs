@@ -29,10 +29,17 @@ namespace Adventure.Sample
 
         private void ProcessVerb(string verb)
         {
+            string output = null;
             if (verb == "hello")
             {
-                this.bus.Send(new OutputMessage("world"));
+                output = "world";
             }
+            else
+            {
+                output = "I don't know what '" + verb + "' means.";
+            }
+
+            this.bus.Send(new OutputMessage(output));
         }
     }
 }
