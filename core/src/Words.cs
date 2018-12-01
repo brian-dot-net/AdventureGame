@@ -4,6 +4,7 @@
 
 namespace Adventure
 {
+    using System;
     using System.Collections.Generic;
 
     public sealed class Words
@@ -30,6 +31,11 @@ namespace Adventure
 
         public void Add(string primary, params string[] synonyms)
         {
+            if (primary == null)
+            {
+                throw new ArgumentNullException(nameof(primary));
+            }
+
             this.words.Add(primary, primary);
             foreach (string synonym in synonyms)
             {
