@@ -33,9 +33,9 @@ namespace Adventure.Sample
         private static Words InitializeWords()
         {
             Words w = new Words();
-            w.Add("greet", "hello", "hi");
-            w.Add("quit", "exit");
-            w.Add("take", "get");
+            w.Add(Verb.Greet, "hello", "hi");
+            w.Add(Verb.Quit, "exit");
+            w.Add(Verb.Take, "get");
             return w;
         }
 
@@ -52,16 +52,23 @@ namespace Adventure.Sample
         {
             switch (verb.Primary)
             {
-                case "greet":
+                case Verb.Greet:
                     return "You say, \"Hello,\" to no one in particular. No one answers.";
-                case "take":
+                case Verb.Take:
                     return "There is no " + noun.Actual.ToLowerInvariant() + " here.";
-                case "quit":
+                case Verb.Quit:
                     cts.Cancel();
                     return null;
                 default:
                     return "I don't know what '" + verb + "' means.";
             }
+        }
+
+        private static class Verb
+        {
+            public const string Greet = "greet";
+            public const string Take = "take";
+            public const string Quit = "quit";
         }
     }
 }
