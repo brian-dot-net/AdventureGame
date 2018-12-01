@@ -9,11 +9,13 @@ namespace Adventure
     public sealed class SentenceParser : IDisposable
     {
         private readonly MessageBus bus;
+        private readonly Words words;
         private readonly IDisposable subscription;
 
-        public SentenceParser(MessageBus bus)
+        public SentenceParser(MessageBus bus, Words words)
         {
             this.bus = bus;
+            this.words = words;
             this.subscription = this.bus.Subscribe<InputMessage>(m => this.ProcessInput(m.Line));
         }
 
@@ -32,7 +34,7 @@ namespace Adventure
                 noun = parts[1].Trim();
             }
 
-            this.bus.Send(new SentenceMessage(verb, noun));
+            this.bus.Send(new SentenceMessage(this.words[verb], this.words[noun]));
         }
     }
 }

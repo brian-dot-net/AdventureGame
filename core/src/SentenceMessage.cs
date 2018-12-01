@@ -6,14 +6,14 @@ namespace Adventure
 {
     public sealed class SentenceMessage
     {
-        public SentenceMessage(string verb, string noun)
+        public SentenceMessage(Word verb, Word noun)
         {
             this.Verb = verb;
             this.Noun = noun;
         }
 
-        public string Verb { get; }
+        public Word Verb { get; }
 
-        public string Noun { get; }
+        public Word Noun { get; }
     }
 }

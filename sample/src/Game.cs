@@ -21,8 +21,8 @@ namespace Adventure.Sample
         public void Run()
         {
             using (CancellationTokenSource cts = new CancellationTokenSource())
-            using (new SentenceParser(this.bus))
-            using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessVerb(cts, m.Verb)))
+            using (new SentenceParser(this.bus, new Words()))
+            using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessVerb(cts, m.Verb.Primary)))
             {
                 this.console.Run(cts.Token);
             }

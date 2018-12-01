@@ -25,7 +25,7 @@ namespace Adventure.Test
             List<string> sentences = new List<string>();
             Action<SentenceMessage> onSentence = m => sentences.Add(m.Verb + ":" + m.Noun);
             bus.Subscribe(onSentence);
-            SentenceParser parser = new SentenceParser(bus);
+            SentenceParser parser = new SentenceParser(bus, new Words());
 
             bus.Send(new InputMessage(input));
 
@@ -39,7 +39,7 @@ namespace Adventure.Test
             List<string> sentences = new List<string>();
             Action<SentenceMessage> onSentence = m => sentences.Add(m.Verb + ":" + m.Noun);
             bus.Subscribe(onSentence);
-            SentenceParser parser = new SentenceParser(bus);
+            SentenceParser parser = new SentenceParser(bus, new Words());
 
             parser.Dispose();
             bus.Send(new InputMessage("hello"));
