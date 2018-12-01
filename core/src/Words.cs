@@ -13,7 +13,7 @@ namespace Adventure
 
         public Words()
         {
-            this.words = new Dictionary<string, string>();
+            this.words = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
         public Word this[string actual]

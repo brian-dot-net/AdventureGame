@@ -54,5 +54,20 @@ namespace Adventure.Test
             act.Should().Throw<InvalidOperationException>().WithMessage("Primary 'x' already exists.");
             words["z"].Primary.Should().BeEmpty();
         }
+
+        [Fact]
+        public void CaseInsensitiveMatching()
+        {
+            Words words = new Words();
+            words.Add("Hello", "hi", "HOWDY");
+
+            Word w1 = words["Hi"];
+            Word w2 = words["howdY"];
+            Word w3 = words["hello"];
+
+            w1.Should().BeEquivalentTo(new Word("Hello", "Hi"));
+            w2.Should().BeEquivalentTo(new Word("Hello", "howdY"));
+            w3.Should().BeEquivalentTo(new Word("Hello", "hello"));
+        }
     }
 }
