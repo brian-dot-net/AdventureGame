@@ -46,5 +46,27 @@ namespace Adventure.Test
 
             sentences.Should().BeEmpty();
         }
+
+        [Theory]
+        [InlineData("see home", "look|house")]
+        [InlineData("inspect house", "look|house")]
+        [InlineData("examine home", "look|house")]
+        [InlineData("look house", "look|house")]
+        [InlineData("watch building", "|")]
+        public void SendWordsSynonyms(string input, string output)
+        {
+            MessageBus bus = new MessageBus();
+            List<string> sentences = new List<string>();
+            Action<SentenceMessage> onSentence = m => sentences.Add(m.Verb.Primary + "|" + m.Noun.Primary);
+            bus.Subscribe(onSentence);
+            Words words = new Words();
+            words.Add("look", "see", "inspect", "examine");
+            words.Add("house", "home");
+            SentenceParser parser = new SentenceParser(bus, words);
+
+            bus.Send(new InputMessage(input));
+
+            sentences.Should().ContainSingle().Which.Should().Be(output);
+        }
     }
 }

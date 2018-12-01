@@ -22,20 +22,20 @@ namespace Adventure.Sample
         {
             using (CancellationTokenSource cts = new CancellationTokenSource())
             using (new SentenceParser(this.bus, new Words()))
-            using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessVerb(cts, m.Verb.Primary)))
+            using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessVerb(cts, m.Verb)))
             {
                 this.console.Run(cts.Token);
             }
         }
 
-        private void ProcessVerb(CancellationTokenSource cts, string verb)
+        private void ProcessVerb(CancellationTokenSource cts, Word verb)
         {
             string output = null;
-            if (verb == "hello")
+            if (verb.Actual == "hello")
             {
                 output = "world";
             }
-            else if (verb == "quit")
+            else if (verb.Actual == "quit")
             {
                 cts.Cancel();
             }

@@ -4,13 +4,36 @@
 
 namespace Adventure
 {
+    using System.Collections.Generic;
+
     public sealed class Words
     {
-        public Word this[string key]
+        private readonly Dictionary<string, string> words;
+
+        public Words()
+        {
+            this.words = new Dictionary<string, string>();
+        }
+
+        public Word this[string actual]
         {
             get
             {
-                return new Word(key, key);
+                if (!this.words.TryGetValue(actual, out string primary))
+                {
+                    primary = string.Empty;
+                }
+
+                return new Word(primary, actual);
+            }
+        }
+
+        public void Add(string primary, params string[] synonyms)
+        {
+            this.words.Add(primary, primary);
+            foreach (string synonym in synonyms)
+            {
+                this.words.Add(synonym, primary);
             }
         }
     }
