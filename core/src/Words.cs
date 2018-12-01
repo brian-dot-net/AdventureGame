@@ -36,6 +36,11 @@ namespace Adventure
                 throw new ArgumentNullException(nameof(primary));
             }
 
+            if (this.words.ContainsKey(primary))
+            {
+                throw new InvalidOperationException($"Primary '{primary}' already exists.");
+            }
+
             this.words.Add(primary, primary);
             foreach (string synonym in synonyms)
             {

@@ -42,5 +42,17 @@ namespace Adventure.Test
             act.Should().Throw<InvalidOperationException>().WithMessage("Synonym 'y' already exists.");
             words["y"].Primary.Should().Be("x");
         }
+
+        [Fact]
+        public void AddDuplicatePrimary()
+        {
+            Words words = new Words();
+
+            words.Add("x", "y");
+            Action act = () => words.Add("x", "z");
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("Primary 'x' already exists.");
+            words["z"].Primary.Should().BeEmpty();
+        }
     }
 }
