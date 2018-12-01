@@ -11,25 +11,32 @@ namespace Adventure.Sample
     {
         private readonly MessageBus bus;
         private readonly TextConsole console;
+        private readonly Words words;
 
         public Game(TextReader reader, TextWriter writer)
         {
             this.bus = new MessageBus();
             this.console = new TextConsole(this.bus, reader, writer);
+            this.words = InitializeWords();
         }
 
         public void Run()
         {
-            Words words = new Words();
-            words.Add("greet", "hello", "hi");
-            words.Add("quit", "exit");
-            words.Add("take", "get");
             using (CancellationTokenSource cts = new CancellationTokenSource())
-            using (new SentenceParser(this.bus, words))
+            using (new SentenceParser(this.bus, this.words))
             using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessSentence(cts, m)))
             {
                 this.console.Run(cts.Token);
             }
+        }
+
+        private static Words InitializeWords()
+        {
+            Words w = new Words();
+            w.Add("greet", "hello", "hi");
+            w.Add("quit", "exit");
+            w.Add("take", "get");
+            return w;
         }
 
         private void ProcessSentence(CancellationTokenSource cts, SentenceMessage sentence)
