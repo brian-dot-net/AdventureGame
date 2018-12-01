@@ -36,12 +36,8 @@ namespace Adventure
                 throw new ArgumentNullException(nameof(primary));
             }
 
-            if (this.words.ContainsKey(primary))
-            {
-                throw new InvalidOperationException($"Primary '{primary}' already exists.");
-            }
+            this.Add("Primary", primary, primary);
 
-            this.words.Add(primary, primary);
             foreach (string synonym in synonyms)
             {
                 if (synonym == null)
@@ -49,13 +45,18 @@ namespace Adventure
                     throw new ArgumentException($"Synonym for '{primary}' cannot be null.", nameof(synonyms));
                 }
 
-                if (this.words.ContainsKey(synonym))
-                {
-                    throw new InvalidOperationException($"Synonym '{synonym}' already exists.");
-                }
-
-                this.words.Add(synonym, primary);
+                this.Add("Synonym", synonym, primary);
             }
+        }
+
+        private void Add(string kind, string key, string value)
+        {
+            if (this.words.ContainsKey(key))
+            {
+                throw new InvalidOperationException($"{kind} '{key}' already exists.");
+            }
+
+            this.words.Add(key, value);
         }
     }
 }
