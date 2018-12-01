@@ -34,28 +34,26 @@ namespace Adventure.Sample
 
         private void ProcessSentence(CancellationTokenSource cts, SentenceMessage sentence)
         {
-            string output = null;
-            Word verb = sentence.Verb;
-            if (verb.Primary == "greet")
-            {
-                output = "You say, \"Hello,\" to no one in particular. No one answers.";
-            }
-            else if (verb.Primary == "quit")
-            {
-                cts.Cancel();
-            }
-            else if (verb.Primary == "take")
-            {
-                output = "There is no " + sentence.Noun.Actual.ToLowerInvariant() + " here.";
-            }
-            else
-            {
-                output = "I don't know what '" + verb + "' means.";
-            }
-
+            string output = this.Process(cts, sentence.Verb, sentence.Noun);
             if (output != null)
             {
                 this.bus.Send(new OutputMessage(output));
+            }
+        }
+
+        private string Process(CancellationTokenSource cts, Word verb, Word noun)
+        {
+            switch (verb.Primary)
+            {
+                case "greet":
+                    return "You say, \"Hello,\" to no one in particular. No one answers.";
+                case "take":
+                    return "There is no " + noun.Actual.ToLowerInvariant() + " here.";
+                case "quit":
+                    cts.Cancel();
+                    return null;
+                default:
+                    return "I don't know what '" + verb + "' means.";
             }
         }
     }
