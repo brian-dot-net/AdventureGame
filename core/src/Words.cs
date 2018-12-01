@@ -36,6 +36,14 @@ namespace Adventure
                 throw new ArgumentNullException(nameof(primary));
             }
 
+            foreach (string synonym in synonyms)
+            {
+                if (synonym == null)
+                {
+                    throw new ArgumentException($"Synonym for '{primary}' cannot be null.", nameof(synonyms));
+                }
+            }
+
             this.words.Add(primary, primary);
             foreach (string synonym in synonyms)
             {

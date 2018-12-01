@@ -19,5 +19,17 @@ namespace Adventure.Test
 
             act.Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be("primary");
         }
+
+        [Fact]
+        public void AddNullSynonym()
+        {
+            Words words = new Words();
+
+            Action act = () => words.Add("x", "y", null);
+
+            act.Should().Throw<ArgumentException>().WithMessage("*'x'*").Which.ParamName.Should().Be("synonyms");
+            words["x"].Primary.Should().BeEmpty();
+            words["y"].Primary.Should().BeEmpty();
+        }
     }
 }
