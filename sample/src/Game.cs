@@ -63,12 +63,5 @@ namespace Adventure.Sample
                     return "I don't know what '" + verb + "' means.";
             }
         }
-
-        private static class Verb
-        {
-            public const string Greet = "greet";
-            public const string Take = "take";
-            public const string Quit = "quit";
-        }
     }
 }
