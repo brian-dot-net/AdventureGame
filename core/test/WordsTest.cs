@@ -28,8 +28,19 @@ namespace Adventure.Test
             Action act = () => words.Add("x", "y", null);
 
             act.Should().Throw<ArgumentException>().WithMessage("*'x'*").Which.ParamName.Should().Be("synonyms");
-            words["x"].Primary.Should().BeEmpty();
-            words["y"].Primary.Should().BeEmpty();
+            words["x"].Primary.Should().Be("x");
+            words["y"].Primary.Should().Be("x");
+        }
+
+        [Fact]
+        public void AddDuplicateSynonym()
+        {
+            Words words = new Words();
+
+            Action act = () => words.Add("x", "y", "y");
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("Synonym 'y' already exists.");
+            words["y"].Primary.Should().Be("x");
         }
     }
 }
