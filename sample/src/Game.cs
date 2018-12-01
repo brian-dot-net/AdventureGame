@@ -20,8 +20,11 @@ namespace Adventure.Sample
 
         public void Run()
         {
+            Words words = new Words();
+            words.Add("greet", "hello", "hi");
+            words.Add("quit", "exit");
             using (CancellationTokenSource cts = new CancellationTokenSource())
-            using (new SentenceParser(this.bus, new Words()))
+            using (new SentenceParser(this.bus, words))
             using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessVerb(cts, m.Verb)))
             {
                 this.console.Run(cts.Token);
@@ -31,11 +34,11 @@ namespace Adventure.Sample
         private void ProcessVerb(CancellationTokenSource cts, Word verb)
         {
             string output = null;
-            if (verb.Actual == "hello")
+            if (verb.Primary == "greet")
             {
-                output = "world";
+                output = "You say, \"Hello,\" to no one in particular. No one answers.";
             }
-            else if (verb.Actual == "quit")
+            else if (verb.Primary == "quit")
             {
                 cts.Cancel();
             }
