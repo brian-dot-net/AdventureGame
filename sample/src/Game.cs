@@ -23,17 +23,19 @@ namespace Adventure.Sample
             Words words = new Words();
             words.Add("greet", "hello", "hi");
             words.Add("quit", "exit");
+            words.Add("take", "get");
             using (CancellationTokenSource cts = new CancellationTokenSource())
             using (new SentenceParser(this.bus, words))
-            using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessVerb(cts, m.Verb)))
+            using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessSentence(cts, m)))
             {
                 this.console.Run(cts.Token);
             }
         }
 
-        private void ProcessVerb(CancellationTokenSource cts, Word verb)
+        private void ProcessSentence(CancellationTokenSource cts, SentenceMessage sentence)
         {
             string output = null;
+            Word verb = sentence.Verb;
             if (verb.Primary == "greet")
             {
                 output = "You say, \"Hello,\" to no one in particular. No one answers.";
@@ -41,6 +43,10 @@ namespace Adventure.Sample
             else if (verb.Primary == "quit")
             {
                 cts.Cancel();
+            }
+            else if (verb.Primary == "take")
+            {
+                output = "There is no " + sentence.Noun.Actual.ToLowerInvariant() + " here.";
             }
             else
             {
