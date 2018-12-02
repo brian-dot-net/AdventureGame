@@ -42,6 +42,16 @@ namespace Adventure.Test
             output.Should().BeEmpty();
         }
 
+        [Fact]
+        public void LeaveBeforeEnter()
+        {
+            Room room = new TestRoom(new MessageBus());
+
+            Action act = () => room.Leave();
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Leave before Enter.");
+        }
+
         private sealed class TestRoom : Room
         {
             public TestRoom(MessageBus bus)

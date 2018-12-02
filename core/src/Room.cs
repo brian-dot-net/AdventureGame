@@ -28,6 +28,11 @@ namespace Adventure
 
         public void Leave()
         {
+            if (this.sub == null)
+            {
+                throw new InvalidOperationException("Cannot Leave before Enter.");
+            }
+
             this.sub.Dispose();
         }
 
