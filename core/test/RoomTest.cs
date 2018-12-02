@@ -107,6 +107,21 @@ namespace Adventure.Test
             act.Should().Throw<InvalidOperationException>().WithMessage("The verb 'hello' is already registered.");
         }
 
+        [Fact]
+        public void RegisterSameVerbDifferentCase()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            Action<OutputMessage> subscriber = m => output.Add(m.Text);
+            bus.Subscribe(subscriber);
+            TestRoom room = new TestRoom(bus);
+
+            room.Enter();
+            Action act = () => room.TestRegister("HeLLO");
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("The verb 'HeLLO' is already registered.");
+        }
+
         private sealed class TestRoom : Room
         {
             public TestRoom(MessageBus bus)

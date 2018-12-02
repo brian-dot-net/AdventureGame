@@ -17,7 +17,7 @@ namespace Adventure
         protected Room(MessageBus bus)
         {
             this.bus = bus;
-            this.verbs = new Dictionary<string, Action<Word, Word>>();
+            this.verbs = new Dictionary<string, Action<Word, Word>>(StringComparer.OrdinalIgnoreCase);
         }
 
         public void Enter()
