@@ -12,6 +12,8 @@ namespace Adventure
         private readonly MessageBus bus;
         private readonly Dictionary<string, Action<Word, Word>> verbs;
 
+        private IDisposable sub;
+
         protected Room(MessageBus bus)
         {
             this.bus = bus;
@@ -20,8 +22,13 @@ namespace Adventure
 
         public void Enter()
         {
-            this.bus.Subscribe<SentenceMessage>(this.Process);
+            this.sub = this.bus.Subscribe<SentenceMessage>(this.Process);
             this.EnterCore();
+        }
+
+        public void Leave()
+        {
+            this.sub.Dispose();
         }
 
         protected virtual void EnterCore()
