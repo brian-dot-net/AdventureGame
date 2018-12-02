@@ -64,7 +64,17 @@ namespace Adventure
 
         private void Process(SentenceMessage message)
         {
-            this.verbs[message.Verb.Primary](message.Verb, message.Noun);
+            if (!this.verbs.TryGetValue(message.Verb.Primary, out Action<Word, Word> handler))
+            {
+                handler = this.UnknownVerb;
+            }
+
+            handler(message.Verb, message.Noun);
+        }
+
+        private void UnknownVerb(Word verb, Word noun)
+        {
+            this.Output($"I don't know what '{verb}' means.");
         }
     }
 }

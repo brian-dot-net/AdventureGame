@@ -122,6 +122,21 @@ namespace Adventure.Test
             act.Should().Throw<InvalidOperationException>().WithMessage("The verb 'HeLLO' is already registered.");
         }
 
+        [Fact]
+        public void ProcessUnknownVerb()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            Action<OutputMessage> subscriber = m => output.Add(m.Text);
+            bus.Subscribe(subscriber);
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("goodbye", "BYE"), new Word("world", "world")));
+
+            output.Should().ContainSingle().Which.Should().Be("I don't know what 'BYE' means.");
+        }
+
         private sealed class TestRoom : Room
         {
             public TestRoom(MessageBus bus)
