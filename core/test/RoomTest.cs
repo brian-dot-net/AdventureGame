@@ -64,6 +64,17 @@ namespace Adventure.Test
             act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Leave before Enter.");
         }
 
+        [Fact]
+        public void EnterTwice()
+        {
+            Room room = new TestRoom(new MessageBus());
+            room.Enter();
+
+            Action act = () => room.Enter();
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Enter again.");
+        }
+
         private sealed class TestRoom : Room
         {
             public TestRoom(MessageBus bus)
