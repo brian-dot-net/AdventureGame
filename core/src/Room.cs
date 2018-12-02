@@ -38,6 +38,7 @@ namespace Adventure
                 throw new InvalidOperationException("Cannot Leave before Enter.");
             }
 
+            this.verbs.Clear();
             this.sub.Dispose();
             this.sub = null;
         }

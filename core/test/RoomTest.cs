@@ -75,6 +75,23 @@ namespace Adventure.Test
             act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Enter again.");
         }
 
+        [Fact]
+        public void EnterLeaveEnter()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            Action<OutputMessage> subscriber = m => output.Add(m.Text);
+            bus.Subscribe(subscriber);
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            room.Leave();
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("hello", "hello"), new Word("world", "world")));
+
+            output.Should().ContainSingle().Which.Should().Be("Hello, world!");
+        }
+
         private sealed class TestRoom : Room
         {
             public TestRoom(MessageBus bus)
