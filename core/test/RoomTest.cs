@@ -92,6 +92,21 @@ namespace Adventure.Test
             output.Should().ContainSingle().Which.Should().Be("Hello, world!");
         }
 
+        [Fact]
+        public void RegisterSameVerb()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            Action<OutputMessage> subscriber = m => output.Add(m.Text);
+            bus.Subscribe(subscriber);
+            TestRoom room = new TestRoom(bus);
+
+            room.Enter();
+            Action act = () => room.TestRegister("hello");
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("The verb 'hello' is already registered.");
+        }
+
         private sealed class TestRoom : Room
         {
             public TestRoom(MessageBus bus)
@@ -99,9 +114,14 @@ namespace Adventure.Test
             {
             }
 
+            public void TestRegister(string verb)
+            {
+                this.Register(verb, this.Hello);
+            }
+
             protected override void EnterCore()
             {
-                this.Register("hello", this.Hello);
+                this.TestRegister("hello");
             }
 
             private void Hello(Word verb, Word noun)

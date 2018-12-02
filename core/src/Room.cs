@@ -49,6 +49,11 @@ namespace Adventure
 
         protected void Register(string verb, Action<Word, Word> handler)
         {
+            if (this.verbs.ContainsKey(verb))
+            {
+                throw new InvalidOperationException($"The verb '{verb}' is already registered.");
+            }
+
             this.verbs.Add(verb, handler);
         }
 
