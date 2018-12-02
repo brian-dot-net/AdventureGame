@@ -24,8 +24,9 @@ namespace Adventure.Sample
         {
             using (CancellationTokenSource cts = new CancellationTokenSource())
             using (new SentenceParser(this.bus, this.words))
-            using (this.bus.Subscribe<SentenceMessage>(m => this.ProcessSentence(cts, m)))
             {
+                Room room = new MainRoom(this.bus, cts);
+                room.Enter();
                 this.console.Run(cts.Token);
             }
         }
@@ -37,31 +38,6 @@ namespace Adventure.Sample
             w.Add(Verb.Quit, "exit");
             w.Add(Verb.Take, "get");
             return w;
-        }
-
-        private void ProcessSentence(CancellationTokenSource cts, SentenceMessage sentence)
-        {
-            string output = this.Process(cts, sentence.Verb, sentence.Noun);
-            if (output != null)
-            {
-                this.bus.Send(new OutputMessage(output));
-            }
-        }
-
-        private string Process(CancellationTokenSource cts, Word verb, Word noun)
-        {
-            switch (verb.Primary)
-            {
-                case Verb.Greet:
-                    return "You say, \"Hello,\" to no one in particular. No one answers.";
-                case Verb.Take:
-                    return "There is no " + noun.Actual.ToLowerInvariant() + " here.";
-                case Verb.Quit:
-                    cts.Cancel();
-                    return null;
-                default:
-                    return "I don't know what '" + verb + "' means.";
-            }
         }
     }
 }
