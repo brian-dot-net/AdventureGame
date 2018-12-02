@@ -34,6 +34,7 @@ namespace Adventure
             }
 
             this.sub.Dispose();
+            this.sub = null;
         }
 
         protected virtual void EnterCore()
