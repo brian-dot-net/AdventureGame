@@ -23,38 +23,59 @@ namespace Adventure
 
         public void Run(CancellationToken token)
         {
-            using (this.bus.Subscribe<OutputMessage>(m => this.writer.WriteLine(m.Text)))
+            using (InputLoop loop = new InputLoop(this.bus, this.ReadLine, m => this.writer.WriteLine(m.Text)))
+            {
+                loop.Run(token);
+            }
+        }
+
+        private bool ReadLine()
+        {
+            string line = this.reader.ReadLine();
+            if (line == null)
+            {
+                return false;
+            }
+
+            this.bus.Send(new InputMessage(line));
+            return true;
+        }
+
+        private sealed class InputLoop : IDisposable
+        {
+            private readonly Func<bool> readInput;
+            private readonly IDisposable sub;
+
+            public InputLoop(MessageBus bus, Func<bool> readInput, Action<OutputMessage> onOutput)
+            {
+                this.readInput = readInput;
+                this.sub = bus.Subscribe(onOutput);
+            }
+
+            public void Run(CancellationToken token)
             {
                 try
                 {
-                    this.ReadLines(token);
+                    this.RunInner(token);
                 }
                 catch (OperationCanceledException)
                 {
                 }
             }
-        }
 
-        private void ReadLines(CancellationToken token)
-        {
-            string line;
-            do
+            public void Dispose()
             {
-                line = this.ReadLine(token);
-            }
-            while (line != null);
-        }
-
-        private string ReadLine(CancellationToken token)
-        {
-            token.ThrowIfCancellationRequested();
-            string line = this.reader.ReadLine();
-            if (line != null)
-            {
-                this.bus.Send(new InputMessage(line));
+                this.sub.Dispose();
             }
 
-            return line;
+            private void RunInner(CancellationToken token)
+            {
+                do
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+                while (this.readInput());
+            }
         }
     }
 }
