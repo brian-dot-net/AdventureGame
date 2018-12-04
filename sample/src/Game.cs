@@ -24,10 +24,11 @@ namespace Adventure.Sample
         {
             using (CancellationTokenSource cts = new CancellationTokenSource())
             using (new SentenceParser(this.bus, this.words))
+            using (InputLoop loop = this.console.NewLoop())
             {
                 Room room = new MainRoom(this.bus, cts);
                 room.Enter();
-                this.console.Run(cts.Token);
+                loop.Run(cts.Token);
             }
         }
 

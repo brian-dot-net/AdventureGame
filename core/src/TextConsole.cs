@@ -4,9 +4,7 @@
 
 namespace Adventure
 {
-    using System;
     using System.IO;
-    using System.Threading;
 
     public sealed class TextConsole
     {
@@ -21,12 +19,9 @@ namespace Adventure
             this.writer = writer;
         }
 
-        public void Run(CancellationToken token)
+        public InputLoop NewLoop()
         {
-            using (InputLoop loop = new InputLoop(this.bus, this.ReadLine, m => this.writer.WriteLine(m.Text)))
-            {
-                loop.Run(token);
-            }
+            return new InputLoop(this.bus, this.ReadLine, m => this.writer.WriteLine(m.Text));
         }
 
         private bool ReadLine()
