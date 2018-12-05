@@ -5,8 +5,6 @@
 namespace Adventure.Test
 {
     using System;
-    using System.Collections.Generic;
-    using System.Threading;
     using FluentAssertions;
     using Xunit;
 
@@ -24,6 +22,22 @@ namespace Adventure.Test
 
                 handler.Token.IsCancellationRequested.Should().BeTrue();
             }
+        }
+
+        [Fact]
+        public void DoesNothingAfterDispose()
+        {
+            bool secondSubscriber = false;
+            MessageBus bus = new MessageBus();
+            using (QuitHandler handler = new QuitHandler(bus, "scram"))
+            {
+                bus.Subscribe<SentenceMessage>(m => secondSubscriber = true);
+            }
+
+            Action act = () => bus.Send(new SentenceMessage(new Word("scram", "quit"), new Word(string.Empty, string.Empty)));
+
+            act.Should().NotThrow();
+            secondSubscriber.Should().BeTrue();
         }
     }
 }

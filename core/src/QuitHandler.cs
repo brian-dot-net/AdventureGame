@@ -10,17 +10,22 @@ namespace Adventure
     public sealed class QuitHandler : IDisposable
     {
         private readonly CancellationTokenSource cts;
+        private readonly IDisposable sub;
 
         public QuitHandler(MessageBus bus, string verb)
         {
             this.cts = new CancellationTokenSource();
-            bus.Subscribe<SentenceMessage>(m => this.Handle(m.Verb.Primary == verb));
+            this.sub = bus.Subscribe<SentenceMessage>(m => this.Handle(m.Verb.Primary == verb));
         }
 
         public CancellationToken Token => this.cts.Token;
 
         public void Dispose()
         {
+            using (this.cts)
+            using (this.sub)
+            {
+            }
         }
 
         private bool Handle(bool shouldQuit)
