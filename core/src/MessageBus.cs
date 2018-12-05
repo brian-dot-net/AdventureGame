@@ -37,18 +37,24 @@ namespace Adventure
 
         private sealed class Subscribers
         {
-            private Func<object, bool> subscribers;
+            private Action<Message> subscribers;
 
             public IDisposable Add<TMessage>(Func<TMessage, bool> subscriber)
             {
-                Func<object, bool> next = o => subscriber((TMessage)o);
+                Action<Message> next = m =>
+                {
+                    if (!m.Consumed)
+                    {
+                        m.Consumed = subscriber((TMessage)m.Data);
+                    }
+                };
                 this.subscribers += next;
                 return new Disposable(() => this.subscribers -= next);
             }
 
             public void Invoke<TMessage>(TMessage message)
             {
-                this.subscribers?.Invoke(message);
+                this.subscribers?.Invoke(new Message(message));
             }
 
             private sealed class Disposable : IDisposable
@@ -64,6 +70,18 @@ namespace Adventure
                 {
                     this.onDispose();
                 }
+            }
+
+            private sealed class Message
+            {
+                public Message(object data)
+                {
+                    this.Data = data;
+                }
+
+                public object Data { get; }
+
+                public bool Consumed { get; set; }
             }
         }
 

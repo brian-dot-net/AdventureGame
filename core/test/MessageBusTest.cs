@@ -204,5 +204,20 @@ namespace Adventure.Test
 
             charCount.Should().Be(6);
         }
+
+        [Fact]
+        public void SendStringTwoBoolSubscribersFirstReturnsTrue()
+        {
+            int charCount = 0;
+            MessageBus bus = new MessageBus();
+            Func<string, bool> subscriber1 = m => (charCount += m.Length) == 3;
+            Func<string, bool> subscriber2 = m => (charCount += m.Length) == 6;
+
+            bus.Subscribe(subscriber1);
+            bus.Subscribe(subscriber2);
+            bus.Send("abc");
+
+            charCount.Should().Be(3);
+        }
     }
 }
