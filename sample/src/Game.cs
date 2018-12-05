@@ -23,10 +23,11 @@ namespace Adventure.Sample
         public void Run()
         {
             using (CancellationTokenSource cts = new CancellationTokenSource())
+            using (this.bus.Subscribe<SentenceMessage>(m => this.HandleQuit(m.Verb, cts)))
             using (new SentenceParser(this.bus, this.words))
             using (InputLoop loop = this.console.NewLoop())
             {
-                Room room = new MainRoom(this.bus, cts);
+                Room room = new MainRoom(this.bus);
                 room.Enter();
                 loop.Run(cts.Token);
             }
@@ -39,6 +40,17 @@ namespace Adventure.Sample
             w.Add(Verb.Quit, "exit");
             w.Add(Verb.Take, "get");
             return w;
+        }
+
+        private bool HandleQuit(Word verb, CancellationTokenSource cts)
+        {
+            if (verb.Primary == Verb.Quit)
+            {
+                cts.Cancel();
+                return true;
+            }
+
+            return false;
         }
     }
 }
