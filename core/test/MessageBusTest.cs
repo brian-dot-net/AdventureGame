@@ -176,5 +176,18 @@ namespace Adventure.Test
 
             received.Should().Equal("S1=hello", "S3=hello");
         }
+
+        [Fact]
+        public void SendStringOneBoolSubscriber()
+        {
+            bool received = false;
+            MessageBus bus = new MessageBus();
+            Func<string, bool> subscriber = m => received = bool.Parse(m);
+
+            bus.Subscribe(subscriber);
+            bus.Send("true");
+
+            received.Should().BeTrue();
+        }
     }
 }

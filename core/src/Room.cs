@@ -27,7 +27,7 @@ namespace Adventure
                 throw new InvalidOperationException("Cannot Enter again.");
             }
 
-            this.sub = this.bus.Subscribe<SentenceMessage>(this.Process);
+            this.sub = this.bus.Subscribe<SentenceMessage>(m => this.Process(m));
             this.EnterCore();
         }
 

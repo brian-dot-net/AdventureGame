@@ -18,6 +18,15 @@ namespace Adventure
 
         public IDisposable Subscribe<TMessage>(Action<TMessage> subscriber)
         {
+            return this.Subscribe<TMessage>(m =>
+            {
+                subscriber(m);
+                return false;
+            });
+        }
+
+        public IDisposable Subscribe<TMessage>(Func<TMessage, bool> subscriber)
+        {
             return this.subscribers[typeof(TMessage)].Add(subscriber);
         }
 
@@ -28,11 +37,11 @@ namespace Adventure
 
         private sealed class Subscribers
         {
-            private Action<object> subscribers;
+            private Func<object, bool> subscribers;
 
-            public IDisposable Add<TMessage>(Action<TMessage> subscriber)
+            public IDisposable Add<TMessage>(Func<TMessage, bool> subscriber)
             {
-                Action<object> next = o => subscriber((TMessage)o);
+                Func<object, bool> next = o => subscriber((TMessage)o);
                 this.subscribers += next;
                 return new Disposable(() => this.subscribers -= next);
             }
