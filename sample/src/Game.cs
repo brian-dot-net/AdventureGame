@@ -5,7 +5,6 @@
 namespace Adventure.Sample
 {
     using System.IO;
-    using System.Threading;
 
     public sealed class Game
     {
@@ -22,14 +21,13 @@ namespace Adventure.Sample
 
         public void Run()
         {
-            using (CancellationTokenSource cts = new CancellationTokenSource())
-            using (this.bus.Subscribe<SentenceMessage>(m => this.HandleQuit(m.Verb, cts)))
             using (new SentenceParser(this.bus, this.words))
+            using (QuitHandler quit = new QuitHandler(this.bus, Verb.Quit))
             using (InputLoop loop = this.console.NewLoop())
             {
                 Room room = new MainRoom(this.bus);
                 room.Enter();
-                loop.Run(cts.Token);
+                loop.Run(quit.Token);
             }
         }
 
@@ -40,17 +38,6 @@ namespace Adventure.Sample
             w.Add(Verb.Quit, "exit");
             w.Add(Verb.Take, "get");
             return w;
-        }
-
-        private bool HandleQuit(Word verb, CancellationTokenSource cts)
-        {
-            if (verb.Primary == Verb.Quit)
-            {
-                cts.Cancel();
-                return true;
-            }
-
-            return false;
         }
     }
 }
