@@ -30,6 +30,7 @@ namespace Adventure
 
         public void Dispose()
         {
+            this.sub.Dispose();
         }
     }
 }

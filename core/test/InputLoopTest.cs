@@ -76,5 +76,19 @@ namespace Adventure.Test
                 }
             }
         }
+
+        [Fact]
+        public void UnsubscribesOnDispose()
+        {
+            MessageBus bus = new MessageBus();
+            InputLoop loop = new InputLoop(bus);
+            loop.Dispose();
+            bool received = false;
+            bus.Subscribe<InputEndedMessage>(_ => received = true);
+
+            bus.Send(new InputEndedMessage());
+
+            received.Should().BeTrue();
+        }
     }
 }
