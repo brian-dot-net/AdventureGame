@@ -31,7 +31,7 @@ namespace Adventure.Test
             MessageBus bus = new MessageBus();
             StringBuilder output = new StringBuilder();
             StringWriter writer = new StringWriter(output);
-            bus.Subscribe<InputMessage>(m => bus.Send(new OutputMessage($"I saw '{m.Line}'")));
+            bus.Subscribe<InputReceivedMessage>(m => bus.Send(new OutputMessage($"I saw '{m.Line}'")));
             TextConsole con = new TextConsole(bus, new StringReader("one line"), writer);
             using (InputLoop loop = con.NewLoop())
             {
@@ -65,7 +65,7 @@ namespace Adventure.Test
             {
                 MessageBus bus = new MessageBus();
                 int calls = 0;
-                Action<InputMessage> subscriber = m =>
+                Action<InputReceivedMessage> subscriber = m =>
                 {
                     ++calls;
                     if (m.Line == "cancel")

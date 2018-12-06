@@ -32,7 +32,7 @@ namespace Adventure
                 return false;
             }
 
-            this.bus.Send(new InputMessage(line));
+            this.bus.Send(new InputReceivedMessage(line));
             return true;
         }
     }

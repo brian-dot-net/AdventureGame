@@ -16,7 +16,7 @@ namespace Adventure
         {
             this.bus = bus;
             this.words = words;
-            this.subscription = this.bus.Subscribe<InputMessage>(m => this.ProcessInput(m.Line));
+            this.subscription = this.bus.Subscribe<InputReceivedMessage>(m => this.ProcessInput(m.Line));
         }
 
         public void Dispose()

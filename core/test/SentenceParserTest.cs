@@ -27,7 +27,7 @@ namespace Adventure.Test
             bus.Subscribe(onSentence);
             SentenceParser parser = new SentenceParser(bus, new Words());
 
-            bus.Send(new InputMessage(input));
+            bus.Send(new InputReceivedMessage(input));
 
             sentences.Should().ContainSingle().Which.Should().Be(output);
         }
@@ -42,7 +42,7 @@ namespace Adventure.Test
             SentenceParser parser = new SentenceParser(bus, new Words());
 
             parser.Dispose();
-            bus.Send(new InputMessage("hello"));
+            bus.Send(new InputReceivedMessage("hello"));
 
             sentences.Should().BeEmpty();
         }
@@ -64,7 +64,7 @@ namespace Adventure.Test
             words.Add("house", "home");
             SentenceParser parser = new SentenceParser(bus, words);
 
-            bus.Send(new InputMessage(input));
+            bus.Send(new InputReceivedMessage(input));
 
             sentences.Should().ContainSingle().Which.Should().Be(output);
         }

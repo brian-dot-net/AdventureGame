@@ -1,12 +1,12 @@
-﻿// <copyright file="InputMessage.cs" company="Brian Rogers">
+﻿// <copyright file="InputReceivedMessage.cs" company="Brian Rogers">
 // Copyright (c) Brian Rogers. All rights reserved.
 // </copyright>
 
 namespace Adventure
 {
-    public sealed class InputMessage
+    public sealed class InputReceivedMessage
     {
-        public InputMessage(string line)
+        public InputReceivedMessage(string line)
         {
             this.Line = line;
         }
