@@ -60,5 +60,21 @@ namespace Adventure.Test
                 }
             }
         }
+
+        [Fact]
+        public void RunCancelBeforeEnd()
+        {
+            MessageBus bus = new MessageBus();
+            using (CancellationTokenSource cts = new CancellationTokenSource())
+            {
+                bus.Subscribe<InputRequestedMessage>(_ => cts.Cancel());
+                using (InputLoop loop = new InputLoop(bus))
+                {
+                    Action act = () => loop.Run(cts.Token);
+
+                    act.Should().NotThrow();
+                }
+            }
+        }
     }
 }
