@@ -9,21 +9,20 @@ namespace Adventure.Sample
     public sealed class Game
     {
         private readonly MessageBus bus;
-        private readonly TextConsole console;
         private readonly Words words;
 
-        public Game(TextReader reader, TextWriter writer)
+        public Game()
         {
             this.bus = new MessageBus();
-            this.console = new TextConsole(this.bus, reader, writer);
             this.words = InitializeWords();
         }
 
-        public void Run()
+        public void Run(TextReader reader, TextWriter writer)
         {
+            TextConsole console = new TextConsole(this.bus, reader, writer);
             using (new SentenceParser(this.bus, this.words))
             using (QuitHandler quit = new QuitHandler(this.bus, Verb.Quit))
-            using (InputLoop loop = this.console.NewLoop())
+            using (InputLoop loop = console.NewLoop())
             {
                 Room room = new MainRoom(this.bus);
                 room.Enter();
