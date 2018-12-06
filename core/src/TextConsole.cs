@@ -19,9 +19,9 @@ namespace Adventure
             this.writer = writer;
         }
 
-        public InputLoop NewLoop()
+        public OldInputLoop NewLoop()
         {
-            return new InputLoop(this.bus, this.ReadLine, m => this.writer.WriteLine(m.Text));
+            return new OldInputLoop(this.bus, this.ReadLine, m => this.writer.WriteLine(m.Text));
         }
 
         private bool ReadLine()

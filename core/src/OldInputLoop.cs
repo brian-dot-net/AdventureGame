@@ -1,4 +1,4 @@
-﻿// <copyright file="InputLoop.cs" company="Brian Rogers">
+﻿// <copyright file="OldInputLoop.cs" company="Brian Rogers">
 // Copyright (c) Brian Rogers. All rights reserved.
 // </copyright>
 
@@ -7,12 +7,12 @@ namespace Adventure
     using System;
     using System.Threading;
 
-    public sealed class InputLoop : IDisposable
+    public sealed class OldInputLoop : IDisposable
     {
         private readonly Func<bool> readInput;
         private readonly IDisposable sub;
 
-        public InputLoop(MessageBus bus, Func<bool> readInput, Action<OutputMessage> onOutput)
+        public OldInputLoop(MessageBus bus, Func<bool> readInput, Action<OutputMessage> onOutput)
         {
             this.readInput = readInput;
             this.sub = bus.Subscribe(onOutput);

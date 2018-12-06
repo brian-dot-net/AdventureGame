@@ -17,7 +17,7 @@ namespace Adventure.Test
         public void RunNoInput()
         {
             TextConsole con = new TextConsole(new MessageBus(), TextReader.Null, TextWriter.Null);
-            using (InputLoop loop = con.NewLoop())
+            using (OldInputLoop loop = con.NewLoop())
             {
                 Action act = () => loop.Run(CancellationToken.None);
 
@@ -33,7 +33,7 @@ namespace Adventure.Test
             StringWriter writer = new StringWriter(output);
             bus.Subscribe<InputReceivedMessage>(m => bus.Send(new OutputMessage($"I saw '{m.Line}'")));
             TextConsole con = new TextConsole(bus, new StringReader("one line"), writer);
-            using (InputLoop loop = con.NewLoop())
+            using (OldInputLoop loop = con.NewLoop())
             {
                 loop.Run(CancellationToken.None);
 
@@ -48,7 +48,7 @@ namespace Adventure.Test
             StringBuilder output = new StringBuilder();
             StringWriter writer = new StringWriter(output);
             TextConsole con = new TextConsole(bus, TextReader.Null, writer);
-            using (InputLoop loop = con.NewLoop())
+            using (OldInputLoop loop = con.NewLoop())
             {
                 loop.Run(CancellationToken.None);
             }
@@ -76,7 +76,7 @@ namespace Adventure.Test
                 bus.Subscribe(subscriber);
                 string[] lines = new string[] { "start", "cancel", "too late" };
                 TextConsole con = new TextConsole(bus, new StringReader(string.Join(Environment.NewLine, lines)), TextWriter.Null);
-                using (InputLoop loop = con.NewLoop())
+                using (OldInputLoop loop = con.NewLoop())
                 {
                     loop.Run(cts.Token);
                 }
