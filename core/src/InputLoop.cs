@@ -22,7 +22,7 @@ namespace Adventure
 
         public void Run(CancellationToken token)
         {
-            while (!this.inputEnded)
+            while (!this.inputEnded && !token.IsCancellationRequested)
             {
                 this.bus.Send(new InputRequestedMessage());
             }

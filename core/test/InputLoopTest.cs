@@ -43,5 +43,22 @@ namespace Adventure.Test
                 linesRead.Should().Be(2);
             }
         }
+
+        [Fact]
+        public void RunCancelImmediately()
+        {
+            MessageBus bus = new MessageBus();
+            bus.Subscribe<InputRequestedMessage>(_ => throw new InvalidOperationException("Should not have requested input."));
+            using (CancellationTokenSource cts = new CancellationTokenSource())
+            {
+                cts.Cancel();
+                using (InputLoop loop = new InputLoop(bus))
+                {
+                    Action act = () => loop.Run(cts.Token);
+
+                    act.Should().NotThrow();
+                }
+            }
+        }
     }
 }
