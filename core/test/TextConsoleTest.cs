@@ -46,5 +46,23 @@ namespace Adventure.Test
                 lines.Should().Equal("one", "two");
             }
         }
+
+        [Fact]
+        public void ReadAfterDispose()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> lines = new List<string>();
+            bus.Subscribe<InputReceivedMessage>(m => lines.Add(m.Line));
+            using (StringReader reader = new StringReader("one" + Environment.NewLine + "two"))
+            {
+                using (TextConsole console = new TextConsole(bus, reader))
+                {
+                }
+
+                bus.Send(new InputRequestedMessage());
+
+                lines.Should().BeEmpty();
+            }
+        }
     }
 }
