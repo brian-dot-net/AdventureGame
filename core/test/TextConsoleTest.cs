@@ -83,5 +83,22 @@ namespace Adventure.Test
                 sb.ToString().Should().Be("one" + Environment.NewLine + "two" + Environment.NewLine);
             }
         }
+
+        [Fact]
+        public void WriteAfterDispose()
+        {
+            MessageBus bus = new MessageBus();
+            StringBuilder sb = new StringBuilder();
+            using (StringWriter writer = new StringWriter(sb))
+            {
+                using (TextConsole console = new TextConsole(bus, TextReader.Null, writer))
+                {
+                }
+
+                bus.Send(new OutputMessage("one"));
+
+                sb.ToString().Should().BeEmpty();
+            }
+        }
     }
 }

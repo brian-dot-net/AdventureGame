@@ -10,18 +10,20 @@ namespace Adventure
     public sealed class TextConsole : IDisposable
     {
         private readonly MessageBus bus;
-        private readonly IDisposable sub;
+        private readonly IDisposable inputSub;
+        private readonly IDisposable outputSub;
 
         public TextConsole(MessageBus bus, TextReader reader, TextWriter writer)
         {
             this.bus = bus;
-            this.sub = this.bus.Subscribe<InputRequestedMessage>(_ => this.ReadLine(reader));
-            this.bus.Subscribe<OutputMessage>(m => writer.WriteLine(m.Text));
+            this.inputSub = this.bus.Subscribe<InputRequestedMessage>(_ => this.ReadLine(reader));
+            this.outputSub = this.bus.Subscribe<OutputMessage>(m => writer.WriteLine(m.Text));
         }
 
         public void Dispose()
         {
-            this.sub.Dispose();
+            this.inputSub.Dispose();
+            this.outputSub.Dispose();
         }
 
         private void ReadLine(TextReader reader)
