@@ -28,13 +28,16 @@ namespace Adventure
         {
             string[] parts = line.Trim().Split(new char[] { ' ' }, 2);
             string verb = parts[0];
-            string noun = string.Empty;
-            if (parts.Length == 2)
+            if (verb.Length > 0)
             {
-                noun = parts[1].Trim();
-            }
+                string noun = string.Empty;
+                if (parts.Length == 2)
+                {
+                    noun = parts[1].Trim();
+                }
 
-            this.bus.Send(new SentenceMessage(this.words[verb], this.words[noun]));
+                this.bus.Send(new SentenceMessage(this.words[verb], this.words[noun]));
+            }
         }
     }
 }

@@ -32,6 +32,23 @@ namespace Adventure.Test
             sentences.Should().ContainSingle().Which.Should().Be(output);
         }
 
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("  ")]
+        public void SendEmptyLine(string empty)
+        {
+            MessageBus bus = new MessageBus();
+            List<string> sentences = new List<string>();
+            Action<SentenceMessage> onSentence = m => sentences.Add(m.Verb + ":" + m.Noun);
+            bus.Subscribe(onSentence);
+            SentenceParser parser = new SentenceParser(bus, new Words());
+
+            bus.Send(new InputReceivedMessage(empty));
+
+            sentences.Should().BeEmpty();
+        }
+
         [Fact]
         public void SendAfterDispose()
         {
