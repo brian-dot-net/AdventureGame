@@ -29,6 +29,20 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ReadInputWithPrompt()
+        {
+            MessageBus bus = new MessageBus();
+            StringBuilder sb = new StringBuilder();
+            using (StringWriter writer = new StringWriter(sb))
+            using (TextConsole console = new TextConsole(bus, TextReader.Null, writer))
+            {
+                bus.Send(new InputRequestedMessage("What's up?"));
+
+                sb.ToString().Should().Be("What's up? ");
+            }
+        }
+
+        [Fact]
         public void ReadEmptyLine()
         {
             MessageBus bus = new MessageBus();

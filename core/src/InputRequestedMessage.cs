@@ -6,5 +6,11 @@ namespace Adventure
 {
     public sealed class InputRequestedMessage
     {
+        public InputRequestedMessage(string prompt = null)
+        {
+            this.Prompt = prompt;
+        }
+
+        public string Prompt { get; }
     }
 }
