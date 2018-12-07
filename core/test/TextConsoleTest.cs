@@ -4,6 +4,8 @@
 
 namespace Adventure.Test
 {
+    using System;
+    using System.Collections.Generic;
     using System.IO;
     using FluentAssertions;
     using Xunit;
@@ -22,6 +24,26 @@ namespace Adventure.Test
                 bus.Send(new InputRequestedMessage());
 
                 done.Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ReadTwoLines()
+        {
+            MessageBus bus = new MessageBus();
+            using (StringReader reader = new StringReader("one" + Environment.NewLine + "two"))
+            using (TextConsole console = new TextConsole(bus, reader))
+            {
+                List<string> lines = new List<string>();
+                bus.Subscribe<InputReceivedMessage>(m => lines.Add(m.Line));
+
+                bus.Send(new InputRequestedMessage());
+
+                lines.Should().ContainSingle().Which.Should().Be("one");
+
+                bus.Send(new InputRequestedMessage());
+
+                lines.Should().Equal("one", "two");
             }
         }
     }

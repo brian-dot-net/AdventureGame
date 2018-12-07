@@ -23,9 +23,14 @@ namespace Adventure
 
         private void ReadLine(TextReader reader)
         {
-            if (reader.ReadLine() == null)
+            string line = reader.ReadLine();
+            if (line == null)
             {
                 this.bus.Send(new InputEndedMessage());
+            }
+            else
+            {
+                this.bus.Send(new InputReceivedMessage(line));
             }
         }
     }
