@@ -15,12 +15,17 @@ namespace Adventure.Test
         public void RunInputEnded()
         {
             MessageBus bus = new MessageBus();
-            bus.Subscribe<InputRequestedMessage>(_ => bus.Send(new InputEndedMessage()));
-            using (InputLoop loop = new InputLoop(bus))
+            string prompt = null;
+            bus.Subscribe<InputRequestedMessage>(m =>
             {
-                Action act = () => loop.Run(CancellationToken.None);
+                prompt = m.Prompt;
+                bus.Send(new InputEndedMessage());
+            });
+            using (InputLoop loop = new InputLoop(bus, "Yes?"))
+            {
+                loop.Run(CancellationToken.None);
 
-                act.Should().NotThrow();
+                prompt.Should().Be("Yes?");
             }
         }
 

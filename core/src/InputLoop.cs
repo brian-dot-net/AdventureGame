@@ -11,20 +11,22 @@ namespace Adventure
     {
         private readonly MessageBus bus;
         private readonly IDisposable sub;
+        private readonly string prompt;
 
         private bool inputEnded;
 
-        public InputLoop(MessageBus bus)
+        public InputLoop(MessageBus bus, string prompt = null)
         {
             this.bus = bus;
             this.sub = bus.Subscribe<InputEndedMessage>(_ => this.inputEnded = true);
+            this.prompt = prompt;
         }
 
         public void Run(CancellationToken token)
         {
             while (!this.inputEnded && !token.IsCancellationRequested)
             {
-                this.bus.Send(new InputRequestedMessage());
+                this.bus.Send(new InputRequestedMessage(this.prompt));
             }
         }
 
