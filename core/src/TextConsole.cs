@@ -12,10 +12,11 @@ namespace Adventure
         private readonly MessageBus bus;
         private readonly IDisposable sub;
 
-        public TextConsole(MessageBus bus, TextReader reader)
+        public TextConsole(MessageBus bus, TextReader reader, TextWriter writer)
         {
             this.bus = bus;
             this.sub = this.bus.Subscribe<InputRequestedMessage>(_ => this.ReadLine(reader));
+            this.bus.Subscribe<OutputMessage>(m => writer.WriteLine(m.Text));
         }
 
         public void Dispose()
