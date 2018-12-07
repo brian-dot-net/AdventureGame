@@ -29,6 +29,22 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ReadEmptyLine()
+        {
+            MessageBus bus = new MessageBus();
+            using (StringReader reader = new StringReader(Environment.NewLine))
+            using (TextConsole console = new TextConsole(bus, reader, TextWriter.Null))
+            {
+                List<string> lines = new List<string>();
+                bus.Subscribe<InputReceivedMessage>(m => lines.Add(m.Line));
+
+                bus.Send(new InputRequestedMessage());
+
+                lines.Should().Equal(string.Empty);
+            }
+        }
+
+        [Fact]
         public void ReadTwoLines()
         {
             MessageBus bus = new MessageBus();
