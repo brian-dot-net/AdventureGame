@@ -20,6 +20,8 @@ namespace Adventure
             this.verbs = new Dictionary<string, Action<Word, Word>>(StringComparer.OrdinalIgnoreCase);
         }
 
+        protected abstract string Description { get; }
+
         public void Enter()
         {
             if (this.sub != null)
@@ -29,6 +31,7 @@ namespace Adventure
 
             this.sub = this.bus.Subscribe<SentenceMessage>(m => this.Process(m));
             this.EnterCore();
+            this.Output(this.Description);
         }
 
         public void Leave()

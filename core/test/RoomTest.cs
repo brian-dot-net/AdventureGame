@@ -22,9 +22,11 @@ namespace Adventure.Test
 
             room.Enter();
 
+            output.Should().ContainSingle().Which.Should().Be("You are in a test room.");
+
             bus.Send(new SentenceMessage(new Word("hello", "hello"), new Word("world", "world")));
 
-            output.Should().ContainSingle().Which.Should().Be("Hello, world!");
+            output.Should().Contain("Hello, world!");
         }
 
         [Fact]
@@ -144,6 +146,8 @@ namespace Adventure.Test
                 : base(bus)
             {
             }
+
+            protected override string Description => "You are in a test room.";
 
             public void TestRegister(string verb)
             {

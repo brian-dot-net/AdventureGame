@@ -11,6 +11,8 @@ namespace Adventure.Sample
         {
         }
 
+        protected override string Description => "You are in the main room.";
+
         protected override void EnterCore()
         {
             this.Register(Verb.Greet, (_, __) => this.Output("You say, \"Hello,\" to no one in particular. No one answers."));
