@@ -1,4 +1,4 @@
-// <copyright file="TextConsoleTest.cs" company="Brian Rogers">
+// <copyright file="OldTextConsoleTest.cs" company="Brian Rogers">
 // Copyright (c) Brian Rogers. All rights reserved.
 // </copyright>
 
@@ -11,12 +11,12 @@ namespace Adventure.Test
     using FluentAssertions;
     using Xunit;
 
-    public class TextConsoleTest
+    public class OldTextConsoleTest
     {
         [Fact]
         public void RunNoInput()
         {
-            TextConsole con = new TextConsole(new MessageBus(), TextReader.Null, TextWriter.Null);
+            OldTextConsole con = new OldTextConsole(new MessageBus(), TextReader.Null, TextWriter.Null);
             using (OldInputLoop loop = con.NewLoop())
             {
                 Action act = () => loop.Run(CancellationToken.None);
@@ -32,7 +32,7 @@ namespace Adventure.Test
             StringBuilder output = new StringBuilder();
             StringWriter writer = new StringWriter(output);
             bus.Subscribe<InputReceivedMessage>(m => bus.Send(new OutputMessage($"I saw '{m.Line}'")));
-            TextConsole con = new TextConsole(bus, new StringReader("one line"), writer);
+            OldTextConsole con = new OldTextConsole(bus, new StringReader("one line"), writer);
             using (OldInputLoop loop = con.NewLoop())
             {
                 loop.Run(CancellationToken.None);
@@ -47,7 +47,7 @@ namespace Adventure.Test
             MessageBus bus = new MessageBus();
             StringBuilder output = new StringBuilder();
             StringWriter writer = new StringWriter(output);
-            TextConsole con = new TextConsole(bus, TextReader.Null, writer);
+            OldTextConsole con = new OldTextConsole(bus, TextReader.Null, writer);
             using (OldInputLoop loop = con.NewLoop())
             {
                 loop.Run(CancellationToken.None);
@@ -75,7 +75,7 @@ namespace Adventure.Test
                 };
                 bus.Subscribe(subscriber);
                 string[] lines = new string[] { "start", "cancel", "too late" };
-                TextConsole con = new TextConsole(bus, new StringReader(string.Join(Environment.NewLine, lines)), TextWriter.Null);
+                OldTextConsole con = new OldTextConsole(bus, new StringReader(string.Join(Environment.NewLine, lines)), TextWriter.Null);
                 using (OldInputLoop loop = con.NewLoop())
                 {
                     loop.Run(cts.Token);

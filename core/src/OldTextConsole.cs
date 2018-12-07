@@ -1,4 +1,4 @@
-﻿// <copyright file="TextConsole.cs" company="Brian Rogers">
+﻿// <copyright file="OldTextConsole.cs" company="Brian Rogers">
 // Copyright (c) Brian Rogers. All rights reserved.
 // </copyright>
 
@@ -6,13 +6,13 @@ namespace Adventure
 {
     using System.IO;
 
-    public sealed class TextConsole
+    public sealed class OldTextConsole
     {
         private readonly MessageBus bus;
         private readonly TextReader reader;
         private readonly TextWriter writer;
 
-        public TextConsole(MessageBus bus, TextReader reader, TextWriter writer)
+        public OldTextConsole(MessageBus bus, TextReader reader, TextWriter writer)
         {
             this.bus = bus;
             this.reader = reader;

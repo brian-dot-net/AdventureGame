@@ -19,7 +19,7 @@ namespace Adventure.Sample
 
         public void Run(TextReader reader, TextWriter writer)
         {
-            TextConsole console = new TextConsole(this.bus, reader, writer);
+            OldTextConsole console = new OldTextConsole(this.bus, reader, writer);
             using (new SentenceParser(this.bus, this.words))
             using (QuitHandler quit = new QuitHandler(this.bus, Verb.Quit))
             using (OldInputLoop loop = console.NewLoop())
