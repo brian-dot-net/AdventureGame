@@ -21,6 +21,7 @@ namespace Adventure.Test
             Room room = new TestRoom(bus);
 
             room.Enter();
+
             bus.Send(new SentenceMessage(new Word("hello", "hello"), new Word("world", "world")));
 
             output.Should().ContainSingle().Which.Should().Be("Hello, world!");
@@ -30,16 +31,16 @@ namespace Adventure.Test
         public void UnsubscribeOnLeave()
         {
             MessageBus bus = new MessageBus();
-            List<string> output = new List<string>();
-            Action<OutputMessage> subscriber = m => output.Add(m.Text);
-            bus.Subscribe(subscriber);
             Room room = new TestRoom(bus);
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
 
             room.Enter();
             room.Leave();
+            bus.Subscribe(subscriber);
             bus.Send(new SentenceMessage(new Word("hello", "hello"), new Word("world", "world")));
 
-            output.Should().BeEmpty();
+            lastOutput.Should().BeNull();
         }
 
         [Fact]
@@ -79,8 +80,8 @@ namespace Adventure.Test
         public void EnterLeaveEnter()
         {
             MessageBus bus = new MessageBus();
-            List<string> output = new List<string>();
-            Action<OutputMessage> subscriber = m => output.Add(m.Text);
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
             bus.Subscribe(subscriber);
             Room room = new TestRoom(bus);
 
@@ -89,7 +90,7 @@ namespace Adventure.Test
             room.Enter();
             bus.Send(new SentenceMessage(new Word("hello", "hello"), new Word("world", "world")));
 
-            output.Should().ContainSingle().Which.Should().Be("Hello, world!");
+            lastOutput.Should().Be("Hello, world!");
         }
 
         [Fact]
@@ -126,15 +127,15 @@ namespace Adventure.Test
         public void ProcessUnknownVerb()
         {
             MessageBus bus = new MessageBus();
-            List<string> output = new List<string>();
-            Action<OutputMessage> subscriber = m => output.Add(m.Text);
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
             bus.Subscribe(subscriber);
             Room room = new TestRoom(bus);
 
             room.Enter();
             bus.Send(new SentenceMessage(new Word("goodbye", "BYE"), new Word("world", "world")));
 
-            output.Should().ContainSingle().Which.Should().Be("I don't know what 'BYE' means.");
+            lastOutput.Should().Be("I don't know what 'BYE' means.");
         }
 
         private sealed class TestRoom : Room
