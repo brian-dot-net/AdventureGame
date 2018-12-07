@@ -22,7 +22,7 @@ namespace Adventure.Sample
             using (TextConsole console = new TextConsole(this.bus, reader, writer))
             using (new SentenceParser(this.bus, this.words))
             using (QuitHandler quit = new QuitHandler(this.bus, Verb.Quit))
-            using (InputLoop loop = new InputLoop(this.bus))
+            using (InputLoop loop = new InputLoop(this.bus, ">"))
             {
                 Room room = new MainRoom(this.bus);
                 room.Enter();
