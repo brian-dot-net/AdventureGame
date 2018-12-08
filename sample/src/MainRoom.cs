@@ -15,6 +15,7 @@ namespace Adventure.Sample
 
         protected override void EnterCore()
         {
+            this.Register(Verb.Look, (_, __) => this.Output(this.Description));
             this.Register(Verb.Greet, (_, __) => this.Output("You say, \"Hello,\" to no one in particular. No one answers."));
             this.Register(Verb.Take, (_, n) => this.Output("There is no " + n.Actual.ToLowerInvariant() + " here."));
         }

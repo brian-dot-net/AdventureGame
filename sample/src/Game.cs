@@ -34,6 +34,7 @@ namespace Adventure.Sample
         {
             Words w = new Words();
             w.Add(Verb.Greet, "hello", "hi");
+            w.Add(Verb.Look);
             w.Add(Verb.Quit, "exit");
             w.Add(Verb.Take, "get");
             return w;
