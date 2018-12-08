@@ -4,6 +4,8 @@
 
 namespace Adventure
 {
+    using System;
+
     public sealed class RoomMap
     {
         public Point Add(Room room)
@@ -18,6 +20,10 @@ namespace Adventure
             public Point(Room room)
             {
                 this.room = room;
+            }
+
+            public void ConnectTo(Point target, string direction)
+            {
             }
         }
     }
