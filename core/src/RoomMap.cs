@@ -16,7 +16,15 @@ namespace Adventure
             return new Point(room);
         }
 
-        public void Start(Point start) => this.Next(start);
+        public void Start(Point start)
+        {
+            if (this.current != null)
+            {
+                throw new InvalidOperationException("Cannot Start again.");
+            }
+
+            this.Next(start);
+        }
 
         public void Go(string direction) => this.Next(this.current.Go(direction));
 

@@ -24,6 +24,20 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void StartTwice()
+        {
+            MessageBus bus = new MessageBus();
+            RoomMap map = new RoomMap();
+            RoomMap.Point p1 = map.Add(new TestRoom(bus));
+            RoomMap.Point p2 = map.Add(new TestRoom(bus));
+
+            map.Start(p1);
+            Action act = () => map.Start(p2);
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Start again.");
+        }
+
+        [Fact]
         public void ConnectTwoRoomsOneDirection()
         {
             MessageBus bus = new MessageBus();
