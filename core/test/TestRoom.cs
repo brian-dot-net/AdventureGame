@@ -4,14 +4,34 @@
 
 namespace Adventure.Test
 {
+    using System.Collections.Generic;
+
     public sealed class TestRoom : Room
     {
-        public TestRoom(MessageBus bus)
+        private readonly string color;
+
+        public TestRoom(MessageBus bus, string color = null)
             : base(bus)
         {
+            this.color = color;
         }
 
-        protected override string Description => "You are in a test room.";
+        protected override string Description
+        {
+            get
+            {
+                List<string> parts = new List<string>();
+                parts.Add("You are in a");
+                if (this.color != null)
+                {
+                    parts.Add(this.color);
+                }
+
+                parts.Add("test room.");
+
+                return string.Join(" ", parts);
+            }
+        }
 
         public void TestRegisterHello(string verb)
         {
