@@ -166,5 +166,20 @@ namespace Adventure.Test
                 "You are in a NE test room.",
                 "You are in a NW test room.");
         }
+
+        [Fact]
+        public void StartBadPoint()
+        {
+            MessageBus bus = new MessageBus();
+            RoomMap map = new RoomMap(bus);
+            RoomMap mapWrong = new RoomMap(bus);
+
+            var wrongP = mapWrong.Add(new TestRoom(bus));
+            Action act = () => map.Start(wrongP);
+
+            act.Should().Throw<ArgumentException>()
+                .WithMessage("The point is not part of this map.*")
+                .Which.ParamName.Should().Be("start");
+        }
     }
 }

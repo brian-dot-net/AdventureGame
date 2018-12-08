@@ -20,6 +20,8 @@ namespace Adventure
 
         private interface IPointPrivate
         {
+            RoomMap Parent { get; set; }
+
             void Enter();
 
             void Leave();
@@ -29,11 +31,18 @@ namespace Adventure
 
         public Point Add(Room room)
         {
-            return new Point(this.bus, room);
+            Point point = new Point(this.bus, room);
+            ((IPointPrivate)point).Parent = this;
+            return point;
         }
 
         public void Start(Point start)
         {
+            if (((IPointPrivate)start).Parent != this)
+            {
+                throw new ArgumentException("The point is not part of this map.", nameof(start));
+            }
+
             if (this.current != null)
             {
                 throw new InvalidOperationException("Cannot Start again.");
@@ -74,6 +83,8 @@ namespace Adventure
                 this.room = room;
                 this.targets = new Dictionary<string, Point>();
             }
+
+            RoomMap IPointPrivate.Parent { get; set; }
 
             public void ConnectTo(Point target, string direction)
             {
