@@ -51,6 +51,20 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ConnectTwice()
+        {
+            MessageBus bus = new MessageBus();
+            RoomMap map = new RoomMap(bus);
+            RoomMap.Point p1 = map.Add(new TestRoom(bus));
+            RoomMap.Point p2 = map.Add(new TestRoom(bus));
+
+            p1.ConnectTo(p2, "east");
+            Action act = () => p1.ConnectTo(p2, "east");
+
+            act.Should().Throw<InvalidOperationException>("There is already a connection for 'east'.");
+        }
+
+        [Fact]
         public void GoBetweenTwoRooms()
         {
             MessageBus bus = new MessageBus();

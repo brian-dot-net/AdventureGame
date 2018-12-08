@@ -60,6 +60,11 @@ namespace Adventure
 
             public void ConnectTo(Point target, string direction)
             {
+                if (this.targets.ContainsKey(direction))
+                {
+                    throw new InvalidOperationException($"There is already a connection for '{direction}'.");
+                }
+
                 this.targets.Add(direction, target);
             }
 
