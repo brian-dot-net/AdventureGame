@@ -9,11 +9,18 @@ namespace Adventure
 
     public sealed class RoomMap
     {
+        private readonly MessageBus bus;
+
         private Point current;
+
+        public RoomMap(MessageBus bus)
+        {
+            this.bus = bus;
+        }
 
         public Point Add(Room room)
         {
-            return new Point(room);
+            return new Point(this.bus, room);
         }
 
         public void Start(Point start)
@@ -30,18 +37,23 @@ namespace Adventure
 
         private void Next(Point next)
         {
-            this.current?.Leave();
-            this.current = next;
-            this.current.Enter();
+            if (this.current != next)
+            {
+                this.current?.Leave();
+                this.current = next;
+                this.current.Enter();
+            }
         }
 
         public sealed class Point
         {
+            private readonly MessageBus bus;
             private readonly Room room;
             private readonly Dictionary<string, Point> targets;
 
-            public Point(Room room)
+            public Point(MessageBus bus, Room room)
             {
+                this.bus = bus;
                 this.room = room;
                 this.targets = new Dictionary<string, Point>();
             }
@@ -55,7 +67,16 @@ namespace Adventure
 
             public void Leave() => this.room.Leave();
 
-            public Point Go(string direction) => this.targets[direction];
+            public Point Go(string direction)
+            {
+                if (!this.targets.TryGetValue(direction, out Point target))
+                {
+                    this.bus.Send(new OutputMessage($"You can't go {direction}."));
+                    target = this;
+                }
+
+                return target;
+            }
         }
     }
 }

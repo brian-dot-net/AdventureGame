@@ -15,7 +15,7 @@ namespace Adventure.Test
         public void AddTwoRooms()
         {
             MessageBus bus = new MessageBus();
-            RoomMap map = new RoomMap();
+            RoomMap map = new RoomMap(bus);
 
             RoomMap.Point p1 = map.Add(new TestRoom(bus));
             RoomMap.Point p2 = map.Add(new TestRoom(bus));
@@ -27,7 +27,7 @@ namespace Adventure.Test
         public void StartTwice()
         {
             MessageBus bus = new MessageBus();
-            RoomMap map = new RoomMap();
+            RoomMap map = new RoomMap(bus);
             RoomMap.Point p1 = map.Add(new TestRoom(bus));
             RoomMap.Point p2 = map.Add(new TestRoom(bus));
 
@@ -41,7 +41,7 @@ namespace Adventure.Test
         public void ConnectTwoRoomsOneDirection()
         {
             MessageBus bus = new MessageBus();
-            RoomMap map = new RoomMap();
+            RoomMap map = new RoomMap(bus);
             RoomMap.Point p1 = map.Add(new TestRoom(bus));
             RoomMap.Point p2 = map.Add(new TestRoom(bus));
 
@@ -56,7 +56,7 @@ namespace Adventure.Test
             MessageBus bus = new MessageBus();
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
-            RoomMap map = new RoomMap();
+            RoomMap map = new RoomMap(bus);
             RoomMap.Point p1 = map.Add(new TestRoom(bus, "red"));
             RoomMap.Point p2 = map.Add(new TestRoom(bus, "green"));
             p1.ConnectTo(p2, "east");
@@ -73,12 +73,34 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void GoWrongWayAtFirst()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            RoomMap map = new RoomMap(bus);
+            RoomMap.Point p1 = map.Add(new TestRoom(bus, "red"));
+            RoomMap.Point p2 = map.Add(new TestRoom(bus, "green"));
+            p1.ConnectTo(p2, "east");
+            p2.ConnectTo(p1, "west");
+
+            map.Start(p1);
+            map.Go("north");
+            map.Go("east");
+
+            messages.Should().Equal(
+                "You are in a red test room.",
+                "You can't go north.",
+                "You are in a green test room.");
+        }
+
+        [Fact]
         public void GoBetweenFourRoomsBothDirections()
         {
             MessageBus bus = new MessageBus();
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
-            RoomMap map = new RoomMap();
+            RoomMap map = new RoomMap(bus);
             RoomMap.Point nw = map.Add(new TestRoom(bus, "NW"));
             RoomMap.Point ne = map.Add(new TestRoom(bus, "NE"));
             RoomMap.Point sw = map.Add(new TestRoom(bus, "SW"));
