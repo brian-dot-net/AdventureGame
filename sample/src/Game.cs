@@ -37,6 +37,9 @@ namespace Adventure.Sample
             w.Add(Verb.Look);
             w.Add(Verb.Quit, "exit");
             w.Add(Verb.Take, "get");
+
+            w.Add(Noun.Table);
+
             return w;
         }
     }
