@@ -71,10 +71,15 @@ namespace Adventure
             {
                 this.Output(this.Description);
             }
-            else
+            else if (!this.LookAt(noun))
             {
                 this.Output($"I can't see any {noun} here.");
             }
+        }
+
+        protected virtual bool LookAt(Word noun)
+        {
+            return false;
         }
 
         private void Process(SentenceMessage message)

@@ -141,6 +141,21 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessLookCustom()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
+            bus.Subscribe(subscriber);
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("look", "VIEW"), new Word("up", "SKY")));
+
+            lastOutput.Should().Be("You see the ceiling.");
+        }
+
+        [Fact]
         public void ProcessLookUnknown()
         {
             MessageBus bus = new MessageBus();
@@ -188,6 +203,17 @@ namespace Adventure.Test
             {
                 this.TestRegisterHello("hello");
                 this.Register("look", (_, n) => this.Look(n));
+            }
+
+            protected override bool LookAt(Word noun)
+            {
+                if (noun.Primary == "up")
+                {
+                    this.Output("You see the ceiling.");
+                    return true;
+                }
+
+                return base.LookAt(noun);
             }
 
             private void Hello(Word verb, Word noun)
