@@ -5,6 +5,7 @@
 namespace Adventure
 {
     using System;
+    using System.Collections.Generic;
 
     public sealed class RoomMap
     {
@@ -29,24 +30,24 @@ namespace Adventure
         public sealed class Point
         {
             private readonly Room room;
-
-            private Point target;
+            private readonly Dictionary<string, Point> targets;
 
             public Point(Room room)
             {
                 this.room = room;
+                this.targets = new Dictionary<string, Point>();
             }
 
             public void ConnectTo(Point target, string direction)
             {
-                this.target = target;
+                this.targets.Add(direction, target);
             }
 
             public void Enter() => this.room.Enter();
 
             public void Leave() => this.room.Leave();
 
-            public Point Go(string direction) => this.target;
+            public Point Go(string direction) => this.targets[direction];
         }
     }
 }

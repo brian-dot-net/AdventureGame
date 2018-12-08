@@ -57,5 +57,47 @@ namespace Adventure.Test
                 "You are in a green test room.",
                 "You are in a red test room.");
         }
+
+        [Fact]
+        public void GoBetweenFourRoomsBothDirections()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            RoomMap map = new RoomMap();
+            RoomMap.Point nw = map.Add(new TestRoom(bus, "NW"));
+            RoomMap.Point ne = map.Add(new TestRoom(bus, "NE"));
+            RoomMap.Point sw = map.Add(new TestRoom(bus, "SW"));
+            RoomMap.Point se = map.Add(new TestRoom(bus, "SE"));
+            nw.ConnectTo(ne, "east");
+            nw.ConnectTo(sw, "south");
+            ne.ConnectTo(nw, "west");
+            ne.ConnectTo(se, "south");
+            sw.ConnectTo(se, "east");
+            sw.ConnectTo(nw, "north");
+            se.ConnectTo(sw, "west");
+            se.ConnectTo(ne, "north");
+
+            map.Start(nw);
+            map.Go("east");
+            map.Go("south");
+            map.Go("west");
+            map.Go("north");
+            map.Go("south");
+            map.Go("east");
+            map.Go("north");
+            map.Go("west");
+
+            messages.Should().Equal(
+                "You are in a NW test room.",
+                "You are in a NE test room.",
+                "You are in a SE test room.",
+                "You are in a SW test room.",
+                "You are in a NW test room.",
+                "You are in a SW test room.",
+                "You are in a SE test room.",
+                "You are in a NE test room.",
+                "You are in a NW test room.");
+        }
     }
 }
