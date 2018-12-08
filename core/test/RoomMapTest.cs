@@ -109,6 +109,23 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void GoBeforeStart()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            RoomMap map = new RoomMap(bus);
+            RoomMap.Point p1 = map.Add(new TestRoom(bus, "red"));
+            RoomMap.Point p2 = map.Add(new TestRoom(bus, "green"));
+            p1.ConnectTo(p2, "east");
+            p2.ConnectTo(p1, "west");
+
+            Action act = () => map.Go("east");
+
+            act.Should().Throw<InvalidOperationException>("Cannot Go before Start.");
+        }
+
+        [Fact]
         public void GoBetweenFourRoomsBothDirections()
         {
             MessageBus bus = new MessageBus();

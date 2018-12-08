@@ -33,7 +33,15 @@ namespace Adventure
             this.Next(start);
         }
 
-        public void Go(string direction) => this.Next(this.current.Go(direction));
+        public void Go(string direction)
+        {
+            if (this.current == null)
+            {
+                throw new InvalidOperationException("Cannot Go before Start.");
+            }
+
+            this.Next(this.current.Go(direction));
+        }
 
         private void Next(Point next)
         {
