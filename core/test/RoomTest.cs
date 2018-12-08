@@ -105,7 +105,7 @@ namespace Adventure.Test
             TestRoom room = new TestRoom(bus);
 
             room.Enter();
-            Action act = () => room.TestRegister("hello");
+            Action act = () => room.TestRegisterHello("hello");
 
             act.Should().Throw<InvalidOperationException>().WithMessage("The verb 'hello' is already registered.");
         }
@@ -120,9 +120,24 @@ namespace Adventure.Test
             TestRoom room = new TestRoom(bus);
 
             room.Enter();
-            Action act = () => room.TestRegister("HeLLO");
+            Action act = () => room.TestRegisterHello("HeLLO");
 
             act.Should().Throw<InvalidOperationException>().WithMessage("The verb 'HeLLO' is already registered.");
+        }
+
+        [Fact]
+        public void ProcessLook()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
+            bus.Subscribe(subscriber);
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("look", "VIEW"), new Word(string.Empty, string.Empty)));
+
+            lastOutput.Should().Be("You are in a test room.");
         }
 
         [Fact]
@@ -149,14 +164,15 @@ namespace Adventure.Test
 
             protected override string Description => "You are in a test room.";
 
-            public void TestRegister(string verb)
+            public void TestRegisterHello(string verb)
             {
                 this.Register(verb, this.Hello);
             }
 
             protected override void EnterCore()
             {
-                this.TestRegister("hello");
+                this.TestRegisterHello("hello");
+                this.Register("look", (_, n) => this.Look(n));
             }
 
             private void Hello(Word verb, Word noun)

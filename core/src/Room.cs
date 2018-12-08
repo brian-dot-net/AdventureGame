@@ -31,7 +31,7 @@ namespace Adventure
 
             this.sub = this.bus.Subscribe<SentenceMessage>(m => this.Process(m));
             this.EnterCore();
-            this.Output(this.Description);
+            this.Look(new Word(string.Empty, string.Empty));
         }
 
         public void Leave()
@@ -63,6 +63,11 @@ namespace Adventure
         protected void Output(string message)
         {
             this.bus.Send(new OutputMessage(message));
+        }
+
+        protected void Look(Word noun)
+        {
+            this.Output(this.Description);
         }
 
         private void Process(SentenceMessage message)
