@@ -67,7 +67,14 @@ namespace Adventure
 
         protected void Look(Word noun)
         {
-            this.Output(this.Description);
+            if (noun.Actual.Length == 0)
+            {
+                this.Output(this.Description);
+            }
+            else
+            {
+                this.Output($"I can't see any {noun} here.");
+            }
         }
 
         private void Process(SentenceMessage message)

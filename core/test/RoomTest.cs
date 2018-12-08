@@ -141,6 +141,21 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessLookUnknown()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
+            bus.Subscribe(subscriber);
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("look", "VIEW"), new Word(string.Empty, "THING")));
+
+            lastOutput.Should().Be("I can't see any THING here.");
+        }
+
+        [Fact]
         public void ProcessUnknownVerb()
         {
             MessageBus bus = new MessageBus();
