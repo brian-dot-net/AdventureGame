@@ -11,11 +11,20 @@ namespace Adventure
     {
         private readonly MessageBus bus;
 
-        private Point current;
+        private IPointPrivate current;
 
         public RoomMap(MessageBus bus)
         {
             this.bus = bus;
+        }
+
+        private interface IPointPrivate
+        {
+            void Enter();
+
+            void Leave();
+
+            Point Go(string direction);
         }
 
         public Point Add(Room room)
@@ -53,7 +62,7 @@ namespace Adventure
             }
         }
 
-        public sealed class Point
+        public sealed class Point : IPointPrivate
         {
             private readonly MessageBus bus;
             private readonly Room room;
@@ -76,11 +85,11 @@ namespace Adventure
                 this.targets.Add(direction, target);
             }
 
-            public void Enter() => this.room.Enter();
+            void IPointPrivate.Enter() => this.room.Enter();
 
-            public void Leave() => this.room.Leave();
+            void IPointPrivate.Leave() => this.room.Leave();
 
-            public Point Go(string direction)
+            Point IPointPrivate.Go(string direction)
             {
                 if (!this.targets.TryGetValue(direction, out Point target))
                 {
