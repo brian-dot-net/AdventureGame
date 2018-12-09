@@ -43,7 +43,7 @@ namespace Adventure.Test
         {
             this.TestRegisterHello("hello");
             this.Register("look", (_, n) => this.Look(n));
-            this.Register("take", (v, _) => this.Take(v));
+            this.Register("take", this.Take);
         }
 
         protected override bool LookAt(Word noun)

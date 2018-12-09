@@ -186,6 +186,21 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessTakeUnknown()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
+            bus.Subscribe(subscriber);
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("take", "grab"), new Word(string.Empty, "THING")));
+
+            lastOutput.Should().Be("You can't grab that.");
+        }
+
+        [Fact]
         public void ProcessUnknownVerb()
         {
             MessageBus bus = new MessageBus();

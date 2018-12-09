@@ -77,9 +77,16 @@ namespace Adventure
             }
         }
 
-        protected void Take(Word verb)
+        protected void Take(Word verb, Word noun)
         {
-            this.Output($"What do you want to {verb}?");
+            if (noun.Actual.Length == 0)
+            {
+                this.Output($"What do you want to {verb}?");
+            }
+            else
+            {
+                this.Output($"You can't {verb} that.");
+            }
         }
 
         protected virtual bool LookAt(Word noun)
