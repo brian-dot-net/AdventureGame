@@ -85,8 +85,8 @@ namespace Adventure.Test
                 p2.ConnectTo(p1, "west");
 
                 map.Start(p1);
-                map.Go("east");
-                map.Go("west");
+                bus.Send(new GoMessage("east"));
+                bus.Send(new GoMessage("west"));
 
                 messages.Should().Equal(
                     "You are in a red test room.",
@@ -109,32 +109,13 @@ namespace Adventure.Test
                 p2.ConnectTo(p1, "west");
 
                 map.Start(p1);
-                map.Go("north");
-                map.Go("east");
+                bus.Send(new GoMessage("north"));
+                bus.Send(new GoMessage("east"));
 
                 messages.Should().Equal(
                     "You are in a red test room.",
                     "You can't go north.",
                     "You are in a green test room.");
-            }
-        }
-
-        [Fact]
-        public void GoBeforeStart()
-        {
-            MessageBus bus = new MessageBus();
-            List<string> messages = new List<string>();
-            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
-            using (RoomMap map = new RoomMap(bus))
-            {
-                RoomMap.Point p1 = map.Add(new TestRoom(bus, "red"));
-                RoomMap.Point p2 = map.Add(new TestRoom(bus, "green"));
-                p1.ConnectTo(p2, "east");
-                p2.ConnectTo(p1, "west");
-
-                Action act = () => map.Go("east");
-
-                act.Should().Throw<InvalidOperationException>("Cannot Go before Start.");
             }
         }
 
@@ -160,14 +141,14 @@ namespace Adventure.Test
                 se.ConnectTo(ne, "north");
 
                 map.Start(nw);
-                map.Go("east");
-                map.Go("south");
-                map.Go("west");
-                map.Go("north");
-                map.Go("south");
-                map.Go("east");
-                map.Go("north");
-                map.Go("west");
+                bus.Send(new GoMessage("east"));
+                bus.Send(new GoMessage("south"));
+                bus.Send(new GoMessage("west"));
+                bus.Send(new GoMessage("north"));
+                bus.Send(new GoMessage("south"));
+                bus.Send(new GoMessage("east"));
+                bus.Send(new GoMessage("north"));
+                bus.Send(new GoMessage("west"));
 
                 messages.Should().Equal(
                     "You are in a NW test room.",

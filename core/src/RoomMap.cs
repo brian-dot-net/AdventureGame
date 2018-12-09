@@ -11,6 +11,7 @@ namespace Adventure
     {
         private readonly MessageBus bus;
 
+        private IDisposable sub;
         private IPointPrivate current;
 
         public RoomMap(MessageBus bus)
@@ -47,21 +48,18 @@ namespace Adventure
                 throw new ArgumentException("The point is not part of this map.", nameof(start));
             }
 
-            if (this.current != null)
+            if (this.sub != null)
             {
                 throw new InvalidOperationException("Cannot Start again.");
             }
 
+            this.sub = this.bus.Subscribe<GoMessage>(m => this.Go(m.Direction));
+
             this.Next(start);
         }
 
-        public void Go(string direction)
+        private void Go(string direction)
         {
-            if (this.current == null)
-            {
-                throw new InvalidOperationException("Cannot Go before Start.");
-            }
-
             this.Next(this.current.Go(direction));
         }
 
