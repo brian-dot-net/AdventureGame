@@ -8,5 +8,6 @@ look table
 GET KEY
 look sun
 move table
+move out
 exit
 -- END --
