@@ -60,6 +60,18 @@ namespace Adventure.Test
             takenKey.Should().BeSameAs(key);
         }
 
+        [Fact]
+        public void TakeItemAlreadyTaken()
+        {
+            Items items = new Items();
+            items.Add("key", new TestItem());
+
+            items.Take("key");
+            Item missing = items.Take("key");
+
+            missing.Should().BeNull();
+        }
+
         private sealed class TestItem : Item
         {
         }
