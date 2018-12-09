@@ -10,15 +10,11 @@ namespace Adventure.Sample
     {
         private readonly MessageBus bus;
         private readonly Words words;
-        private readonly RoomMap map;
-
-        private RoomMap.Point start;
 
         public Game()
         {
             this.bus = new MessageBus();
             this.words = InitializeWords();
-            this.map = this.InitializeMap();
         }
 
         public void Run(TextReader reader, TextWriter writer)
@@ -28,7 +24,7 @@ namespace Adventure.Sample
             using (QuitHandler quit = new QuitHandler(this.bus, Verb.Quit))
             using (InputLoop loop = new InputLoop(this.bus, ">"))
             {
-                this.map.Start(this.start);
+                RoomMap map = this.InitializeMap();
 
                 loop.Run(quit.Token);
             }
@@ -52,7 +48,9 @@ namespace Adventure.Sample
             RoomMap map = new RoomMap(this.bus);
 
             MainRoom mainRoom = new MainRoom(this.bus);
-            this.start = map.Add(mainRoom);
+            var mainRoomP = map.Add(mainRoom);
+
+            map.Start(mainRoomP);
 
             return map;
         }
