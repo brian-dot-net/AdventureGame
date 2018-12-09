@@ -72,6 +72,16 @@ namespace Adventure.Test
             missing.Should().BeNull();
         }
 
+        [Fact]
+        public void TakeItemNotPresent()
+        {
+            Items items = new Items();
+
+            Item missing = items.Take("key");
+
+            missing.Should().BeNull();
+        }
+
         private sealed class TestItem : Item
         {
         }
