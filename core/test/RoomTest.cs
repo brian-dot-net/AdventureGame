@@ -188,6 +188,23 @@ namespace Adventure.Test
                 "I don't know what 'BYE' means.");
         }
 
+        [Fact]
+        public void DropOneItem()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            Action<OutputMessage> subscriber = m => output.Add(m.Text);
+            bus.Subscribe(subscriber);
+            TestRoom room = new TestRoom(bus);
+            room.TestDropItem("key", new TestKey());
+
+            room.Enter();
+
+            output.Should().Equal(
+                "You are in a test room.",
+                "There is a key here.");
+        }
+
         private static void TestSend(Word verb, Word noun, string expectedOutput)
         {
             MessageBus bus = new MessageBus();
@@ -200,6 +217,11 @@ namespace Adventure.Test
             bus.Send(new SentenceMessage(verb, noun));
 
             lastOutput.Should().Be(expectedOutput);
+        }
+
+        private sealed class TestKey : Item
+        {
+            public override string ShortDescription => "a key";
         }
     }
 }

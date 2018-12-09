@@ -5,9 +5,10 @@
 namespace Adventure
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
 
-    public sealed class Items
+    public sealed class Items : IEnumerable<Item>
     {
         private readonly Dictionary<string, Item> items;
 
@@ -26,10 +27,14 @@ namespace Adventure
             this.items.Add(name, item);
         }
 
+        public IEnumerator<Item> GetEnumerator() => this.items.Values.GetEnumerator();
+
         public Item Take(string name)
         {
             this.items.Remove(name, out Item item);
             return item;
         }
+
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
     }
 }

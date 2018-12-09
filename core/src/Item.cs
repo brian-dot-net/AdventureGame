@@ -9,5 +9,7 @@ namespace Adventure
         protected Item()
         {
         }
+
+        public abstract string ShortDescription { get; }
     }
 }

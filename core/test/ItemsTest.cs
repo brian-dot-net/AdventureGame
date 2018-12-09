@@ -95,6 +95,7 @@ namespace Adventure.Test
 
         private sealed class TestItem : Item
         {
+            public override string ShortDescription => "a test item";
         }
     }
 }

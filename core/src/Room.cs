@@ -6,11 +6,13 @@ namespace Adventure
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public abstract class Room
     {
         private readonly MessageBus bus;
         private readonly Dictionary<string, Action<Word, Word>> verbs;
+        private readonly Items items;
 
         private IDisposable sub;
 
@@ -18,6 +20,7 @@ namespace Adventure
         {
             this.bus = bus;
             this.verbs = new Dictionary<string, Action<Word, Word>>(StringComparer.OrdinalIgnoreCase);
+            this.items = new Items();
         }
 
         protected abstract string Description { get; }
@@ -46,6 +49,11 @@ namespace Adventure
             this.sub = null;
         }
 
+        protected void Drop(string name, Item item)
+        {
+            this.items.Drop(name, item);
+        }
+
         protected virtual void EnterCore()
         {
         }
@@ -69,7 +77,7 @@ namespace Adventure
         {
             if (noun.Actual.Length == 0)
             {
-                this.Output(this.Description);
+                this.LookAround();
             }
             else if (!this.LookAt(noun))
             {
@@ -112,6 +120,15 @@ namespace Adventure
         private void UnknownVerb(Word verb, Word noun)
         {
             this.Output($"I don't know what '{verb}' means.");
+        }
+
+        private void LookAround()
+        {
+            this.Output(this.Description);
+            foreach (string item in this.items.Select(i => i.ShortDescription))
+            {
+                this.Output($"There is {item} here.");
+            }
         }
     }
 }
