@@ -17,7 +17,7 @@ namespace Adventure.Sample
         {
             this.Register(Verb.Look, (_, n) => this.Look(n));
             this.Register(Verb.Greet, (_, __) => this.Output("You say, \"Hello,\" to no one in particular. No one answers."));
-            this.Register(Verb.Take, (_, n) => this.Output("There is no " + n.Actual.ToLowerInvariant() + " here."));
+            this.Register(Verb.Take, this.Take);
         }
 
         protected override bool LookAt(Word noun)
