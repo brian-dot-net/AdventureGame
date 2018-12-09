@@ -31,6 +31,19 @@ namespace Adventure.Test
             act.Should().NotThrow();
         }
 
+        [Fact]
+        public void TakeOneOfTwoItems()
+        {
+            Items items = new Items();
+            items.Add("key", new TestItem());
+            TestItem coin = new TestItem();
+            items.Add("coin", coin);
+
+            Item taken = items.Take("coin");
+
+            taken.Should().BeSameAs(coin);
+        }
+
         private sealed class TestItem : Item
         {
         }
