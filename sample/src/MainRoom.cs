@@ -6,6 +6,8 @@ namespace Adventure.Sample
 {
     internal sealed class MainRoom : Room
     {
+        private bool tableMoved;
+
         public MainRoom(MessageBus bus)
             : base(bus)
         {
@@ -36,11 +38,24 @@ namespace Adventure.Sample
         {
             if (noun.Primary == Noun.Table)
             {
-                this.Output("You move the table slightly. Underneath you see a coin.");
+                this.MoveTable();
             }
             else
             {
                 this.Output($"You can't {verb} that.");
+            }
+        }
+
+        private void MoveTable()
+        {
+            if (!this.tableMoved)
+            {
+                this.Output("You move the table slightly. Underneath you see a coin.");
+                this.tableMoved = true;
+            }
+            else
+            {
+                this.Output("Someone has already moved it.");
             }
         }
     }
