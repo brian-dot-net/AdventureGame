@@ -88,6 +88,11 @@ namespace Adventure
 
             public void ConnectTo(Point target, string direction)
             {
+                if (((IPointPrivate)this).Parent != ((IPointPrivate)target).Parent)
+                {
+                    throw new ArgumentException("The point is not part of this map.", nameof(target));
+                }
+
                 if (this.targets.ContainsKey(direction))
                 {
                     throw new InvalidOperationException($"There is already a connection for '{direction}'.");

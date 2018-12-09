@@ -181,5 +181,21 @@ namespace Adventure.Test
                 .WithMessage("The point is not part of this map.*")
                 .Which.ParamName.Should().Be("start");
         }
+
+        [Fact]
+        public void ConnectToBadPoint()
+        {
+            MessageBus bus = new MessageBus();
+            RoomMap map = new RoomMap(bus);
+            RoomMap mapWrong = new RoomMap(bus);
+
+            var rightP = map.Add(new TestRoom(bus));
+            var wrongP = mapWrong.Add(new TestRoom(bus));
+            Action act = () => rightP.ConnectTo(wrongP, "north");
+
+            act.Should().Throw<ArgumentException>()
+                .WithMessage("The point is not part of this map.*")
+                .Which.ParamName.Should().Be("target");
+        }
     }
 }
