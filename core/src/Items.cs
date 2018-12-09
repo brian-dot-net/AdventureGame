@@ -4,6 +4,7 @@
 
 namespace Adventure
 {
+    using System;
     using System.Collections.Generic;
 
     public sealed class Items
@@ -15,8 +16,13 @@ namespace Adventure
             this.items = new Dictionary<string, Item>();
         }
 
-        public void Add(string name, Item item)
+        public void Drop(string name, Item item)
         {
+            if (this.items.ContainsKey(name))
+            {
+                throw new InvalidOperationException($"Item '{name}' already exists.");
+            }
+
             this.items.Add(name, item);
         }
 

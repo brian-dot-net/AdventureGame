@@ -11,22 +11,22 @@ namespace Adventure.Test
     public sealed class ItemsTest
     {
         [Fact]
-        public void AddOneItem()
+        public void DropOneItem()
         {
             Items items = new Items();
 
-            Action act = () => items.Add("key", new TestItem());
+            Action act = () => items.Drop("key", new TestItem());
 
             act.Should().NotThrow();
         }
 
         [Fact]
-        public void AddTwoItems()
+        public void DropTwoItems()
         {
             Items items = new Items();
 
-            items.Add("key", new TestItem());
-            Action act = () => items.Add("coin", new TestItem());
+            items.Drop("key", new TestItem());
+            Action act = () => items.Drop("coin", new TestItem());
 
             act.Should().NotThrow();
         }
@@ -35,9 +35,9 @@ namespace Adventure.Test
         public void TakeOneOfTwoItems()
         {
             Items items = new Items();
-            items.Add("key", new TestItem());
+            items.Drop("key", new TestItem());
             TestItem coin = new TestItem();
-            items.Add("coin", coin);
+            items.Drop("coin", coin);
 
             Item taken = items.Take("coin");
 
@@ -49,9 +49,9 @@ namespace Adventure.Test
         {
             Items items = new Items();
             TestItem key = new TestItem();
-            items.Add("key", key);
+            items.Drop("key", key);
             TestItem coin = new TestItem();
-            items.Add("coin", coin);
+            items.Drop("coin", coin);
 
             Item takenCoin = items.Take("coin");
             Item takenKey = items.Take("key");
@@ -64,7 +64,7 @@ namespace Adventure.Test
         public void TakeItemAlreadyTaken()
         {
             Items items = new Items();
-            items.Add("key", new TestItem());
+            items.Drop("key", new TestItem());
 
             items.Take("key");
             Item missing = items.Take("key");
@@ -80,6 +80,17 @@ namespace Adventure.Test
             Item missing = items.Take("key");
 
             missing.Should().BeNull();
+        }
+
+        [Fact]
+        public void DropItemAlreadyExists()
+        {
+            Items items = new Items();
+            items.Drop("key", new TestItem());
+
+            Action act = () => items.Drop("key", new TestItem());
+
+            act.Should().Throw<InvalidOperationException>("Item 'key' already exists.");
         }
 
         private sealed class TestItem : Item
