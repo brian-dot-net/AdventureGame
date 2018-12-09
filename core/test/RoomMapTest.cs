@@ -120,6 +120,23 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void GoAfterDispose()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            using (RoomMap map = new RoomMap(bus))
+            {
+                RoomMap.Point p1 = map.Add(new TestRoom(bus, "red"));
+                map.Start(p1);
+            }
+
+            bus.Send(new GoMessage("nowhere"));
+
+            messages.Should().Equal("You are in a red test room.");
+        }
+
+        [Fact]
         public void GoBetweenFourRoomsBothDirections()
         {
             MessageBus bus = new MessageBus();

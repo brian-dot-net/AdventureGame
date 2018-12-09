@@ -32,6 +32,9 @@ namespace Adventure
 
         public void Dispose()
         {
+            using (this.sub)
+            {
+            }
         }
 
         public Point Add(Room room)
