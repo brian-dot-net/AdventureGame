@@ -20,6 +20,17 @@ namespace Adventure.Test
             act.Should().NotThrow();
         }
 
+        [Fact]
+        public void AddTwoItems()
+        {
+            Items items = new Items();
+
+            items.Add("key", new TestItem());
+            Action act = () => items.Add("coin", new TestItem());
+
+            act.Should().NotThrow();
+        }
+
         private sealed class TestItem : Item
         {
         }
