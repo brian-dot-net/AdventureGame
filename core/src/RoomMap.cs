@@ -7,7 +7,7 @@ namespace Adventure
     using System;
     using System.Collections.Generic;
 
-    public sealed class RoomMap
+    public sealed class RoomMap : IDisposable
     {
         private readonly MessageBus bus;
 
@@ -27,6 +27,10 @@ namespace Adventure
             void Leave();
 
             Point Go(string direction);
+        }
+
+        public void Dispose()
+        {
         }
 
         public Point Add(Room room)

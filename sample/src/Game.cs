@@ -23,9 +23,8 @@ namespace Adventure.Sample
             using (new SentenceParser(this.bus, this.words))
             using (QuitHandler quit = new QuitHandler(this.bus, Verb.Quit))
             using (InputLoop loop = new InputLoop(this.bus, ">"))
+            using (RoomMap map = this.InitializeMap())
             {
-                RoomMap map = this.InitializeMap();
-
                 loop.Run(quit.Token);
             }
         }
