@@ -4,7 +4,6 @@
 
 namespace Adventure.Test
 {
-    using System;
     using System.Collections.Generic;
 
     public sealed class TestRoom : Room
@@ -51,6 +50,17 @@ namespace Adventure.Test
             if (noun.Primary == "up")
             {
                 this.Output("You see the ceiling.");
+                return true;
+            }
+
+            return base.LookAt(noun);
+        }
+
+        protected override bool Take(Word noun)
+        {
+            if (noun.Primary == "breath")
+            {
+                this.Output("You inhale deeply.");
                 return true;
             }
 

@@ -201,6 +201,21 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessTakeCustom()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
+            bus.Subscribe(subscriber);
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("take", "RETRIEVE"), new Word("breath", "breath")));
+
+            lastOutput.Should().Be("You inhale deeply.");
+        }
+
+        [Fact]
         public void ProcessUnknownVerb()
         {
             MessageBus bus = new MessageBus();
