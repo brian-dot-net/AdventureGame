@@ -17,6 +17,7 @@ namespace Adventure.Sample
         {
             this.Register(Verb.Look, (_, n) => this.Look(n));
             this.Register(Verb.Greet, (_, __) => this.Output("You say, \"Hello,\" to no one in particular. No one answers."));
+            this.Register(Verb.Move, (_, n) => this.Move(n));
             this.Register(Verb.Take, this.Take);
         }
 
@@ -29,6 +30,14 @@ namespace Adventure.Sample
             }
 
             return base.LookAt(noun);
+        }
+
+        private void Move(Word noun)
+        {
+            if (noun.Primary == Noun.Table)
+            {
+                this.Output("You move the table slightly. Underneath you see a coin.");
+            }
         }
     }
 }

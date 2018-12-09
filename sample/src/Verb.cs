@@ -8,6 +8,7 @@ namespace Adventure.Sample
     {
         public const string Greet = "greet";
         public const string Look = "look";
+        public const string Move = "move";
         public const string Take = "take";
         public const string Quit = "quit";
     }
