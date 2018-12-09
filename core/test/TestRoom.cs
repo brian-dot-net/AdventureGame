@@ -4,6 +4,7 @@
 
 namespace Adventure.Test
 {
+    using System;
     using System.Collections.Generic;
 
     public sealed class TestRoom : Room
@@ -42,6 +43,7 @@ namespace Adventure.Test
         {
             this.TestRegisterHello("hello");
             this.Register("look", (_, n) => this.Look(n));
+            this.Register("take", (v, _) => this.Take(v));
         }
 
         protected override bool LookAt(Word noun)
