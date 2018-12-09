@@ -205,6 +205,25 @@ namespace Adventure.Test
                 "There is a key here.");
         }
 
+        [Fact]
+        public void DropTwoItems()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            Action<OutputMessage> subscriber = m => output.Add(m.Text);
+            bus.Subscribe(subscriber);
+            TestRoom room = new TestRoom(bus);
+            room.TestDropItem("key", new TestKey());
+            room.TestDropItem("coin", new TestCoin());
+
+            room.Enter();
+
+            output.Should().Equal(
+                "You are in a test room.",
+                "There is a key here.",
+                "There is a coin here.");
+        }
+
         private static void TestSend(Word verb, Word noun, string expectedOutput)
         {
             MessageBus bus = new MessageBus();
@@ -222,6 +241,11 @@ namespace Adventure.Test
         private sealed class TestKey : Item
         {
             public override string ShortDescription => "a key";
+        }
+
+        private sealed class TestCoin : Item
+        {
+            public override string ShortDescription => "a coin";
         }
     }
 }
