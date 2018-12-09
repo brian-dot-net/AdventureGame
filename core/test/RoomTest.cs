@@ -167,7 +167,7 @@ namespace Adventure.Test
             room.Enter();
             bus.Send(new SentenceMessage(new Word("look", "VIEW"), new Word(string.Empty, "THING")));
 
-            lastOutput.Should().Be("I can't see any THING here.");
+            lastOutput.Should().Be("You see nothing of interest.");
         }
 
         [Fact]

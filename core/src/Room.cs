@@ -73,7 +73,7 @@ namespace Adventure
             }
             else if (!this.LookAt(noun))
             {
-                this.Output($"I can't see any {noun} here.");
+                this.Output("You see nothing of interest.");
             }
         }
 
