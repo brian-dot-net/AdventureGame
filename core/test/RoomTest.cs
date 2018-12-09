@@ -128,95 +128,67 @@ namespace Adventure.Test
         [Fact]
         public void ProcessLook()
         {
-            MessageBus bus = new MessageBus();
-            string lastOutput = null;
-            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
-            bus.Subscribe(subscriber);
-            Room room = new TestRoom(bus);
-
-            room.Enter();
-            bus.Send(new SentenceMessage(new Word("look", "VIEW"), new Word(string.Empty, string.Empty)));
-
-            lastOutput.Should().Be("You are in a test room.");
+            TestSend(
+                new Word("look", "VIEW"),
+                new Word(string.Empty, string.Empty),
+                "You are in a test room.");
         }
 
         [Fact]
         public void ProcessLookCustom()
         {
-            MessageBus bus = new MessageBus();
-            string lastOutput = null;
-            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
-            bus.Subscribe(subscriber);
-            Room room = new TestRoom(bus);
-
-            room.Enter();
-            bus.Send(new SentenceMessage(new Word("look", "VIEW"), new Word("up", "SKY")));
-
-            lastOutput.Should().Be("You see the ceiling.");
+            TestSend(
+                new Word("look", "VIEW"),
+                new Word("up", "SKY"),
+                "You see the ceiling.");
         }
 
         [Fact]
         public void ProcessLookUnknown()
         {
-            MessageBus bus = new MessageBus();
-            string lastOutput = null;
-            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
-            bus.Subscribe(subscriber);
-            Room room = new TestRoom(bus);
-
-            room.Enter();
-            bus.Send(new SentenceMessage(new Word("look", "VIEW"), new Word(string.Empty, "THING")));
-
-            lastOutput.Should().Be("You see nothing of interest.");
+            TestSend(
+                new Word("look", "VIEW"),
+                new Word(string.Empty, "THING"),
+                "You see nothing of interest.");
         }
 
         [Fact]
         public void ProcessTake()
         {
-            MessageBus bus = new MessageBus();
-            string lastOutput = null;
-            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
-            bus.Subscribe(subscriber);
-            Room room = new TestRoom(bus);
-
-            room.Enter();
-            bus.Send(new SentenceMessage(new Word("take", "GET"), new Word(string.Empty, string.Empty)));
-
-            lastOutput.Should().Be("What do you want to GET?");
+            TestSend(
+                new Word("take", "GET"),
+                new Word(string.Empty, string.Empty),
+                "What do you want to GET?");
         }
 
         [Fact]
         public void ProcessTakeUnknown()
         {
-            MessageBus bus = new MessageBus();
-            string lastOutput = null;
-            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
-            bus.Subscribe(subscriber);
-            Room room = new TestRoom(bus);
-
-            room.Enter();
-            bus.Send(new SentenceMessage(new Word("take", "grab"), new Word(string.Empty, "THING")));
-
-            lastOutput.Should().Be("You can't grab that.");
+            TestSend(
+                new Word("take", "grab"),
+                new Word(string.Empty, "THING"),
+                "You can't grab that.");
         }
 
         [Fact]
         public void ProcessTakeCustom()
         {
-            MessageBus bus = new MessageBus();
-            string lastOutput = null;
-            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
-            bus.Subscribe(subscriber);
-            Room room = new TestRoom(bus);
-
-            room.Enter();
-            bus.Send(new SentenceMessage(new Word("take", "RETRIEVE"), new Word("breath", "breath")));
-
-            lastOutput.Should().Be("You inhale deeply.");
+            TestSend(
+                new Word("take", "RETRIEVE"),
+                new Word("breath", "breath"),
+                "You inhale deeply.");
         }
 
         [Fact]
         public void ProcessUnknownVerb()
+        {
+            TestSend(
+                new Word("goodbye", "BYE"),
+                new Word("world", "world"),
+                "I don't know what 'BYE' means.");
+        }
+
+        private static void TestSend(Word verb, Word noun, string expectedOutput)
         {
             MessageBus bus = new MessageBus();
             string lastOutput = null;
@@ -225,9 +197,9 @@ namespace Adventure.Test
             Room room = new TestRoom(bus);
 
             room.Enter();
-            bus.Send(new SentenceMessage(new Word("goodbye", "BYE"), new Word("world", "world")));
+            bus.Send(new SentenceMessage(verb, noun));
 
-            lastOutput.Should().Be("I don't know what 'BYE' means.");
+            lastOutput.Should().Be(expectedOutput);
         }
     }
 }
