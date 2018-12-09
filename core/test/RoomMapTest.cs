@@ -12,6 +12,17 @@ namespace Adventure.Test
     public sealed class RoomMapTest
     {
         [Fact]
+        public void DisposeEmpty()
+        {
+            MessageBus bus = new MessageBus();
+            RoomMap map = new RoomMap(bus);
+
+            Action act = () => map.Dispose();
+
+            act.Should().NotThrow();
+        }
+
+        [Fact]
         public void AddTwoRooms()
         {
             MessageBus bus = new MessageBus();
