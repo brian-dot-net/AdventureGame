@@ -52,6 +52,7 @@ namespace Adventure.Sample
             {
                 this.Output("You move the table slightly. Underneath you see a coin.");
                 this.tableMoved = true;
+                this.Drop(Noun.Coin, new Coin());
             }
             else
             {
