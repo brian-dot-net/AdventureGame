@@ -13,7 +13,7 @@ namespace Adventure.Test
         [Fact]
         public void DropOneItem()
         {
-            Items items = new Items();
+            Items items = new Items(new MessageBus());
 
             Action act = () => items.Drop("key", new TestItem());
 
@@ -23,7 +23,7 @@ namespace Adventure.Test
         [Fact]
         public void DropTwoItems()
         {
-            Items items = new Items();
+            Items items = new Items(new MessageBus());
 
             items.Drop("key", new TestItem());
             Action act = () => items.Drop("coin", new TestItem());
@@ -34,7 +34,7 @@ namespace Adventure.Test
         [Fact]
         public void TakeOneOfTwoItems()
         {
-            Items items = new Items();
+            Items items = new Items(new MessageBus());
             items.Drop("key", new TestItem());
             TestItem coin = new TestItem();
             items.Drop("coin", coin);
@@ -47,7 +47,7 @@ namespace Adventure.Test
         [Fact]
         public void TakeTwoItems()
         {
-            Items items = new Items();
+            Items items = new Items(new MessageBus());
             TestItem key = new TestItem();
             items.Drop("key", key);
             TestItem coin = new TestItem();
@@ -63,7 +63,7 @@ namespace Adventure.Test
         [Fact]
         public void TakeItemAlreadyTaken()
         {
-            Items items = new Items();
+            Items items = new Items(new MessageBus());
             items.Drop("key", new TestItem());
 
             items.Take("key");
@@ -75,7 +75,7 @@ namespace Adventure.Test
         [Fact]
         public void TakeItemNotPresent()
         {
-            Items items = new Items();
+            Items items = new Items(new MessageBus());
 
             Item missing = items.Take("key");
 
@@ -85,7 +85,7 @@ namespace Adventure.Test
         [Fact]
         public void DropItemAlreadyExists()
         {
-            Items items = new Items();
+            Items items = new Items(new MessageBus());
             items.Drop("key", new TestItem());
 
             Action act = () => items.Drop("key", new TestItem());

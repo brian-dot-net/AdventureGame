@@ -20,7 +20,7 @@ namespace Adventure
         {
             this.bus = bus;
             this.verbs = new Dictionary<string, Action<Word, Word>>(StringComparer.OrdinalIgnoreCase);
-            this.items = new Items();
+            this.items = new Items(this.bus);
         }
 
         protected abstract string Description { get; }

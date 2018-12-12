@@ -12,7 +12,7 @@ namespace Adventure
     {
         private readonly Dictionary<string, Item> items;
 
-        public Items()
+        public Items(MessageBus bus)
         {
             this.items = new Dictionary<string, Item>();
         }
