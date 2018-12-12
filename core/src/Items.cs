@@ -5,16 +5,26 @@
 namespace Adventure
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
-    public sealed class Items : IEnumerable<Item>
+    public sealed class Items
     {
+        private readonly MessageBus bus;
         private readonly Dictionary<string, Item> items;
 
         public Items(MessageBus bus)
         {
+            this.bus = bus;
             this.items = new Dictionary<string, Item>();
+        }
+
+        public void Look()
+        {
+            foreach (string item in this.items.Values.Select(i => i.ShortDescription))
+            {
+                this.Output($"There is {item} here.");
+            }
         }
 
         public void Drop(string name, Item item)
@@ -27,14 +37,15 @@ namespace Adventure
             this.items.Add(name, item);
         }
 
-        public IEnumerator<Item> GetEnumerator() => this.items.Values.GetEnumerator();
-
         public Item Take(string name)
         {
             this.items.Remove(name, out Item item);
             return item;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        private void Output(string text)
+        {
+            this.bus.Send(new OutputMessage(text));
+        }
     }
 }

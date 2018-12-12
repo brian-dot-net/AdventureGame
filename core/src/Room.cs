@@ -125,10 +125,7 @@ namespace Adventure
         private void LookAround()
         {
             this.Output(this.Description);
-            foreach (string item in this.items.Select(i => i.ShortDescription))
-            {
-                this.Output($"There is {item} here.");
-            }
+            this.items.Look();
         }
     }
 }
