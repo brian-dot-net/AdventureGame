@@ -12,13 +12,14 @@ namespace Adventure
 
         public abstract string ShortDescription { get; }
 
-        public void Do(MessageBus bus, Word verb, Word noun)
+        public bool Do(MessageBus bus, Word verb, Word noun)
         {
-            this.DoCore(bus, verb, noun);
+            return this.DoCore(bus, verb, noun);
         }
 
-        protected virtual void DoCore(MessageBus bus, Word verb, Word noun)
+        protected virtual bool DoCore(MessageBus bus, Word verb, Word noun)
         {
+            return true;
         }
     }
 }

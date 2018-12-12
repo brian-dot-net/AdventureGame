@@ -126,16 +126,35 @@ namespace Adventure.Test
             messages.Should().ContainSingle().Which.Should().Be("Don't TOSS the PARTY");
         }
 
+        [Fact]
+        public void SkipCustomActionForItemThatCannotHandleIt()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Items items = new Items(bus);
+            items.Drop("ball", new TestItem());
+
+            items.Activate();
+            bus.Subscribe<SentenceMessage>(m => messages.Add($"Don't {m.Verb} the {m.Noun}"));
+            bus.Send(new SentenceMessage(new Word("eat", "CONSUME"), new Word("ball", "BALL")));
+
+            messages.Should().ContainSingle().Which.Should().Be("Don't CONSUME the BALL");
+        }
+
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a test item";
 
-            protected override void DoCore(MessageBus bus, Word verb, Word noun)
+            protected override bool DoCore(MessageBus bus, Word verb, Word noun)
             {
                 if (verb.Primary == "throw")
                 {
                     bus.Send(new OutputMessage($"You threw the {noun}!"));
+                    return true;
                 }
+
+                return false;
             }
         }
     }
