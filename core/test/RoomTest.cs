@@ -185,7 +185,7 @@ namespace Adventure.Test
             TestSend(
                 new Word("goodbye", "BYE"),
                 new Word("world", "world"),
-                "I don't know what 'BYE' means.");
+                "You can't do that.");
         }
 
         [Fact]
@@ -273,7 +273,7 @@ namespace Adventure.Test
             room.Enter();
             bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("key", "KEY")));
 
-            lastOutput.Should().Be("I don't know what 'FLIP' means.");
+            lastOutput.Should().Be("You can't do that.");
         }
 
         private static void TestSend(Word verb, Word noun, string expectedOutput)

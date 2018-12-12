@@ -120,7 +120,7 @@ namespace Adventure
 
         private void UnknownVerb(Word verb, Word noun)
         {
-            this.Output($"I don't know what '{verb}' means.");
+            this.Output("You can't do that.");
         }
 
         private void LookAround()
