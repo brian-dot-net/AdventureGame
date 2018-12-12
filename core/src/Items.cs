@@ -55,12 +55,14 @@ namespace Adventure
             this.bus.Send(new OutputMessage(text));
         }
 
-        private void Do(SentenceMessage sentence)
+        private bool Do(SentenceMessage sentence)
         {
             if (this.items.TryGetValue(sentence.Noun.Primary, out Item item))
             {
                 item.Do(this.bus, sentence.Verb, sentence.Noun);
             }
+
+            return true;
         }
     }
 }

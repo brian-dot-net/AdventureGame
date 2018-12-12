@@ -104,6 +104,7 @@ namespace Adventure.Test
             items.Drop("ball", new TestItem());
 
             items.Activate();
+            bus.Subscribe<SentenceMessage>(m => messages.Add($"Don't {m.Verb} the {m.Noun}"));
             bus.Send(new SentenceMessage(new Word("throw", "TOSS"), new Word("ball", "BASEBALL")));
 
             messages.Should().ContainSingle().Which.Should().Be("You threw the BASEBALL!");
