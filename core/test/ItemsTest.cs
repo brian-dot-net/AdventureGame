@@ -109,6 +109,21 @@ namespace Adventure.Test
             messages.Should().ContainSingle().Which.Should().Be("You threw the BASEBALL!");
         }
 
+        [Fact]
+        public void SkipCustomActionForItemNotPresent()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Items items = new Items(bus);
+            items.Drop("ball", new TestItem());
+
+            items.Activate();
+            bus.Send(new SentenceMessage(new Word("throw", "TOSS"), new Word("party", "PARTY")));
+
+            messages.Should().BeEmpty();
+        }
+
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a test item";

@@ -57,7 +57,10 @@ namespace Adventure
 
         private void Do(SentenceMessage sentence)
         {
-            this.items[sentence.Noun.Primary].Do(this.bus, sentence.Verb, sentence.Noun);
+            if (this.items.TryGetValue(sentence.Noun.Primary, out Item item))
+            {
+                item.Do(this.bus, sentence.Verb, sentence.Noun);
+            }
         }
     }
 }
