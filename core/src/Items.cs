@@ -26,6 +26,11 @@ namespace Adventure
             this.sub = this.bus.Subscribe<SentenceMessage>(m => this.Do(m));
         }
 
+        public void Deactivate()
+        {
+            this.sub.Dispose();
+        }
+
         public void Look()
         {
             foreach (string item in this.items.Values.Select(i => i.ShortDescription))

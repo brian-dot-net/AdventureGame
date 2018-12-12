@@ -173,6 +173,23 @@ namespace Adventure.Test
             messages.Should().ContainSingle().Which.Should().Be("Don't TOSS the BASEBALL");
         }
 
+        [Fact]
+        public void SkipCustomActionAfterDeactivation()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Items items = new Items(bus);
+            items.Drop("ball", new TestItem());
+
+            items.Activate();
+            items.Deactivate();
+            bus.Subscribe<SentenceMessage>(m => messages.Add($"Don't {m.Verb} the {m.Noun}"));
+            bus.Send(new SentenceMessage(new Word("throw", "TOSS"), new Word("ball", "BASEBALL")));
+
+            messages.Should().ContainSingle().Which.Should().Be("Don't TOSS the BASEBALL");
+        }
+
         private sealed class TestItemNoActions : Item
         {
             public override string ShortDescription => "a dull item";
