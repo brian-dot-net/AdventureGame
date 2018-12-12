@@ -196,7 +196,7 @@ namespace Adventure.Test
             Action<OutputMessage> subscriber = m => output.Add(m.Text);
             bus.Subscribe(subscriber);
             TestRoom room = new TestRoom(bus);
-            room.TestDropItem("key", new TestKey());
+            room.Drop("key", new TestKey());
 
             room.Enter();
 
@@ -213,8 +213,8 @@ namespace Adventure.Test
             Action<OutputMessage> subscriber = m => output.Add(m.Text);
             bus.Subscribe(subscriber);
             TestRoom room = new TestRoom(bus);
-            room.TestDropItem("key", new TestKey());
-            room.TestDropItem("coin", new TestCoin());
+            room.Drop("key", new TestKey());
+            room.Drop("coin", new TestCoin());
 
             room.Enter();
 

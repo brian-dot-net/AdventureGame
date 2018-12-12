@@ -49,7 +49,7 @@ namespace Adventure
             this.sub = null;
         }
 
-        protected void Drop(string name, Item item)
+        public void Drop(string name, Item item)
         {
             this.items.Drop(name, item);
         }

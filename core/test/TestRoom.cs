@@ -33,11 +33,6 @@ namespace Adventure.Test
             }
         }
 
-        public void TestDropItem(string name, Item item)
-        {
-            this.Drop(name, item);
-        }
-
         public void TestRegisterHello(string verb)
         {
             this.Register(verb, this.Hello);
