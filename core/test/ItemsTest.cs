@@ -5,6 +5,7 @@
 namespace Adventure.Test
 {
     using System;
+    using System.Collections.Generic;
     using FluentAssertions;
     using Xunit;
 
@@ -93,9 +94,32 @@ namespace Adventure.Test
             act.Should().Throw<InvalidOperationException>("Item 'key' already exists.");
         }
 
+        [Fact]
+        public void DoCustomActionForItem()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Items items = new Items(bus);
+            items.Drop("ball", new TestItem());
+
+            items.Activate();
+            bus.Send(new SentenceMessage(new Word("throw", "TOSS"), new Word("ball", "BASEBALL")));
+
+            messages.Should().ContainSingle().Which.Should().Be("You threw the BASEBALL!");
+        }
+
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a test item";
+
+            protected override void DoCore(MessageBus bus, Word verb, Word noun)
+            {
+                if (verb.Primary == "throw")
+                {
+                    bus.Send(new OutputMessage($"You threw the {noun}!"));
+                }
+            }
         }
     }
 }

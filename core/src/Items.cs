@@ -13,10 +13,17 @@ namespace Adventure
         private readonly MessageBus bus;
         private readonly Dictionary<string, Item> items;
 
+        private IDisposable sub;
+
         public Items(MessageBus bus)
         {
             this.bus = bus;
             this.items = new Dictionary<string, Item>();
+        }
+
+        public void Activate()
+        {
+            this.sub = this.bus.Subscribe<SentenceMessage>(m => this.Do(m));
         }
 
         public void Look()
@@ -46,6 +53,11 @@ namespace Adventure
         private void Output(string text)
         {
             this.bus.Send(new OutputMessage(text));
+        }
+
+        private void Do(SentenceMessage sentence)
+        {
+            this.items[sentence.Noun.Primary].Do(this.bus, sentence.Verb, sentence.Noun);
         }
     }
 }
