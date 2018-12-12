@@ -33,7 +33,13 @@ namespace Adventure
 
         public void Deactivate()
         {
+            if (this.sub == null)
+            {
+                throw new InvalidOperationException("Cannot Deactivate before Activate.");
+            }
+
             this.sub.Dispose();
+            this.sub = null;
         }
 
         public void Look()

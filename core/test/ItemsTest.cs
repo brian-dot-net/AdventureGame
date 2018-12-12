@@ -202,6 +202,19 @@ namespace Adventure.Test
             act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Activate again.");
         }
 
+        [Fact]
+        public void DeactivateTwice()
+        {
+            MessageBus bus = new MessageBus();
+            Items items = new Items(bus);
+
+            items.Activate();
+            items.Deactivate();
+            Action act = () => items.Deactivate();
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Deactivate before Activate.");
+        }
+
         private sealed class TestItemNoActions : Item
         {
             public override string ShortDescription => "a dull item";
