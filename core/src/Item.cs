@@ -19,7 +19,7 @@ namespace Adventure
 
         protected virtual bool DoCore(MessageBus bus, Word verb, Word noun)
         {
-            return true;
+            return false;
         }
     }
 }

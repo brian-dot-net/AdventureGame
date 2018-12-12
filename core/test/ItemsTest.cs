@@ -142,6 +142,27 @@ namespace Adventure.Test
             messages.Should().ContainSingle().Which.Should().Be("Don't CONSUME the BALL");
         }
 
+        [Fact]
+        public void SkipCustomActionForItemThatHasNoActions()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Items items = new Items(bus);
+            items.Drop("ball", new TestItemNoActions());
+
+            items.Activate();
+            bus.Subscribe<SentenceMessage>(m => messages.Add($"Don't {m.Verb} the {m.Noun}"));
+            bus.Send(new SentenceMessage(new Word("eat", "CONSUME"), new Word("ball", "BALL")));
+
+            messages.Should().ContainSingle().Which.Should().Be("Don't CONSUME the BALL");
+        }
+
+        private sealed class TestItemNoActions : Item
+        {
+            public override string ShortDescription => "a dull item";
+        }
+
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a test item";
