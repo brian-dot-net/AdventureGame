@@ -259,6 +259,23 @@ namespace Adventure.Test
             lastOutput.Should().Be("There is a coin here.");
         }
 
+        [Fact]
+        public void ProcessUnknownCustomItemAction()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
+            bus.Subscribe(subscriber);
+            TestRoom room = new TestRoom(bus);
+            room.Drop("key", new TestKey());
+            room.Drop("coin", new TestCoin());
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("key", "KEY")));
+
+            lastOutput.Should().Be("I don't know what 'FLIP' means.");
+        }
+
         private static void TestSend(Word verb, Word noun, string expectedOutput)
         {
             MessageBus bus = new MessageBus();
