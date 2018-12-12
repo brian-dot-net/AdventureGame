@@ -120,9 +120,10 @@ namespace Adventure.Test
             items.Drop("ball", new TestItem());
 
             items.Activate();
+            bus.Subscribe<SentenceMessage>(m => messages.Add($"Don't {m.Verb} the {m.Noun}"));
             bus.Send(new SentenceMessage(new Word("throw", "TOSS"), new Word("party", "PARTY")));
 
-            messages.Should().BeEmpty();
+            messages.Should().ContainSingle().Which.Should().Be("Don't TOSS the PARTY");
         }
 
         private sealed class TestItem : Item

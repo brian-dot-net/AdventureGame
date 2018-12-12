@@ -60,9 +60,10 @@ namespace Adventure
             if (this.items.TryGetValue(sentence.Noun.Primary, out Item item))
             {
                 item.Do(this.bus, sentence.Verb, sentence.Noun);
+                return true;
             }
 
-            return true;
+            return false;
         }
     }
 }
