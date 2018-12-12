@@ -190,6 +190,18 @@ namespace Adventure.Test
             messages.Should().ContainSingle().Which.Should().Be("Don't TOSS the BASEBALL");
         }
 
+        [Fact]
+        public void ActivateTwice()
+        {
+            MessageBus bus = new MessageBus();
+            Items items = new Items(bus);
+
+            items.Activate();
+            Action act = () => items.Activate();
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Activate again.");
+        }
+
         private sealed class TestItemNoActions : Item
         {
             public override string ShortDescription => "a dull item";

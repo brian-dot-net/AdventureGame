@@ -23,6 +23,11 @@ namespace Adventure
 
         public void Activate()
         {
+            if (this.sub != null)
+            {
+                throw new InvalidOperationException("Cannot Activate again.");
+            }
+
             this.sub = this.bus.Subscribe<SentenceMessage>(m => this.Do(m));
         }
 
