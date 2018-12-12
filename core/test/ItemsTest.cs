@@ -215,6 +215,17 @@ namespace Adventure.Test
             act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Deactivate before Activate.");
         }
 
+        [Fact]
+        public void DeactivateBeforeActivate()
+        {
+            MessageBus bus = new MessageBus();
+            Items items = new Items(bus);
+
+            Action act = () => items.Deactivate();
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Deactivate before Activate.");
+        }
+
         private sealed class TestItemNoActions : Item
         {
             public override string ShortDescription => "a dull item";
