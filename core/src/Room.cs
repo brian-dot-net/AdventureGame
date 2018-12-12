@@ -6,7 +6,6 @@ namespace Adventure
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     public abstract class Room
     {
@@ -32,6 +31,7 @@ namespace Adventure
                 throw new InvalidOperationException("Cannot Enter again.");
             }
 
+            this.items.Activate();
             this.sub = this.bus.Subscribe<SentenceMessage>(m => this.Process(m));
             this.EnterCore();
             this.Look(new Word(string.Empty, string.Empty));
@@ -44,6 +44,7 @@ namespace Adventure
                 throw new InvalidOperationException("Cannot Leave before Enter.");
             }
 
+            this.items.Deactivate();
             this.verbs.Clear();
             this.sub.Dispose();
             this.sub = null;

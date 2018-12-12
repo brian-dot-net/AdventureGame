@@ -224,6 +224,23 @@ namespace Adventure.Test
                 "There is a coin here.");
         }
 
+        [Fact]
+        public void ProcessCustomItemAction()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
+            bus.Subscribe(subscriber);
+            TestRoom room = new TestRoom(bus);
+            room.Drop("key", new TestKey());
+            room.Drop("coin", new TestCoin());
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("coin", "COIN")));
+
+            lastOutput.Should().Be("You FLIP the COIN; it lands on heads.");
+        }
+
         private static void TestSend(Word verb, Word noun, string expectedOutput)
         {
             MessageBus bus = new MessageBus();
@@ -246,6 +263,17 @@ namespace Adventure.Test
         private sealed class TestCoin : Item
         {
             public override string ShortDescription => "a coin";
+
+            protected override bool DoCore(MessageBus bus, Word verb, Word noun)
+            {
+                if (verb.Primary == "flip")
+                {
+                    bus.Send(new OutputMessage($"You {verb} the {noun}; it lands on heads."));
+                    return true;
+                }
+
+                return false;
+            }
         }
     }
 }
