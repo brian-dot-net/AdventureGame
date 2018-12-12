@@ -23,7 +23,7 @@ namespace Adventure.Sample
             this.Register(Verb.Take, this.Take);
         }
 
-        protected override bool LookAt(Word noun)
+        protected override bool LookAtCore(Word noun)
         {
             if (noun.Primary == Noun.Table)
             {
@@ -31,7 +31,7 @@ namespace Adventure.Sample
                 return true;
             }
 
-            return base.LookAt(noun);
+            return base.LookAtCore(noun);
         }
 
         private void Move(Word verb, Word noun)

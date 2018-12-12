@@ -12,6 +12,8 @@ namespace Adventure
 
         public abstract string ShortDescription { get; }
 
+        public abstract string LongDescription { get; }
+
         public bool Do(MessageBus bus, Word verb, Word noun)
         {
             return this.DoCore(bus, verb, noun);

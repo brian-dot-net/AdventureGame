@@ -50,6 +50,17 @@ namespace Adventure
             }
         }
 
+        public bool LookAt(Word noun)
+        {
+            if (this.items.TryGetValue(noun.Primary, out Item item))
+            {
+                this.Output(item.LongDescription);
+                return true;
+            }
+
+            return false;
+        }
+
         public void Drop(string name, Item item)
         {
             if (this.items.ContainsKey(name))

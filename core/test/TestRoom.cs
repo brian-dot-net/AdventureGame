@@ -45,7 +45,7 @@ namespace Adventure.Test
             this.Register("take", this.Take);
         }
 
-        protected override bool LookAt(Word noun)
+        protected override bool LookAtCore(Word noun)
         {
             if (noun.Primary == "up")
             {
@@ -53,7 +53,7 @@ namespace Adventure.Test
                 return true;
             }
 
-            return base.LookAt(noun);
+            return base.LookAtCore(noun);
         }
 
         protected override bool Take(Word noun)
@@ -64,7 +64,7 @@ namespace Adventure.Test
                 return true;
             }
 
-            return base.LookAt(noun);
+            return base.Take(noun);
         }
 
         private void Hello(Word verb, Word noun)

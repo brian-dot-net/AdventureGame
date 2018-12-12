@@ -229,11 +229,15 @@ namespace Adventure.Test
         private sealed class TestItemNoActions : Item
         {
             public override string ShortDescription => "a dull item";
+
+            public override string LongDescription => "It's a very dull item.";
         }
 
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a test item";
+
+            public override string LongDescription => "It's a simple test item.";
 
             protected override bool DoCore(MessageBus bus, Word verb, Word noun)
             {

@@ -86,7 +86,7 @@ namespace Adventure
             }
         }
 
-        protected virtual bool LookAt(Word noun)
+        protected virtual bool LookAtCore(Word noun)
         {
             return false;
         }
@@ -127,6 +127,11 @@ namespace Adventure
         {
             this.Output(this.Description);
             this.items.Look();
+        }
+
+        private bool LookAt(Word noun)
+        {
+            return this.items.LookAt(noun) || this.LookAtCore(noun);
         }
     }
 }

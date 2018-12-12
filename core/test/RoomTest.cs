@@ -153,6 +153,22 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessLookItem()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
+            bus.Subscribe(subscriber);
+            Room room = new TestRoom(bus);
+            room.Drop("key", new TestKey());
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("look", "LOOK"), new Word("key", "KEY")));
+
+            lastOutput.Should().Be("It is solid gold.");
+        }
+
+        [Fact]
         public void ProcessTake()
         {
             TestSend(
@@ -293,11 +309,15 @@ namespace Adventure.Test
         private sealed class TestKey : Item
         {
             public override string ShortDescription => "a key";
+
+            public override string LongDescription => "It is solid gold.";
         }
 
         private sealed class TestCoin : Item
         {
             public override string ShortDescription => "a coin";
+
+            public override string LongDescription => "It is a shiny new quarter.";
 
             protected override bool DoCore(MessageBus bus, Word verb, Word noun)
             {
