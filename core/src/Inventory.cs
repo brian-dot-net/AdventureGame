@@ -22,6 +22,7 @@ namespace Adventure
 
         public void Dispose()
         {
+            this.items.Deactivate();
             this.sub.Dispose();
         }
 

@@ -91,6 +91,24 @@ namespace Adventure.Test
             }
         }
 
+        [Fact]
+        public void ProcessCustomItemActionAfterDispose()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
+            bus.Subscribe(subscriber);
+            using (Inventory inv = new Inventory(bus))
+            {
+                inv.Drop("key", new TestItem());
+                inv.Drop("coin", new TestItem2());
+            }
+
+            bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("coin", "COIN")));
+
+            lastOutput.Should().BeNull();
+        }
+
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a key";
