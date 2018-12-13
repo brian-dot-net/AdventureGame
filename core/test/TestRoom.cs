@@ -43,6 +43,7 @@ namespace Adventure.Test
             this.TestRegisterHello("hello");
             this.Register("look", (_, n) => this.Look(n));
             this.Register("take", this.Take);
+            this.Register("inventory", (_, __) => this.Inventory());
         }
 
         protected override bool LookAtCore(Word noun)

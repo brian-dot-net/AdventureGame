@@ -292,6 +292,20 @@ namespace Adventure.Test
             lastOutput.Should().Be("You can't do that.");
         }
 
+        [Fact]
+        public void RequestInventory()
+        {
+            MessageBus bus = new MessageBus();
+            int inv = 0;
+            bus.Subscribe<InventoryRequestedMessage>(_ => ++inv);
+            TestRoom room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("inventory", "INV"), new Word(string.Empty, string.Empty)));
+
+            inv.Should().Be(1);
+        }
+
         private static void TestSend(Word verb, Word noun, string expectedOutput)
         {
             MessageBus bus = new MessageBus();

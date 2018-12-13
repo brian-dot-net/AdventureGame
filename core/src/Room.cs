@@ -74,6 +74,11 @@ namespace Adventure
             this.bus.Send(new OutputMessage(message));
         }
 
+        protected void Inventory()
+        {
+            this.bus.Send(new InventoryRequestedMessage());
+        }
+
         protected void Look(Word noun)
         {
             if (noun.Actual.Length == 0)
