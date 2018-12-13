@@ -226,6 +226,20 @@ namespace Adventure.Test
             act.Should().Throw<InvalidOperationException>().WithMessage("Cannot Deactivate before Activate.");
         }
 
+        [Fact]
+        public void LookCountsItems()
+        {
+            MessageBus bus = new MessageBus();
+            Items items = new Items(bus);
+            items.Activate();
+            items.Drop("one", new TestItem());
+            items.Drop("two", new TestItem());
+
+            int count = items.Look("{0}");
+
+            count.Should().Be(2);
+        }
+
         private sealed class TestItemNoActions : Item
         {
             public override string ShortDescription => "a dull item";

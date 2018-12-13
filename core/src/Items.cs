@@ -42,12 +42,16 @@ namespace Adventure
             this.sub = null;
         }
 
-        public void Look(string itemFormat)
+        public int Look(string itemFormat)
         {
+            int count = 0;
             foreach (string item in this.items.Values.Select(i => i.ShortDescription))
             {
                 this.Output(string.Format(itemFormat, item));
+                ++count;
             }
+
+            return count;
         }
 
         public bool LookAt(Word noun)
