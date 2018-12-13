@@ -124,6 +124,19 @@ namespace Adventure.Test
             }
         }
 
+        [Fact]
+        public void AddInventoryAfterDispose()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Inventory inv = new Inventory(bus);
+            inv.Dispose();
+            bus.Send(new InventoryAddedMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem()));
+
+            messages.Should().BeEmpty();
+        }
+
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a key";
