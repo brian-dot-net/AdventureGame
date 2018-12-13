@@ -9,13 +9,15 @@ namespace Adventure
     public sealed class Inventory : IDisposable
     {
         private readonly MessageBus bus;
-        private readonly IDisposable sub;
+        private readonly IDisposable show;
+        private readonly IDisposable add;
         private readonly Items items;
 
         public Inventory(MessageBus bus)
         {
             this.bus = bus;
-            this.sub = bus.Subscribe<InventoryRequestedMessage>(m => this.Show());
+            this.show = bus.Subscribe<InventoryRequestedMessage>(m => this.Show());
+            this.add = bus.Subscribe<InventoryAddedMessage>(m => this.Add(m.Verb, m.Noun, m.Item));
             this.items = new Items(this.bus);
             this.items.Activate();
         }
@@ -23,7 +25,7 @@ namespace Adventure
         public void Dispose()
         {
             this.items.Deactivate();
-            this.sub.Dispose();
+            this.show.Dispose();
         }
 
         public void Drop(string key, Item item)
@@ -39,6 +41,12 @@ namespace Adventure
             {
                 this.Output("(nothing)");
             }
+        }
+
+        private void Add(Word verb, Word noun, Item item)
+        {
+            this.Drop(noun.Primary, item);
+            this.Output($"You {verb} the {noun}.");
         }
 
         private void Output(string text)

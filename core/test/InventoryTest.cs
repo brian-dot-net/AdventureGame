@@ -109,6 +109,21 @@ namespace Adventure.Test
             lastOutput.Should().BeNull();
         }
 
+        [Fact]
+        public void AddInventory()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            using (Inventory inv = new Inventory(bus))
+            {
+                bus.Send(new InventoryAddedMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem()));
+                bus.Send(new InventoryRequestedMessage());
+
+                messages.Should().Equal("You GRAB the KEY.", "You are carrying:", "a key");
+            }
+        }
+
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a key";
