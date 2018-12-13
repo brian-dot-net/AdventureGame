@@ -116,14 +116,19 @@ namespace Adventure
         private void TakeItem(Word verb, Word noun)
         {
             Item taken = this.items.Take(noun.Primary);
-            if (taken != null)
-            {
-                this.bus.Send(new InventoryAddedMessage(verb, noun, taken));
-            }
-            else
+            if (taken == null)
             {
                 this.Output($"You can't {verb} that.");
+                return;
             }
+
+            if (!taken.Take(this.bus))
+            {
+                this.Drop(noun.Primary, taken);
+                return;
+            }
+
+            this.bus.Send(new InventoryAddedMessage(verb, noun, taken));
         }
 
         private void Process(SentenceMessage message)

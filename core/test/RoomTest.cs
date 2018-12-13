@@ -209,6 +209,37 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessTakeUnavailableItem()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Item actualItem = null;
+            bus.Subscribe<InventoryAddedMessage>(m =>
+            {
+                messages.Add($"You {m.Verb} the {m.Noun}!");
+                actualItem = m.Item;
+            });
+            TestRoom room = new TestRoom(bus);
+            room.Drop("key", new TestKey(false));
+            room.Drop("coin", new TestCoin());
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("take", "TAKE"), new Word("key", "KEY")));
+            bus.Send(new SentenceMessage(new Word("look", "LOOK"), new Word(string.Empty, string.Empty)));
+
+            messages.Should().Equal(
+                "You are in a test room.",
+                "There is a key here.",
+                "There is a coin here.",
+                "I won't let you take this!",
+                "You are in a test room.",
+                "There is a key here.",
+                "There is a coin here.");
+            actualItem.Should().BeNull();
+        }
+
+        [Fact]
         public void ProcessTakeUnknown()
         {
             TestSend(
@@ -353,9 +384,27 @@ namespace Adventure.Test
 
         private sealed class TestKey : Item
         {
+            private readonly bool canTake;
+
+            public TestKey(bool canTake = true)
+            {
+                this.canTake = canTake;
+            }
+
             public override string ShortDescription => "a key";
 
             public override string LongDescription => "It is solid gold.";
+
+            protected override bool TakeCore(MessageBus bus)
+            {
+                if (this.canTake)
+                {
+                    return base.TakeCore(bus);
+                }
+
+                bus.Send(new OutputMessage("I won't let you take this!"));
+                return false;
+            }
         }
 
         private sealed class TestCoin : Item
