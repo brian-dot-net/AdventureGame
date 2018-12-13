@@ -39,9 +39,32 @@ namespace Adventure.Test
             }
         }
 
+        [Fact]
+        public void ShowInventoryTwoItems()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            using (Inventory inv = new Inventory(bus))
+            {
+                inv.Drop("key", new TestItem());
+                inv.Drop("coin", new TestItem2());
+                bus.Send(new InventoryRequestedMessage());
+
+                messages.Should().Equal("You are carrying:", "a key", "a coin");
+            }
+        }
+
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a key";
+
+            public override string LongDescription => throw new System.NotImplementedException();
+        }
+
+        private sealed class TestItem2 : Item
+        {
+            public override string ShortDescription => "a coin";
 
             public override string LongDescription => throw new System.NotImplementedException();
         }
