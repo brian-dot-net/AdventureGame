@@ -13,5 +13,7 @@ move table
 look
 look coin
 inv
+GET COIN
+inv
 exit
 -- END --
