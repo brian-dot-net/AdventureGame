@@ -126,7 +126,7 @@ namespace Adventure
         private void LookAround()
         {
             this.Output(this.Description);
-            this.items.Look();
+            this.items.Look("There is {0} here.");
         }
 
         private bool LookAt(Word noun)

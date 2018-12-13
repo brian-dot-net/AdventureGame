@@ -42,11 +42,11 @@ namespace Adventure
             this.sub = null;
         }
 
-        public void Look()
+        public void Look(string itemFormat)
         {
             foreach (string item in this.items.Values.Select(i => i.ShortDescription))
             {
-                this.Output($"There is {item} here.");
+                this.Output(string.Format(itemFormat, item));
             }
         }
 
