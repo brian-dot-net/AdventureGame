@@ -14,7 +14,9 @@ look
 look coin
 get table
 inv
+read coin
 GET COIN
+read coin
 inv
 exit
 -- END --

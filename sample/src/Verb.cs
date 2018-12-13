@@ -12,5 +12,6 @@ namespace Adventure.Sample
         public const string Move = "move";
         public const string Take = "take";
         public const string Quit = "quit";
+        public const string Read = "read";
     }
 }

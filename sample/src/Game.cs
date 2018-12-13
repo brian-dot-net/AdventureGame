@@ -37,6 +37,7 @@ namespace Adventure.Sample
             w.Add(Verb.Look);
             w.Add(Verb.Move);
             w.Add(Verb.Quit, "exit");
+            w.Add(Verb.Read);
             w.Add(Verb.Take, "get");
             w.Add(Verb.Inventory, "inv");
 
