@@ -21,6 +21,7 @@ namespace Adventure
 
         public void Dispose()
         {
+            this.sub.Dispose();
         }
 
         public void Drop(string key, Item item)

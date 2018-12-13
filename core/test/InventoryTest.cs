@@ -55,6 +55,23 @@ namespace Adventure.Test
             }
         }
 
+        [Fact]
+        public void ShowInventoryAfterDispose()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            using (Inventory inv = new Inventory(bus))
+            {
+                inv.Drop("key", new TestItem());
+                inv.Drop("coin", new TestItem2());
+            }
+
+            bus.Send(new InventoryRequestedMessage());
+
+            messages.Should().BeEmpty();
+        }
+
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a key";
