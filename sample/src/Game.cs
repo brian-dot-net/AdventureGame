@@ -23,6 +23,7 @@ namespace Adventure.Sample
             using (new SentenceParser(this.bus, this.words))
             using (QuitHandler quit = new QuitHandler(this.bus, Verb.Quit))
             using (InputLoop loop = new InputLoop(this.bus, ">"))
+            using (new Inventory(this.bus))
             using (this.InitializeMap())
             {
                 loop.Run(quit.Token);
@@ -37,6 +38,7 @@ namespace Adventure.Sample
             w.Add(Verb.Move);
             w.Add(Verb.Quit, "exit");
             w.Add(Verb.Take, "get");
+            w.Add(Verb.Inventory, "inv");
 
             w.Add(Noun.Coin);
             w.Add(Noun.Table);

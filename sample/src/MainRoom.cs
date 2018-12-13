@@ -18,6 +18,7 @@ namespace Adventure.Sample
         {
             this.Register(Verb.Look, (_, n) => this.Look(n));
             this.Register(Verb.Greet, (_, __) => this.Output("You say, \"Hello,\" to no one in particular. No one answers."));
+            this.Register(Verb.Inventory, (_, __) => this.Inventory());
             this.Register(Verb.Take, this.Take);
         }
     }

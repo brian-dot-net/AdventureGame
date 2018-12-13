@@ -7,6 +7,7 @@ namespace Adventure.Sample
     internal static class Verb
     {
         public const string Greet = "greet";
+        public const string Inventory = "inventory";
         public const string Look = "look";
         public const string Move = "move";
         public const string Take = "take";
