@@ -19,6 +19,12 @@ namespace Adventure.Sample
 
         public override string LongDescription => "It is an ordinary wooden table.";
 
+        protected override bool TakeCore(MessageBus bus)
+        {
+            bus.Send(new OutputMessage("It is too heavy."));
+            return false;
+        }
+
         protected override bool DoCore(MessageBus bus, Word verb, Word noun)
         {
             if (verb.Primary == Verb.Move)
