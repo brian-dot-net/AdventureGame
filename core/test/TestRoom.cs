@@ -57,7 +57,7 @@ namespace Adventure.Test
             return base.LookAtCore(noun);
         }
 
-        protected override bool Take(Word noun)
+        protected override bool TakeCore(Word noun)
         {
             if (noun.Primary == "breath")
             {
@@ -65,7 +65,7 @@ namespace Adventure.Test
                 return true;
             }
 
-            return base.Take(noun);
+            return base.TakeCore(noun);
         }
 
         private void Hello(Word verb, Word noun)

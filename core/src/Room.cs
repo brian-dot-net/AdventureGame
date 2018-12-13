@@ -102,15 +102,28 @@ namespace Adventure
             {
                 this.Output($"What do you want to {verb}?");
             }
-            else if (!this.Take(noun))
+            else if (!this.TakeCore(noun))
             {
-                this.Output($"You can't {verb} that.");
+                this.TakeItem(verb, noun);
             }
         }
 
-        protected virtual bool Take(Word noun)
+        protected virtual bool TakeCore(Word noun)
         {
             return false;
+        }
+
+        private void TakeItem(Word verb, Word noun)
+        {
+            Item taken = this.items.Take(noun.Primary);
+            if (taken != null)
+            {
+                this.bus.Send(new InventoryAddedMessage(verb, noun, taken));
+            }
+            else
+            {
+                this.Output($"You can't {verb} that.");
+            }
         }
 
         private void Process(SentenceMessage message)

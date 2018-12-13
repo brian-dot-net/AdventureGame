@@ -178,6 +178,37 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessTakeAvailableItem()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Item actualItem = null;
+            bus.Subscribe<InventoryAddedMessage>(m =>
+            {
+                messages.Add($"You {m.Verb} the {m.Noun}!");
+                actualItem = m.Item;
+            });
+            TestRoom room = new TestRoom(bus);
+            Item expectedItem = new TestKey();
+            room.Drop("key", expectedItem);
+            room.Drop("coin", new TestCoin());
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("take", "TAKE"), new Word("key", "KEY")));
+            bus.Send(new SentenceMessage(new Word("look", "LOOK"), new Word(string.Empty, string.Empty)));
+
+            messages.Should().Equal(
+                "You are in a test room.",
+                "There is a key here.",
+                "There is a coin here.",
+                "You TAKE the KEY!",
+                "You are in a test room.",
+                "There is a coin here.");
+            actualItem.Should().BeSameAs(expectedItem);
+        }
+
+        [Fact]
         public void ProcessTakeUnknown()
         {
             TestSend(
