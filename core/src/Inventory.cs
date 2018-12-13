@@ -17,6 +17,7 @@ namespace Adventure
             this.bus = bus;
             this.sub = bus.Subscribe<InventoryRequestedMessage>(m => this.Show());
             this.items = new Items(this.bus);
+            this.items.Activate();
         }
 
         public void Dispose()

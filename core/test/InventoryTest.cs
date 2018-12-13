@@ -4,6 +4,7 @@
 
 namespace Adventure.Test
 {
+    using System;
     using System.Collections.Generic;
     using FluentAssertions;
     using Xunit;
@@ -72,6 +73,24 @@ namespace Adventure.Test
             messages.Should().BeEmpty();
         }
 
+        [Fact]
+        public void ProcessCustomItemAction()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            Action<OutputMessage> subscriber = m => lastOutput = m.Text;
+            bus.Subscribe(subscriber);
+            using (Inventory inv = new Inventory(bus))
+            {
+                inv.Drop("key", new TestItem());
+                inv.Drop("coin", new TestItem2());
+
+                bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("coin", "COIN")));
+
+                lastOutput.Should().Be("You FLIP the COIN; it lands on heads.");
+            }
+        }
+
         private sealed class TestItem : Item
         {
             public override string ShortDescription => "a key";
@@ -84,6 +103,17 @@ namespace Adventure.Test
             public override string ShortDescription => "a coin";
 
             public override string LongDescription => throw new System.NotImplementedException();
+
+            protected override bool DoCore(MessageBus bus, Word verb, Word noun)
+            {
+                if (verb.Primary == "flip")
+                {
+                    bus.Send(new OutputMessage($"You {verb} the {noun}; it lands on heads."));
+                    return true;
+                }
+
+                return false;
+            }
         }
     }
 }
