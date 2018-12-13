@@ -10,21 +10,32 @@ namespace Adventure
     {
         private readonly MessageBus bus;
         private readonly IDisposable sub;
+        private readonly Items items;
 
         public Inventory(MessageBus bus)
         {
             this.bus = bus;
             this.sub = bus.Subscribe<InventoryRequestedMessage>(m => this.Show());
+            this.items = new Items(this.bus);
         }
 
         public void Dispose()
         {
         }
 
+        public void Drop(string key, Item item)
+        {
+            this.items.Drop(key, item);
+        }
+
         private void Show()
         {
             this.Output("You are carrying:");
-            this.Output("(nothing)");
+            int count = this.items.Look("{0}");
+            if (count == 0)
+            {
+                this.Output("(nothing)");
+            }
         }
 
         private void Output(string text)

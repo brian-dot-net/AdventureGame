@@ -23,5 +23,27 @@ namespace Adventure.Test
                 messages.Should().Equal("You are carrying:", "(nothing)");
             }
         }
+
+        [Fact]
+        public void ShowInventoryOneItem()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            using (Inventory inv = new Inventory(bus))
+            {
+                inv.Drop("key", new TestItem());
+                bus.Send(new InventoryRequestedMessage());
+
+                messages.Should().Equal("You are carrying:", "a key");
+            }
+        }
+
+        private sealed class TestItem : Item
+        {
+            public override string ShortDescription => "a key";
+
+            public override string LongDescription => throw new System.NotImplementedException();
+        }
     }
 }
