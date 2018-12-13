@@ -8,6 +8,6 @@ namespace Adventure.Sample
     {
         public override string ShortDescription => "a coin";
 
-        public override string LongDescription => throw new System.NotImplementedException();
+        public override string LongDescription => "It is a small gold coin with an inscription on the edge.";
     }
 }

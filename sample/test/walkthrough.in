@@ -11,5 +11,6 @@ move table
 move out
 move table
 look
+look coin
 exit
 -- END --

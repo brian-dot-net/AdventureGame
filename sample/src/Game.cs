@@ -38,6 +38,7 @@ namespace Adventure.Sample
             w.Add(Verb.Quit, "exit");
             w.Add(Verb.Take, "get");
 
+            w.Add(Noun.Coin);
             w.Add(Noun.Table);
 
             return w;
