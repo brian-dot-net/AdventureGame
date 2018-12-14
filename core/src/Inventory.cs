@@ -11,6 +11,7 @@ namespace Adventure
         private readonly MessageBus bus;
         private readonly IDisposable show;
         private readonly IDisposable add;
+        private readonly IDisposable drop;
         private readonly Items items;
 
         public Inventory(MessageBus bus)
@@ -18,6 +19,7 @@ namespace Adventure
             this.bus = bus;
             this.show = bus.Subscribe<InventoryRequestedMessage>(m => this.Show());
             this.add = bus.Subscribe<InventoryAddedMessage>(m => this.Add(m.Verb, m.Noun, m.Item));
+            this.drop = bus.Subscribe<InventoryDropMessage>(m => this.Drop(m.Verb, m.Noun, m.Items));
             this.items = new Items(this.bus);
             this.items.Activate();
         }
@@ -47,6 +49,13 @@ namespace Adventure
         private void Add(Word verb, Word noun, Item item)
         {
             this.Add(noun.Primary, item);
+            this.Output($"You {verb} the {noun}.");
+        }
+
+        private void Drop(Word verb, Word noun, Items targetItems)
+        {
+            Item item = this.items.Take(noun.Primary);
+            targetItems.Add(noun.Primary, item);
             this.Output($"You {verb} the {noun}.");
         }
 
