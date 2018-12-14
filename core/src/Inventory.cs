@@ -29,7 +29,7 @@ namespace Adventure
             this.add.Dispose();
         }
 
-        public void Drop(string key, Item item)
+        public void Add(string key, Item item)
         {
             this.items.Add(key, item);
         }
@@ -46,7 +46,7 @@ namespace Adventure
 
         private void Add(Word verb, Word noun, Item item)
         {
-            this.Drop(noun.Primary, item);
+            this.Add(noun.Primary, item);
             this.Output($"You {verb} the {noun}.");
         }
 

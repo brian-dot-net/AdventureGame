@@ -33,7 +33,7 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Drop("key", new TestItem());
+                inv.Add("key", new TestItem());
                 bus.Send(new InventoryRequestedMessage());
 
                 messages.Should().Equal("You are carrying:", "a key");
@@ -48,8 +48,8 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Drop("key", new TestItem());
-                inv.Drop("coin", new TestItem2());
+                inv.Add("key", new TestItem());
+                inv.Add("coin", new TestItem2());
                 bus.Send(new InventoryRequestedMessage());
 
                 messages.Should().Equal("You are carrying:", "a key", "a coin");
@@ -64,8 +64,8 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Drop("key", new TestItem());
-                inv.Drop("coin", new TestItem2());
+                inv.Add("key", new TestItem());
+                inv.Add("coin", new TestItem2());
             }
 
             bus.Send(new InventoryRequestedMessage());
@@ -82,8 +82,8 @@ namespace Adventure.Test
             bus.Subscribe(subscriber);
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Drop("key", new TestItem());
-                inv.Drop("coin", new TestItem2());
+                inv.Add("key", new TestItem());
+                inv.Add("coin", new TestItem2());
 
                 bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("coin", "COIN")));
 
@@ -100,8 +100,8 @@ namespace Adventure.Test
             bus.Subscribe(subscriber);
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Drop("key", new TestItem());
-                inv.Drop("coin", new TestItem2());
+                inv.Add("key", new TestItem());
+                inv.Add("coin", new TestItem2());
             }
 
             bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("coin", "COIN")));
