@@ -267,6 +267,15 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessDrop()
+        {
+            TestSend(
+                new Word("drop", "THROW"),
+                new Word(string.Empty, string.Empty),
+                "What do you want to THROW?");
+        }
+
+        [Fact]
         public void DropOneItem()
         {
             MessageBus bus = new MessageBus();

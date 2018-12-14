@@ -98,7 +98,14 @@ namespace Adventure
 
         protected void Drop(Word verb, Word noun)
         {
-            this.bus.Send(new InventoryDropMessage(this.items, verb, noun));
+            if (noun.Actual.Length == 0)
+            {
+                this.Output($"What do you want to {verb}?");
+            }
+            else
+            {
+                this.bus.Send(new InventoryDropMessage(this.items, verb, noun));
+            }
         }
 
         protected void Take(Word verb, Word noun)
