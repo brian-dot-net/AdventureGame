@@ -18,6 +18,7 @@ read coin
 GET COIN
 read coin
 inv
+drop
 THROW coin
 read coin
 take coin
