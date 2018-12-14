@@ -31,7 +31,7 @@ namespace Adventure
 
         public void Drop(string key, Item item)
         {
-            this.items.Drop(key, item);
+            this.items.Add(key, item);
         }
 
         private void Show()

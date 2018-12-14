@@ -52,7 +52,7 @@ namespace Adventure
 
         public void Add(string name, Item item)
         {
-            this.items.Drop(name, item);
+            this.items.Add(name, item);
         }
 
         protected virtual void EnterCore()

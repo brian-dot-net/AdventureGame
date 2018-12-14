@@ -65,7 +65,7 @@ namespace Adventure
             return false;
         }
 
-        public void Drop(string name, Item item)
+        public void Add(string name, Item item)
         {
             if (this.items.ContainsKey(name))
             {
