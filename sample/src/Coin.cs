@@ -18,6 +18,12 @@ namespace Adventure.Sample
             return base.TakeCore(bus);
         }
 
+        protected override bool DropCore(MessageBus bus)
+        {
+            this.taken = false;
+            return base.DropCore(bus);
+        }
+
         protected override bool DoCore(MessageBus bus, Word verb, Word noun)
         {
             if (verb.Primary == Verb.Read)

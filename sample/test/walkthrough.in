@@ -18,5 +18,8 @@ read coin
 GET COIN
 read coin
 inv
+THROW coin
+read coin
+take coin
 exit
 -- END --
