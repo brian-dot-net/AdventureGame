@@ -9,7 +9,7 @@ namespace Adventure.Sample
         public MainRoom(MessageBus bus)
             : base(bus)
         {
-            this.Drop(Noun.Table, new Table(this));
+            this.Add(Noun.Table, new Table(this));
         }
 
         protected override string Description => "You are in the main room.";

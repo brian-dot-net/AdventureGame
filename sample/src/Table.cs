@@ -42,7 +42,7 @@ namespace Adventure.Sample
             {
                 this.tableMoved = true;
                 bus.Send(new OutputMessage("You move the table slightly. Underneath you see a coin."));
-                this.parent.Drop(Noun.Coin, new Coin());
+                this.parent.Add(Noun.Coin, new Coin());
             }
             else
             {

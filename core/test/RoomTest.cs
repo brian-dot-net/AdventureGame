@@ -160,7 +160,7 @@ namespace Adventure.Test
             Action<OutputMessage> subscriber = m => lastOutput = m.Text;
             bus.Subscribe(subscriber);
             Room room = new TestRoom(bus);
-            room.Drop("key", new TestKey());
+            room.Add("key", new TestKey());
 
             room.Enter();
             bus.Send(new SentenceMessage(new Word("look", "LOOK"), new Word("key", "KEY")));
@@ -191,8 +191,8 @@ namespace Adventure.Test
             });
             TestRoom room = new TestRoom(bus);
             Item expectedItem = new TestKey();
-            room.Drop("key", expectedItem);
-            room.Drop("coin", new TestCoin());
+            room.Add("key", expectedItem);
+            room.Add("coin", new TestCoin());
 
             room.Enter();
             bus.Send(new SentenceMessage(new Word("take", "TAKE"), new Word("key", "KEY")));
@@ -221,8 +221,8 @@ namespace Adventure.Test
                 actualItem = m.Item;
             });
             TestRoom room = new TestRoom(bus);
-            room.Drop("key", new TestKey(false));
-            room.Drop("coin", new TestCoin());
+            room.Add("key", new TestKey(false));
+            room.Add("coin", new TestCoin());
 
             room.Enter();
             bus.Send(new SentenceMessage(new Word("take", "TAKE"), new Word("key", "KEY")));
@@ -267,14 +267,14 @@ namespace Adventure.Test
         }
 
         [Fact]
-        public void DropOneItem()
+        public void AddOneItem()
         {
             MessageBus bus = new MessageBus();
             List<string> output = new List<string>();
             Action<OutputMessage> subscriber = m => output.Add(m.Text);
             bus.Subscribe(subscriber);
             TestRoom room = new TestRoom(bus);
-            room.Drop("key", new TestKey());
+            room.Add("key", new TestKey());
 
             room.Enter();
 
@@ -284,15 +284,15 @@ namespace Adventure.Test
         }
 
         [Fact]
-        public void DropTwoItems()
+        public void AddTwoItems()
         {
             MessageBus bus = new MessageBus();
             List<string> output = new List<string>();
             Action<OutputMessage> subscriber = m => output.Add(m.Text);
             bus.Subscribe(subscriber);
             TestRoom room = new TestRoom(bus);
-            room.Drop("key", new TestKey());
-            room.Drop("coin", new TestCoin());
+            room.Add("key", new TestKey());
+            room.Add("coin", new TestCoin());
 
             room.Enter();
 
@@ -310,8 +310,8 @@ namespace Adventure.Test
             Action<OutputMessage> subscriber = m => lastOutput = m.Text;
             bus.Subscribe(subscriber);
             TestRoom room = new TestRoom(bus);
-            room.Drop("key", new TestKey());
-            room.Drop("coin", new TestCoin());
+            room.Add("key", new TestKey());
+            room.Add("coin", new TestCoin());
 
             room.Enter();
             bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("coin", "COIN")));
@@ -327,8 +327,8 @@ namespace Adventure.Test
             Action<OutputMessage> subscriber = m => lastOutput = m.Text;
             bus.Subscribe(subscriber);
             TestRoom room = new TestRoom(bus);
-            room.Drop("key", new TestKey());
-            room.Drop("coin", new TestCoin());
+            room.Add("key", new TestKey());
+            room.Add("coin", new TestCoin());
 
             room.Enter();
             room.Leave();
@@ -345,8 +345,8 @@ namespace Adventure.Test
             Action<OutputMessage> subscriber = m => lastOutput = m.Text;
             bus.Subscribe(subscriber);
             TestRoom room = new TestRoom(bus);
-            room.Drop("key", new TestKey());
-            room.Drop("coin", new TestCoin());
+            room.Add("key", new TestKey());
+            room.Add("coin", new TestCoin());
 
             room.Enter();
             bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("key", "KEY")));

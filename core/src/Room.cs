@@ -50,7 +50,7 @@ namespace Adventure
             this.sub = null;
         }
 
-        public void Drop(string name, Item item)
+        public void Add(string name, Item item)
         {
             this.items.Drop(name, item);
         }
@@ -124,7 +124,7 @@ namespace Adventure
 
             if (!taken.Take(this.bus))
             {
-                this.Drop(noun.Primary, taken);
+                this.Add(noun.Primary, taken);
                 return;
             }
 
