@@ -128,6 +128,24 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void DropDisallowedItem()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Items items = new Items(bus);
+            using (Inventory inv = new Inventory(bus))
+            {
+                inv.Add("key", new TestItem(false));
+                bus.Send(new InventoryDropMessage(items, new Word("drop", "THROW"), new Word("key", "KEY")));
+                bus.Send(new InventoryRequestedMessage());
+
+                messages.Should().Equal("I won't let you drop this!", "You are carrying:", "a key");
+                items.Look("{0}").Should().Be(0);
+            }
+        }
+
+        [Fact]
         public void DropItemAfterDispose()
         {
             MessageBus bus = new MessageBus();
@@ -175,9 +193,27 @@ namespace Adventure.Test
 
         private sealed class TestItem : Item
         {
+            private readonly bool canDrop;
+
+            public TestItem(bool canDrop = true)
+            {
+                this.canDrop = canDrop;
+            }
+
             public override string ShortDescription => "a key";
 
             public override string LongDescription => throw new System.NotImplementedException();
+
+            protected override bool DropCore(MessageBus bus)
+            {
+                if (!this.canDrop)
+                {
+                    bus.Send(new OutputMessage("I won't let you drop this!"));
+                    return false;
+                }
+
+                return base.DropCore(bus);
+            }
         }
 
         private sealed class TestItem2 : Item

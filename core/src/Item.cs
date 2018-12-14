@@ -24,12 +24,22 @@ namespace Adventure
             return this.TakeCore(bus);
         }
 
+        public bool Drop(MessageBus bus)
+        {
+            return this.DropCore(bus);
+        }
+
         protected virtual bool DoCore(MessageBus bus, Word verb, Word noun)
         {
             return false;
         }
 
         protected virtual bool TakeCore(MessageBus bus)
+        {
+            return true;
+        }
+
+        protected virtual bool DropCore(MessageBus bus)
         {
             return true;
         }
