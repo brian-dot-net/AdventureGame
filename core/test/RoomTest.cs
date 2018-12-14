@@ -267,6 +267,27 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void DropOneItem()
+        {
+            MessageBus bus = new MessageBus();
+            Dictionary<string, Item> items = new Dictionary<string, Item>();
+            items["DROP/KEY"] = new TestKey();
+            bus.Subscribe<InventoryDropMessage>(m => m.Items.Add(m.Noun.Primary, items[$"{m.Verb}/{m.Noun}"]));
+            List<string> output = new List<string>();
+            bus.Subscribe<OutputMessage>(m => output.Add(m.Text));
+            TestRoom room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("drop", "DROP"), new Word("key", "KEY")));
+            bus.Send(new SentenceMessage(new Word("look", "LOOK"), new Word(string.Empty, string.Empty)));
+
+            output.Should().Equal(
+                "You are in a test room.",
+                "You are in a test room.",
+                "There is a key here.");
+        }
+
+        [Fact]
         public void AddOneItem()
         {
             MessageBus bus = new MessageBus();

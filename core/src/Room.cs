@@ -96,6 +96,11 @@ namespace Adventure
             return false;
         }
 
+        protected void Drop(Word verb, Word noun)
+        {
+            this.bus.Send(new InventoryDropMessage(this.items, verb, noun));
+        }
+
         protected void Take(Word verb, Word noun)
         {
             if (noun.Actual.Length == 0)
