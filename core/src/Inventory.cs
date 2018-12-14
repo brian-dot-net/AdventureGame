@@ -56,15 +56,20 @@ namespace Adventure
         private void Drop(Word verb, Word noun, Items targetItems)
         {
             Item item = this.items.Take(noun.Primary);
+            if (item == null)
+            {
+                this.Output($"You can't {verb} what you don't have.");
+                return;
+            }
+
             if (item.Drop(this.bus))
             {
                 targetItems.Add(noun.Primary, item);
                 this.Output($"You {verb} the {noun}.");
+                return;
             }
-            else
-            {
-                this.items.Add(noun.Primary, item);
-            }
+
+            this.items.Add(noun.Primary, item);
         }
 
         private void Output(string text)
