@@ -128,6 +128,24 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void DropItemAfterDispose()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Items items = new Items(bus);
+            using (Inventory inv = new Inventory(bus))
+            {
+                inv.Add("key", new TestItem());
+            }
+
+            bus.Send(new InventoryDropMessage(items, new Word("drop", "THROW"), new Word("key", "KEY")));
+
+            messages.Should().BeEmpty();
+            items.Look("{0}").Should().Be(0);
+        }
+
+        [Fact]
         public void AddInventory()
         {
             MessageBus bus = new MessageBus();
