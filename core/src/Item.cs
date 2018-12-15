@@ -4,6 +4,8 @@
 
 namespace Adventure
 {
+    using Adventure.Messages;
+
     public abstract class Item
     {
         protected Item()
