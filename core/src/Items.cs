@@ -7,6 +7,7 @@ namespace Adventure
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Adventure.Messages;
 
     public sealed class Items
     {

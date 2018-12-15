@@ -8,6 +8,7 @@ namespace Adventure.Test
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
+    using Adventure.Messages;
     using FluentAssertions;
     using Xunit;
 

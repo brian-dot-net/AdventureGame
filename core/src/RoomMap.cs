@@ -6,6 +6,7 @@ namespace Adventure
 {
     using System;
     using System.Collections.Generic;
+    using Adventure.Messages;
 
     public sealed class RoomMap : IDisposable
     {

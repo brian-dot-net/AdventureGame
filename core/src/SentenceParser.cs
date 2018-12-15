@@ -5,6 +5,7 @@
 namespace Adventure
 {
     using System;
+    using Adventure.Messages;
 
     public sealed class SentenceParser : IDisposable
     {

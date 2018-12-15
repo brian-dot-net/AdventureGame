@@ -2,7 +2,7 @@
 // Copyright (c) Brian Rogers. All rights reserved.
 // </copyright>
 
-namespace Adventure
+namespace Adventure.Messages
 {
     public sealed class InputEndedMessage
     {

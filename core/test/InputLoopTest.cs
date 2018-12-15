@@ -6,6 +6,7 @@ namespace Adventure.Test
 {
     using System;
     using System.Threading;
+    using Adventure.Messages;
     using FluentAssertions;
     using Xunit;
 

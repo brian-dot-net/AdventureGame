@@ -6,6 +6,7 @@ namespace Adventure
 {
     using System;
     using System.Threading;
+    using Adventure.Messages;
 
     public sealed class QuitHandler : IDisposable
     {

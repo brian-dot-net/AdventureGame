@@ -6,6 +6,7 @@ namespace Adventure
 {
     using System;
     using System.IO;
+    using Adventure.Messages;
 
     public sealed class TextConsole : IDisposable
     {
