@@ -17,10 +17,10 @@ namespace Adventure.Sample
 
         public override string LongDescription => "It is a small gold coin with an inscription on the edge.";
 
-        protected override bool TakeCore(MessageBus bus)
+        protected override bool TakeCore()
         {
             this.taken = true;
-            return base.TakeCore(bus);
+            return base.TakeCore();
         }
 
         protected override bool DropCore(MessageBus bus)
@@ -33,22 +33,22 @@ namespace Adventure.Sample
         {
             if (verb.Primary == Verb.Read)
             {
-                this.Read(bus);
+                this.Read();
                 return true;
             }
 
             return base.DoCore(bus, verb, noun);
         }
 
-        private void Read(MessageBus bus)
+        private void Read()
         {
             if (this.taken)
             {
-                this.Output(bus, "The inscription reads: \"MCMXCIX\"");
+                this.Output("The inscription reads: \"MCMXCIX\"");
             }
             else
             {
-                this.Output(bus, "The writing is too small. You'd have to pick it up to see it better.");
+                this.Output("The writing is too small. You'd have to pick it up to see it better.");
             }
         }
     }

@@ -20,9 +20,9 @@ namespace Adventure.Sample
 
         public override string LongDescription => "It is an ordinary wooden table.";
 
-        protected override bool TakeCore(MessageBus bus)
+        protected override bool TakeCore()
         {
-            this.Output(bus, "It is too heavy.");
+            this.Output("It is too heavy.");
             return false;
         }
 
@@ -42,12 +42,12 @@ namespace Adventure.Sample
             if (!this.tableMoved)
             {
                 this.tableMoved = true;
-                this.Output(bus, "You move the table slightly. Underneath you see a coin.");
+                this.Output("You move the table slightly. Underneath you see a coin.");
                 this.parent.Add(Noun.Coin, new Coin(bus));
             }
             else
             {
-                this.Output(bus, "Someone has already moved it.");
+                this.Output("Someone has already moved it.");
             }
         }
     }

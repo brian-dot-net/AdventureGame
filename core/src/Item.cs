@@ -24,9 +24,9 @@ namespace Adventure
             return this.DoCore(bus, verb, noun);
         }
 
-        public bool Take(MessageBus bus)
+        public bool Take()
         {
-            return this.TakeCore(bus);
+            return this.TakeCore();
         }
 
         public bool Drop(MessageBus bus)
@@ -39,7 +39,7 @@ namespace Adventure
             return false;
         }
 
-        protected virtual bool TakeCore(MessageBus bus)
+        protected virtual bool TakeCore()
         {
             return true;
         }
@@ -49,9 +49,9 @@ namespace Adventure
             return true;
         }
 
-        protected void Output(MessageBus bus, string text)
+        protected void Output(string text)
         {
-            bus.Send(new OutputMessage(text));
+            this.bus.Send(new OutputMessage(text));
         }
     }
 }

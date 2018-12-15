@@ -138,7 +138,7 @@ namespace Adventure
                 return;
             }
 
-            if (!taken.Take(this.bus))
+            if (!taken.Take())
             {
                 this.Add(noun.Primary, taken);
                 return;

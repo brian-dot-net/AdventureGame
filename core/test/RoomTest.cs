@@ -463,14 +463,14 @@ namespace Adventure.Test
 
             public override string LongDescription => "It is solid gold.";
 
-            protected override bool TakeCore(MessageBus bus)
+            protected override bool TakeCore()
             {
                 if (this.canTake)
                 {
-                    return base.TakeCore(bus);
+                    return base.TakeCore();
                 }
 
-                bus.Send(new OutputMessage("I won't let you take this!"));
+                this.Output("I won't let you take this!");
                 return false;
             }
         }
