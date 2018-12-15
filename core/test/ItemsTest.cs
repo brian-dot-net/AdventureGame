@@ -15,9 +15,10 @@ namespace Adventure.Test
         [Fact]
         public void AddOneItem()
         {
-            Items items = new Items(new MessageBus());
+            MessageBus bus = new MessageBus();
+            Items items = new Items(bus);
 
-            Action act = () => items.Add("key", new TestItem());
+            Action act = () => items.Add("key", new TestItem(bus));
 
             act.Should().NotThrow();
         }
@@ -25,10 +26,11 @@ namespace Adventure.Test
         [Fact]
         public void AddTwoItems()
         {
-            Items items = new Items(new MessageBus());
+            MessageBus bus = new MessageBus();
+            Items items = new Items(bus);
 
-            items.Add("key", new TestItem());
-            Action act = () => items.Add("coin", new TestItem());
+            items.Add("key", new TestItem(bus));
+            Action act = () => items.Add("coin", new TestItem(bus));
 
             act.Should().NotThrow();
         }
@@ -36,9 +38,10 @@ namespace Adventure.Test
         [Fact]
         public void TakeOneOfTwoItems()
         {
-            Items items = new Items(new MessageBus());
-            items.Add("key", new TestItem());
-            TestItem coin = new TestItem();
+            MessageBus bus = new MessageBus();
+            Items items = new Items(bus);
+            items.Add("key", new TestItem(bus));
+            TestItem coin = new TestItem(bus);
             items.Add("coin", coin);
 
             Item taken = items.Take("coin");
@@ -49,10 +52,11 @@ namespace Adventure.Test
         [Fact]
         public void TakeTwoItems()
         {
-            Items items = new Items(new MessageBus());
-            TestItem key = new TestItem();
+            MessageBus bus = new MessageBus();
+            Items items = new Items(bus);
+            TestItem key = new TestItem(bus);
             items.Add("key", key);
-            TestItem coin = new TestItem();
+            TestItem coin = new TestItem(bus);
             items.Add("coin", coin);
 
             Item takenCoin = items.Take("coin");
@@ -65,8 +69,9 @@ namespace Adventure.Test
         [Fact]
         public void TakeItemAlreadyTaken()
         {
-            Items items = new Items(new MessageBus());
-            items.Add("key", new TestItem());
+            MessageBus bus = new MessageBus();
+            Items items = new Items(bus);
+            items.Add("key", new TestItem(bus));
 
             items.Take("key");
             Item missing = items.Take("key");
@@ -87,10 +92,11 @@ namespace Adventure.Test
         [Fact]
         public void DropItemAlreadyExists()
         {
-            Items items = new Items(new MessageBus());
-            items.Add("key", new TestItem());
+            MessageBus bus = new MessageBus();
+            Items items = new Items(bus);
+            items.Add("key", new TestItem(bus));
 
-            Action act = () => items.Add("key", new TestItem());
+            Action act = () => items.Add("key", new TestItem(bus));
 
             act.Should().Throw<InvalidOperationException>("Item 'key' already exists.");
         }
@@ -102,7 +108,7 @@ namespace Adventure.Test
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             Items items = new Items(bus);
-            items.Add("ball", new TestItem());
+            items.Add("ball", new TestItem(bus));
 
             items.Activate();
             bus.Subscribe<SentenceMessage>(m => messages.Add($"Don't {m.Verb} the {m.Noun}"));
@@ -118,7 +124,7 @@ namespace Adventure.Test
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             Items items = new Items(bus);
-            items.Add("ball", new TestItem());
+            items.Add("ball", new TestItem(bus));
 
             items.Activate();
             bus.Subscribe<SentenceMessage>(m => messages.Add($"Don't {m.Verb} the {m.Noun}"));
@@ -134,7 +140,7 @@ namespace Adventure.Test
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             Items items = new Items(bus);
-            items.Add("ball", new TestItem());
+            items.Add("ball", new TestItem(bus));
 
             items.Activate();
             bus.Subscribe<SentenceMessage>(m => messages.Add($"Don't {m.Verb} the {m.Noun}"));
@@ -150,7 +156,7 @@ namespace Adventure.Test
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             Items items = new Items(bus);
-            items.Add("ball", new TestItemNoActions());
+            items.Add("ball", new TestItemNoActions(bus));
 
             items.Activate();
             bus.Subscribe<SentenceMessage>(m => messages.Add($"Don't {m.Verb} the {m.Noun}"));
@@ -166,7 +172,7 @@ namespace Adventure.Test
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             Items items = new Items(bus);
-            items.Add("ball", new TestItem());
+            items.Add("ball", new TestItem(bus));
 
             bus.Subscribe<SentenceMessage>(m => messages.Add($"Don't {m.Verb} the {m.Noun}"));
             bus.Send(new SentenceMessage(new Word("throw", "TOSS"), new Word("ball", "BASEBALL")));
@@ -181,7 +187,7 @@ namespace Adventure.Test
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             Items items = new Items(bus);
-            items.Add("ball", new TestItem());
+            items.Add("ball", new TestItem(bus));
 
             items.Activate();
             items.Deactivate();
@@ -233,8 +239,8 @@ namespace Adventure.Test
             MessageBus bus = new MessageBus();
             Items items = new Items(bus);
             items.Activate();
-            items.Add("one", new TestItem());
-            items.Add("two", new TestItem());
+            items.Add("one", new TestItem(bus));
+            items.Add("two", new TestItem(bus));
 
             int count = items.Look("{0}");
 
@@ -243,6 +249,11 @@ namespace Adventure.Test
 
         private sealed class TestItemNoActions : Item
         {
+            public TestItemNoActions(MessageBus bus)
+                : base(bus)
+            {
+            }
+
             public override string ShortDescription => "a dull item";
 
             public override string LongDescription => "It's a very dull item.";
@@ -250,6 +261,11 @@ namespace Adventure.Test
 
         private sealed class TestItem : Item
         {
+            public TestItem(MessageBus bus)
+                : base(bus)
+            {
+            }
+
             public override string ShortDescription => "a test item";
 
             public override string LongDescription => "It's a simple test item.";

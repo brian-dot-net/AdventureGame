@@ -34,7 +34,7 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Add("key", new TestItem());
+                inv.Add("key", new TestItem(bus));
                 bus.Send(new ShowInventoryMessage());
 
                 messages.Should().Equal("You are carrying:", "a key");
@@ -49,8 +49,8 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Add("key", new TestItem());
-                inv.Add("coin", new TestItem2());
+                inv.Add("key", new TestItem(bus));
+                inv.Add("coin", new TestItem2(bus));
                 bus.Send(new ShowInventoryMessage());
 
                 messages.Should().Equal("You are carrying:", "a key", "a coin");
@@ -65,8 +65,8 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Add("key", new TestItem());
-                inv.Add("coin", new TestItem2());
+                inv.Add("key", new TestItem(bus));
+                inv.Add("coin", new TestItem2(bus));
             }
 
             bus.Send(new ShowInventoryMessage());
@@ -83,8 +83,8 @@ namespace Adventure.Test
             bus.Subscribe(subscriber);
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Add("key", new TestItem());
-                inv.Add("coin", new TestItem2());
+                inv.Add("key", new TestItem(bus));
+                inv.Add("coin", new TestItem2(bus));
 
                 bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("coin", "COIN")));
 
@@ -101,8 +101,8 @@ namespace Adventure.Test
             bus.Subscribe(subscriber);
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Add("key", new TestItem());
-                inv.Add("coin", new TestItem2());
+                inv.Add("key", new TestItem(bus));
+                inv.Add("coin", new TestItem2(bus));
             }
 
             bus.Send(new SentenceMessage(new Word("flip", "FLIP"), new Word("coin", "COIN")));
@@ -119,8 +119,8 @@ namespace Adventure.Test
             using (Inventory inv = new Inventory(bus))
             {
                 bus.Subscribe<LookItemMessage>(m => bus.Send(new OutputMessage($"I can't bear to look at {m.Noun}.")));
-                inv.Add("key", new TestItem());
-                inv.Add("coin", new TestItem2());
+                inv.Add("key", new TestItem(bus));
+                inv.Add("coin", new TestItem2(bus));
 
                 bus.Send(new LookItemMessage(new Word("key", "KEY")));
 
@@ -137,8 +137,8 @@ namespace Adventure.Test
             using (Inventory inv = new Inventory(bus))
             {
                 bus.Subscribe<LookItemMessage>(m => bus.Send(new OutputMessage($"I can't bear to look at {m.Noun}.")));
-                inv.Add("key", new TestItem());
-                inv.Add("coin", new TestItem2());
+                inv.Add("key", new TestItem(bus));
+                inv.Add("coin", new TestItem2(bus));
 
                 bus.Send(new LookItemMessage(new Word("that", "THAT")));
 
@@ -155,8 +155,8 @@ namespace Adventure.Test
             using (Inventory inv = new Inventory(bus))
             {
                 bus.Subscribe<LookItemMessage>(m => bus.Send(new OutputMessage($"I can't bear to look at {m.Noun}.")));
-                inv.Add("key", new TestItem());
-                inv.Add("coin", new TestItem2());
+                inv.Add("key", new TestItem(bus));
+                inv.Add("coin", new TestItem2(bus));
             }
 
             bus.Send(new LookItemMessage(new Word("key", "KEY")));
@@ -173,7 +173,7 @@ namespace Adventure.Test
             Items items = new Items(bus);
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Add("key", new TestItem());
+                inv.Add("key", new TestItem(bus));
                 bus.Send(new DropItemMessage(items, new Word("drop", "THROW"), new Word("key", "KEY")));
                 bus.Send(new ShowInventoryMessage());
 
@@ -191,7 +191,7 @@ namespace Adventure.Test
             Items items = new Items(bus);
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Add("key", new TestItem(false));
+                inv.Add("key", new TestItem(bus, false));
                 bus.Send(new DropItemMessage(items, new Word("drop", "THROW"), new Word("key", "KEY")));
                 bus.Send(new ShowInventoryMessage());
 
@@ -225,7 +225,7 @@ namespace Adventure.Test
             Items items = new Items(bus);
             using (Inventory inv = new Inventory(bus))
             {
-                inv.Add("key", new TestItem());
+                inv.Add("key", new TestItem(bus));
             }
 
             bus.Send(new DropItemMessage(items, new Word("drop", "THROW"), new Word("key", "KEY")));
@@ -242,7 +242,7 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             using (Inventory inv = new Inventory(bus))
             {
-                bus.Send(new TakeItemMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem()));
+                bus.Send(new TakeItemMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem(bus)));
                 bus.Send(new ShowInventoryMessage());
 
                 messages.Should().Equal("You GRAB the KEY.", "You are carrying:", "a key");
@@ -257,7 +257,7 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             Inventory inv = new Inventory(bus);
             inv.Dispose();
-            bus.Send(new TakeItemMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem()));
+            bus.Send(new TakeItemMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem(bus)));
 
             messages.Should().BeEmpty();
         }
@@ -266,7 +266,8 @@ namespace Adventure.Test
         {
             private readonly bool canDrop;
 
-            public TestItem(bool canDrop = true)
+            public TestItem(MessageBus bus, bool canDrop = true)
+                : base(bus)
             {
                 this.canDrop = canDrop;
             }
@@ -289,6 +290,11 @@ namespace Adventure.Test
 
         private sealed class TestItem2 : Item
         {
+            public TestItem2(MessageBus bus)
+                : base(bus)
+            {
+            }
+
             public override string ShortDescription => "a coin";
 
             public override string LongDescription => throw new System.NotImplementedException();

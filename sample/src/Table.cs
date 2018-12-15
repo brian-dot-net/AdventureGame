@@ -10,7 +10,8 @@ namespace Adventure.Sample
 
         private bool tableMoved;
 
-        public Table(Room parent)
+        public Table(MessageBus bus, Room parent)
+            : base(bus)
         {
             this.parent = parent;
         }
@@ -42,7 +43,7 @@ namespace Adventure.Sample
             {
                 this.tableMoved = true;
                 this.Output(bus, "You move the table slightly. Underneath you see a coin.");
-                this.parent.Add(Noun.Coin, new Coin());
+                this.parent.Add(Noun.Coin, new Coin(bus));
             }
             else
             {

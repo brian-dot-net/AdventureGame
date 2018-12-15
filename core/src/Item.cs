@@ -8,8 +8,11 @@ namespace Adventure
 
     public abstract class Item
     {
-        protected Item()
+        private readonly MessageBus bus;
+
+        protected Item(MessageBus bus)
         {
+            this.bus = bus;
         }
 
         public abstract string ShortDescription { get; }

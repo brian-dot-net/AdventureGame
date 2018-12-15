@@ -8,6 +8,11 @@ namespace Adventure.Sample
     {
         private bool taken;
 
+        public Coin(MessageBus bus)
+            : base(bus)
+        {
+        }
+
         public override string ShortDescription => "a coin";
 
         public override string LongDescription => "It is a small gold coin with an inscription on the edge.";
