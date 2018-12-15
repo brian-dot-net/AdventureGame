@@ -91,7 +91,7 @@ namespace Adventure
         {
             if (this.items.TryGetValue(sentence.Noun.Primary, out Item item))
             {
-                return item.Do(this.bus, sentence.Verb, sentence.Noun);
+                return item.Do(sentence.Verb, sentence.Noun);
             }
 
             return false;

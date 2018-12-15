@@ -270,11 +270,11 @@ namespace Adventure.Test
 
             public override string LongDescription => "It's a simple test item.";
 
-            protected override bool DoCore(MessageBus bus, Word verb, Word noun)
+            protected override bool DoCore(Word verb, Word noun)
             {
                 if (verb.Primary == "throw")
                 {
-                    bus.Send(new OutputMessage($"You threw the {noun}!"));
+                    this.Output($"You threw the {noun}!");
                     return true;
                 }
 

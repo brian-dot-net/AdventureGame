@@ -29,7 +29,7 @@ namespace Adventure.Sample
             return base.DropCore();
         }
 
-        protected override bool DoCore(MessageBus bus, Word verb, Word noun)
+        protected override bool DoCore(Word verb, Word noun)
         {
             if (verb.Primary == Verb.Read)
             {
@@ -37,7 +37,7 @@ namespace Adventure.Sample
                 return true;
             }
 
-            return base.DoCore(bus, verb, noun);
+            return base.DoCore(verb, noun);
         }
 
         private void Read()

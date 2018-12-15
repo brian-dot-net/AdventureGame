@@ -26,24 +26,24 @@ namespace Adventure.Sample
             return false;
         }
 
-        protected override bool DoCore(MessageBus bus, Word verb, Word noun)
+        protected override bool DoCore(Word verb, Word noun)
         {
             if (verb.Primary == Verb.Move)
             {
-                this.Move(bus);
+                this.Move();
                 return true;
             }
 
-            return base.DoCore(bus, verb, noun);
+            return base.DoCore(verb, noun);
         }
 
-        private void Move(MessageBus bus)
+        private void Move()
         {
             if (!this.tableMoved)
             {
                 this.tableMoved = true;
                 this.Output("You move the table slightly. Underneath you see a coin.");
-                this.parent.Add(Noun.Coin, new Coin(bus));
+                this.parent.Add(Noun.Coin, new Coin(this.Bus));
             }
             else
             {

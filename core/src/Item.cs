@@ -8,20 +8,20 @@ namespace Adventure
 
     public abstract class Item
     {
-        private readonly MessageBus bus;
-
         protected Item(MessageBus bus)
         {
-            this.bus = bus;
+            this.Bus = bus;
         }
 
         public abstract string ShortDescription { get; }
 
         public abstract string LongDescription { get; }
 
-        public bool Do(MessageBus bus, Word verb, Word noun)
+        protected MessageBus Bus { get; }
+
+        public bool Do(Word verb, Word noun)
         {
-            return this.DoCore(bus, verb, noun);
+            return this.DoCore(verb, noun);
         }
 
         public bool Take()
@@ -34,7 +34,7 @@ namespace Adventure
             return this.DropCore();
         }
 
-        protected virtual bool DoCore(MessageBus bus, Word verb, Word noun)
+        protected virtual bool DoCore(Word verb, Word noun)
         {
             return false;
         }
@@ -51,7 +51,7 @@ namespace Adventure
 
         protected void Output(string text)
         {
-            this.bus.Send(new OutputMessage(text));
+            this.Bus.Send(new OutputMessage(text));
         }
     }
 }

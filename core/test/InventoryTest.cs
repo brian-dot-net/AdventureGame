@@ -299,11 +299,11 @@ namespace Adventure.Test
 
             public override string LongDescription => throw new System.NotImplementedException();
 
-            protected override bool DoCore(MessageBus bus, Word verb, Word noun)
+            protected override bool DoCore(Word verb, Word noun)
             {
                 if (verb.Primary == "flip")
                 {
-                    bus.Send(new OutputMessage($"You {verb} the {noun}; it lands on heads."));
+                    this.Output($"You {verb} the {noun}; it lands on heads.");
                     return true;
                 }
 
