@@ -220,7 +220,7 @@ namespace Adventure.Test
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             Item actualItem = null;
-            bus.Subscribe<InventoryAddedMessage>(m =>
+            bus.Subscribe<TakeItemMessage>(m =>
             {
                 messages.Add($"You {m.Verb} the {m.Noun}!");
                 actualItem = m.Item;
@@ -251,7 +251,7 @@ namespace Adventure.Test
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             Item actualItem = null;
-            bus.Subscribe<InventoryAddedMessage>(m =>
+            bus.Subscribe<TakeItemMessage>(m =>
             {
                 messages.Add($"You {m.Verb} the {m.Noun}!");
                 actualItem = m.Item;

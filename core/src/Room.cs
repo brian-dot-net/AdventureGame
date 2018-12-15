@@ -143,7 +143,7 @@ namespace Adventure
                 return;
             }
 
-            this.bus.Send(new InventoryAddedMessage(verb, noun, taken));
+            this.bus.Send(new TakeItemMessage(verb, noun, taken));
         }
 
         private void Process(SentenceMessage message)

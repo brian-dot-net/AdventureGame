@@ -10,7 +10,7 @@ namespace Adventure
     {
         private readonly MessageBus bus;
         private readonly IDisposable show;
-        private readonly IDisposable add;
+        private readonly IDisposable take;
         private readonly IDisposable drop;
         private readonly IDisposable look;
         private readonly Items items;
@@ -19,7 +19,7 @@ namespace Adventure
         {
             this.bus = bus;
             this.show = bus.Subscribe<InventoryRequestedMessage>(m => this.Show());
-            this.add = bus.Subscribe<InventoryAddedMessage>(m => this.Add(m.Verb, m.Noun, m.Item));
+            this.take = bus.Subscribe<TakeItemMessage>(m => this.Take(m.Verb, m.Noun, m.Item));
             this.drop = bus.Subscribe<DropItemMessage>(m => this.Drop(m.Verb, m.Noun, m.Items));
             this.look = bus.Subscribe<LookItemMessage>(m => this.Look(m.Noun));
             this.items = new Items(this.bus);
@@ -30,7 +30,7 @@ namespace Adventure
         {
             this.items.Deactivate();
             this.show.Dispose();
-            this.add.Dispose();
+            this.take.Dispose();
             this.drop.Dispose();
             this.look.Dispose();
         }
@@ -50,7 +50,7 @@ namespace Adventure
             }
         }
 
-        private void Add(Word verb, Word noun, Item item)
+        private void Take(Word verb, Word noun, Item item)
         {
             this.Add(noun.Primary, item);
             this.Output($"You {verb} the {noun}.");

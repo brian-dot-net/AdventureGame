@@ -234,14 +234,14 @@ namespace Adventure.Test
         }
 
         [Fact]
-        public void AddInventory()
+        public void TakeItem()
         {
             MessageBus bus = new MessageBus();
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             using (Inventory inv = new Inventory(bus))
             {
-                bus.Send(new InventoryAddedMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem()));
+                bus.Send(new TakeItemMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem()));
                 bus.Send(new InventoryRequestedMessage());
 
                 messages.Should().Equal("You GRAB the KEY.", "You are carrying:", "a key");
@@ -249,14 +249,14 @@ namespace Adventure.Test
         }
 
         [Fact]
-        public void AddInventoryAfterDispose()
+        public void TakeItemAfterDispose()
         {
             MessageBus bus = new MessageBus();
             List<string> messages = new List<string>();
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             Inventory inv = new Inventory(bus);
             inv.Dispose();
-            bus.Send(new InventoryAddedMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem()));
+            bus.Send(new TakeItemMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem()));
 
             messages.Should().BeEmpty();
         }

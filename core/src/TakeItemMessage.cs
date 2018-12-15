@@ -1,12 +1,12 @@
-﻿// <copyright file="InventoryAddedMessage.cs" company="Brian Rogers">
+﻿// <copyright file="TakeItemMessage.cs" company="Brian Rogers">
 // Copyright (c) Brian Rogers. All rights reserved.
 // </copyright>
 
 namespace Adventure
 {
-    public sealed class InventoryAddedMessage
+    public sealed class TakeItemMessage
     {
-        public InventoryAddedMessage(Word verb, Word noun, Item item)
+        public TakeItemMessage(Word verb, Word noun, Item item)
         {
             this.Verb = verb;
             this.Noun = noun;
