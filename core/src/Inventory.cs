@@ -32,6 +32,7 @@ namespace Adventure
             this.show.Dispose();
             this.add.Dispose();
             this.drop.Dispose();
+            this.look.Dispose();
         }
 
         public void Add(string key, Item item)
