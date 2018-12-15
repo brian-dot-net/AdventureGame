@@ -21,7 +21,7 @@ namespace Adventure.Sample
 
         protected override bool TakeCore(MessageBus bus)
         {
-            bus.Send(new OutputMessage("It is too heavy."));
+            this.Output(bus, "It is too heavy.");
             return false;
         }
 
@@ -41,12 +41,12 @@ namespace Adventure.Sample
             if (!this.tableMoved)
             {
                 this.tableMoved = true;
-                bus.Send(new OutputMessage("You move the table slightly. Underneath you see a coin."));
+                this.Output(bus, "You move the table slightly. Underneath you see a coin.");
                 this.parent.Add(Noun.Coin, new Coin());
             }
             else
             {
-                bus.Send(new OutputMessage("Someone has already moved it."));
+                this.Output(bus, "Someone has already moved it.");
             }
         }
     }

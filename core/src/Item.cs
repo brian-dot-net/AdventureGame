@@ -43,5 +43,10 @@ namespace Adventure
         {
             return true;
         }
+
+        protected void Output(MessageBus bus, string text)
+        {
+            bus.Send(new OutputMessage(text));
+        }
     }
 }

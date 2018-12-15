@@ -39,11 +39,11 @@ namespace Adventure.Sample
         {
             if (this.taken)
             {
-                bus.Send(new OutputMessage("The inscription reads: \"MCMXCIX\""));
+                this.Output(bus, "The inscription reads: \"MCMXCIX\"");
             }
             else
             {
-                bus.Send(new OutputMessage("The writing is too small. You'd have to pick it up to see it better."));
+                this.Output(bus, "The writing is too small. You'd have to pick it up to see it better.");
             }
         }
     }
