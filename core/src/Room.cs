@@ -73,9 +73,9 @@ namespace Adventure
             this.verbs.Add(verb, handler);
         }
 
-        protected void Output(string message)
+        protected void Output(string text)
         {
-            this.bus.Send(new OutputMessage(message));
+            this.bus.Output(text);
         }
 
         protected void Inventory()

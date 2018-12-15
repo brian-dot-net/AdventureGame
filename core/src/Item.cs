@@ -31,6 +31,6 @@ namespace Adventure
 
         protected virtual bool DropCore() => true;
 
-        protected void Output(string text) => this.Bus.Send(new OutputMessage(text));
+        protected void Output(string text) => this.Bus.Output(text);
     }
 }

@@ -115,7 +115,7 @@ namespace Adventure
             {
                 if (!this.targets.TryGetValue(direction, out Point target))
                 {
-                    this.bus.Send(new OutputMessage($"You can't go {direction}."));
+                    this.bus.Output($"You can't go {direction}.");
                     target = this;
                 }
 

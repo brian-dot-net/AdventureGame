@@ -84,7 +84,7 @@ namespace Adventure
 
         private void Output(string text)
         {
-            this.bus.Send(new OutputMessage(text));
+            this.bus.Output(text);
         }
 
         private bool Do(SentenceMessage sentence)
