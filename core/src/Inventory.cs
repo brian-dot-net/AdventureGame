@@ -18,7 +18,7 @@ namespace Adventure
         public Inventory(MessageBus bus)
         {
             this.bus = bus;
-            this.show = bus.Subscribe<InventoryRequestedMessage>(m => this.Show());
+            this.show = bus.Subscribe<ShowInventoryMessage>(m => this.Show());
             this.take = bus.Subscribe<TakeItemMessage>(m => this.Take(m.Verb, m.Noun, m.Item));
             this.drop = bus.Subscribe<DropItemMessage>(m => this.Drop(m.Verb, m.Noun, m.Items));
             this.look = bus.Subscribe<LookItemMessage>(m => this.Look(m.Noun));

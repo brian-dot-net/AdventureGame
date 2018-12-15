@@ -425,7 +425,7 @@ namespace Adventure.Test
         {
             MessageBus bus = new MessageBus();
             int inv = 0;
-            bus.Subscribe<InventoryRequestedMessage>(_ => ++inv);
+            bus.Subscribe<ShowInventoryMessage>(_ => ++inv);
             TestRoom room = new TestRoom(bus);
 
             room.Enter();

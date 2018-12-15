@@ -79,7 +79,7 @@ namespace Adventure
 
         protected void Inventory()
         {
-            this.bus.Send(new InventoryRequestedMessage());
+            this.bus.Send(new ShowInventoryMessage());
         }
 
         protected void Look(Word noun)

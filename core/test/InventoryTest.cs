@@ -19,7 +19,7 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             using (Inventory inv = new Inventory(bus))
             {
-                bus.Send(new InventoryRequestedMessage());
+                bus.Send(new ShowInventoryMessage());
 
                 messages.Should().Equal("You are carrying:", "(nothing)");
             }
@@ -34,7 +34,7 @@ namespace Adventure.Test
             using (Inventory inv = new Inventory(bus))
             {
                 inv.Add("key", new TestItem());
-                bus.Send(new InventoryRequestedMessage());
+                bus.Send(new ShowInventoryMessage());
 
                 messages.Should().Equal("You are carrying:", "a key");
             }
@@ -50,7 +50,7 @@ namespace Adventure.Test
             {
                 inv.Add("key", new TestItem());
                 inv.Add("coin", new TestItem2());
-                bus.Send(new InventoryRequestedMessage());
+                bus.Send(new ShowInventoryMessage());
 
                 messages.Should().Equal("You are carrying:", "a key", "a coin");
             }
@@ -68,7 +68,7 @@ namespace Adventure.Test
                 inv.Add("coin", new TestItem2());
             }
 
-            bus.Send(new InventoryRequestedMessage());
+            bus.Send(new ShowInventoryMessage());
 
             messages.Should().BeEmpty();
         }
@@ -174,7 +174,7 @@ namespace Adventure.Test
             {
                 inv.Add("key", new TestItem());
                 bus.Send(new DropItemMessage(items, new Word("drop", "THROW"), new Word("key", "KEY")));
-                bus.Send(new InventoryRequestedMessage());
+                bus.Send(new ShowInventoryMessage());
 
                 messages.Should().Equal("You THROW the KEY.", "You are carrying:", "(nothing)");
                 items.Look("{0}").Should().Be(1);
@@ -192,7 +192,7 @@ namespace Adventure.Test
             {
                 inv.Add("key", new TestItem(false));
                 bus.Send(new DropItemMessage(items, new Word("drop", "THROW"), new Word("key", "KEY")));
-                bus.Send(new InventoryRequestedMessage());
+                bus.Send(new ShowInventoryMessage());
 
                 messages.Should().Equal("I won't let you drop this!", "You are carrying:", "a key");
                 items.Look("{0}").Should().Be(0);
@@ -242,7 +242,7 @@ namespace Adventure.Test
             using (Inventory inv = new Inventory(bus))
             {
                 bus.Send(new TakeItemMessage(new Word("take", "GRAB"), new Word("key", "KEY"), new TestItem()));
-                bus.Send(new InventoryRequestedMessage());
+                bus.Send(new ShowInventoryMessage());
 
                 messages.Should().Equal("You GRAB the KEY.", "You are carrying:", "a key");
             }
