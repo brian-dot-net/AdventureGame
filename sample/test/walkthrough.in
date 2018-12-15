@@ -22,5 +22,6 @@ drop
 THROW coin
 read coin
 take coin
+look coin
 exit
 -- END --
