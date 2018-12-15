@@ -12,6 +12,7 @@ namespace Adventure
         private readonly IDisposable show;
         private readonly IDisposable add;
         private readonly IDisposable drop;
+        private readonly IDisposable look;
         private readonly Items items;
 
         public Inventory(MessageBus bus)
@@ -20,6 +21,7 @@ namespace Adventure
             this.show = bus.Subscribe<InventoryRequestedMessage>(m => this.Show());
             this.add = bus.Subscribe<InventoryAddedMessage>(m => this.Add(m.Verb, m.Noun, m.Item));
             this.drop = bus.Subscribe<InventoryDropMessage>(m => this.Drop(m.Verb, m.Noun, m.Items));
+            this.look = bus.Subscribe<LookItemMessage>(m => this.Look(m.Noun));
             this.items = new Items(this.bus);
             this.items.Activate();
         }
@@ -70,6 +72,11 @@ namespace Adventure
             }
 
             this.items.Add(noun.Primary, item);
+        }
+
+        private bool Look(Word noun)
+        {
+            return this.items.LookAt(noun);
         }
 
         private void Output(string text)

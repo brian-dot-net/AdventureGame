@@ -110,6 +110,23 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessLookItem()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            bus.Subscribe<OutputMessage>(m => lastOutput = m.Text);
+            using (Inventory inv = new Inventory(bus))
+            {
+                inv.Add("key", new TestItem());
+                inv.Add("coin", new TestItem2());
+
+                bus.Send(new LookItemMessage(new Word("key", "KEY")));
+
+                lastOutput.Should().Be("It's a test key.");
+            }
+        }
+
+        [Fact]
         public void DropAllowedItem()
         {
             MessageBus bus = new MessageBus();
@@ -218,7 +235,7 @@ namespace Adventure.Test
 
             public override string ShortDescription => "a key";
 
-            public override string LongDescription => throw new System.NotImplementedException();
+            public override string LongDescription => "It's a test key.";
 
             protected override bool DropCore(MessageBus bus)
             {
