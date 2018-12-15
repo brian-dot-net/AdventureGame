@@ -317,7 +317,7 @@ namespace Adventure.Test
             MessageBus bus = new MessageBus();
             Dictionary<string, Item> items = new Dictionary<string, Item>();
             items["DROP/KEY"] = new TestKey();
-            bus.Subscribe<InventoryDropMessage>(m => m.Items.Add(m.Noun.Primary, items[$"{m.Verb}/{m.Noun}"]));
+            bus.Subscribe<DropItemMessage>(m => m.Items.Add(m.Noun.Primary, items[$"{m.Verb}/{m.Noun}"]));
             List<string> output = new List<string>();
             bus.Subscribe<OutputMessage>(m => output.Add(m.Text));
             TestRoom room = new TestRoom(bus);

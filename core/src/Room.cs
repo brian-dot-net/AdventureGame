@@ -107,7 +107,7 @@ namespace Adventure
             }
             else
             {
-                this.bus.Send(new InventoryDropMessage(this.items, verb, noun));
+                this.bus.Send(new DropItemMessage(this.items, verb, noun));
             }
         }
 

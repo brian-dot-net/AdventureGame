@@ -20,7 +20,7 @@ namespace Adventure
             this.bus = bus;
             this.show = bus.Subscribe<InventoryRequestedMessage>(m => this.Show());
             this.add = bus.Subscribe<InventoryAddedMessage>(m => this.Add(m.Verb, m.Noun, m.Item));
-            this.drop = bus.Subscribe<InventoryDropMessage>(m => this.Drop(m.Verb, m.Noun, m.Items));
+            this.drop = bus.Subscribe<DropItemMessage>(m => this.Drop(m.Verb, m.Noun, m.Items));
             this.look = bus.Subscribe<LookItemMessage>(m => this.Look(m.Noun));
             this.items = new Items(this.bus);
             this.items.Activate();
