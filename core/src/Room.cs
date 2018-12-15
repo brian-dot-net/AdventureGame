@@ -50,6 +50,7 @@ namespace Adventure
             this.verbs.Clear();
             this.process.Dispose();
             this.process = null;
+            this.look.Dispose();
         }
 
         public void Add(string name, Item item)

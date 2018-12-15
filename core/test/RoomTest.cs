@@ -190,6 +190,21 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessLookItemAfterLeave()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            room.Leave();
+            bus.Send(new LookItemMessage(new Word("key", "KEY")));
+
+            messages.Should().Equal("You are in a test room.");
+        }
+
+        [Fact]
         public void ProcessTake()
         {
             TestSend(
