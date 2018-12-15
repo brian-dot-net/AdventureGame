@@ -169,6 +169,27 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessLookItemUpperLevelSubscriber()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            bus.Subscribe<OutputMessage>(m => lastOutput = m.Text);
+            Dictionary<string, Item> items = new Dictionary<string, Item>();
+            items.Add("key", new TestKey());
+            bus.Subscribe<LookItemMessage>(m =>
+            {
+                bus.Send(new OutputMessage(items[m.Noun.Primary].LongDescription));
+                return true;
+            });
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("look", "LOOK"), new Word("key", "KEY")));
+
+            lastOutput.Should().Be("It is solid gold.");
+        }
+
+        [Fact]
         public void ProcessTake()
         {
             TestSend(

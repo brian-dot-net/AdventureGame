@@ -13,7 +13,8 @@ namespace Adventure
         private readonly Dictionary<string, Action<Word, Word>> verbs;
         private readonly Items items;
 
-        private IDisposable sub;
+        private IDisposable process;
+        private IDisposable look;
 
         protected Room(MessageBus bus)
         {
@@ -26,28 +27,29 @@ namespace Adventure
 
         public void Enter()
         {
-            if (this.sub != null)
+            if (this.process != null)
             {
                 throw new InvalidOperationException("Cannot Enter again.");
             }
 
             this.items.Activate();
-            this.sub = this.bus.Subscribe<SentenceMessage>(m => this.Process(m));
+            this.process = this.bus.Subscribe<SentenceMessage>(m => this.Process(m));
+            this.look = this.bus.Subscribe<LookItemMessage>(m => this.LookAt(m.Noun));
             this.EnterCore();
             this.Look(new Word(string.Empty, string.Empty));
         }
 
         public void Leave()
         {
-            if (this.sub == null)
+            if (this.process == null)
             {
                 throw new InvalidOperationException("Cannot Leave before Enter.");
             }
 
             this.items.Deactivate();
             this.verbs.Clear();
-            this.sub.Dispose();
-            this.sub = null;
+            this.process.Dispose();
+            this.process = null;
         }
 
         public void Add(string name, Item item)
@@ -85,9 +87,9 @@ namespace Adventure
             {
                 this.LookAround();
             }
-            else if (!this.LookAt(noun))
+            else
             {
-                this.Output("You see nothing of interest.");
+                this.bus.Send(new LookItemMessage(noun));
             }
         }
 
@@ -164,9 +166,12 @@ namespace Adventure
             this.items.Look("There is {0} here.");
         }
 
-        private bool LookAt(Word noun)
+        private void LookAt(Word noun)
         {
-            return this.items.LookAt(noun) || this.LookAtCore(noun);
+            if (!this.items.LookAt(noun) && !this.LookAtCore(noun))
+            {
+                this.Output("You see nothing of interest.");
+            }
         }
     }
 }
