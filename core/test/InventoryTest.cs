@@ -276,15 +276,15 @@ namespace Adventure.Test
 
             public override string LongDescription => "It's a test key.";
 
-            protected override bool DropCore(MessageBus bus)
+            protected override bool DropCore()
             {
                 if (!this.canDrop)
                 {
-                    bus.Send(new OutputMessage("I won't let you drop this!"));
+                    this.Output("I won't let you drop this!");
                     return false;
                 }
 
-                return base.DropCore(bus);
+                return base.DropCore();
             }
         }
 

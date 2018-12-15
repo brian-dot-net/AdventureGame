@@ -23,10 +23,10 @@ namespace Adventure.Sample
             return base.TakeCore();
         }
 
-        protected override bool DropCore(MessageBus bus)
+        protected override bool DropCore()
         {
             this.taken = false;
-            return base.DropCore(bus);
+            return base.DropCore();
         }
 
         protected override bool DoCore(MessageBus bus, Word verb, Word noun)

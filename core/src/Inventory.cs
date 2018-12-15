@@ -66,7 +66,7 @@ namespace Adventure
                 return;
             }
 
-            if (item.Drop(this.bus))
+            if (item.Drop())
             {
                 targetItems.Add(noun.Primary, item);
                 this.Output($"You {verb} the {noun}.");

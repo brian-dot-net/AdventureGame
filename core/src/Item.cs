@@ -29,9 +29,9 @@ namespace Adventure
             return this.TakeCore();
         }
 
-        public bool Drop(MessageBus bus)
+        public bool Drop()
         {
-            return this.DropCore(bus);
+            return this.DropCore();
         }
 
         protected virtual bool DoCore(MessageBus bus, Word verb, Word noun)
@@ -44,7 +44,7 @@ namespace Adventure
             return true;
         }
 
-        protected virtual bool DropCore(MessageBus bus)
+        protected virtual bool DropCore()
         {
             return true;
         }
