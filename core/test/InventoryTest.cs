@@ -117,12 +117,31 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => lastOutput = m.Text);
             using (Inventory inv = new Inventory(bus))
             {
+                bus.Subscribe<LookItemMessage>(m => bus.Send(new OutputMessage($"I can't bear to look at {m.Noun}.")));
                 inv.Add("key", new TestItem());
                 inv.Add("coin", new TestItem2());
 
                 bus.Send(new LookItemMessage(new Word("key", "KEY")));
 
                 lastOutput.Should().Be("It's a test key.");
+            }
+        }
+
+        [Fact]
+        public void ProcessLookUnknown()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            bus.Subscribe<OutputMessage>(m => lastOutput = m.Text);
+            using (Inventory inv = new Inventory(bus))
+            {
+                bus.Subscribe<LookItemMessage>(m => bus.Send(new OutputMessage($"I can't bear to look at {m.Noun}.")));
+                inv.Add("key", new TestItem());
+                inv.Add("coin", new TestItem2());
+
+                bus.Send(new LookItemMessage(new Word("that", "THAT")));
+
+                lastOutput.Should().Be("I can't bear to look at THAT.");
             }
         }
 
