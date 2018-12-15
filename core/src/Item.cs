@@ -19,39 +19,18 @@ namespace Adventure
 
         protected MessageBus Bus { get; }
 
-        public bool Do(Word verb, Word noun)
-        {
-            return this.DoCore(verb, noun);
-        }
+        public bool Do(Word verb, Word noun) => this.DoCore(verb, noun);
 
-        public bool Take()
-        {
-            return this.TakeCore();
-        }
+        public bool Take() => this.TakeCore();
 
-        public bool Drop()
-        {
-            return this.DropCore();
-        }
+        public bool Drop() => this.DropCore();
 
-        protected virtual bool DoCore(Word verb, Word noun)
-        {
-            return false;
-        }
+        protected virtual bool DoCore(Word verb, Word noun) => false;
 
-        protected virtual bool TakeCore()
-        {
-            return true;
-        }
+        protected virtual bool TakeCore() => true;
 
-        protected virtual bool DropCore()
-        {
-            return true;
-        }
+        protected virtual bool DropCore() => true;
 
-        protected void Output(string text)
-        {
-            this.Bus.Send(new OutputMessage(text));
-        }
+        protected void Output(string text) => this.Bus.Send(new OutputMessage(text));
     }
 }
