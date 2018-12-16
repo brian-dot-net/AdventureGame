@@ -118,9 +118,9 @@ namespace Adventure
             {
                 this.Output($"Where do you want to {verb}?");
             }
-            else
+            else if (!this.GoCore(noun))
             {
-                this.GoCore(noun);
+                this.bus.Send(new GoMessage(noun.Primary));
             }
         }
 
@@ -141,8 +141,9 @@ namespace Adventure
             return false;
         }
 
-        protected virtual void GoCore(Word noun)
+        protected virtual bool GoCore(Word noun)
         {
+            return false;
         }
 
         private void TakeItem(Word verb, Word noun)

@@ -70,16 +70,15 @@ namespace Adventure.Test
             return base.TakeCore(noun);
         }
 
-        protected override void GoCore(Word noun)
+        protected override bool GoCore(Word noun)
         {
             if (noun.Primary == "fish")
             {
                 this.Output("This is no time to play cards.");
+                return true;
             }
-            else
-            {
-                base.GoCore(noun);
-            }
+
+            return base.GoCore(noun);
         }
 
         private void Hello(Word verb, Word noun)

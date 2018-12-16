@@ -224,6 +224,23 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessGoDirection()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            bus.Subscribe<GoMessage>(m => messages.Add($"You go {m.Direction}!"));
+            TestRoom room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("go", "GO"), new Word("north", "NORTH")));
+
+            messages.Should().Equal(
+                "You are in a test room.",
+                "You go north!");
+        }
+
+        [Fact]
         public void ProcessTake()
         {
             TestSend(
