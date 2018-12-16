@@ -215,6 +215,15 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessGoCustom()
+        {
+            TestSend(
+                new Word("go", "GO"),
+                new Word("fish", "FISH"),
+                "This is no time to play cards.");
+        }
+
+        [Fact]
         public void ProcessTake()
         {
             TestSend(

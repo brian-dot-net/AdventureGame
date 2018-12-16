@@ -118,6 +118,10 @@ namespace Adventure
             {
                 this.Output($"Where do you want to {verb}?");
             }
+            else
+            {
+                this.GoCore(noun);
+            }
         }
 
         protected void Take(Word verb, Word noun)
@@ -135,6 +139,10 @@ namespace Adventure
         protected virtual bool TakeCore(Word noun)
         {
             return false;
+        }
+
+        protected virtual void GoCore(Word noun)
+        {
         }
 
         private void TakeItem(Word verb, Word noun)
