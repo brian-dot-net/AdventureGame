@@ -1,18 +1,17 @@
-﻿// <copyright file="MainRoom.cs" company="Brian Rogers">
+﻿// <copyright file="AuxiliaryRoom.cs" company="Brian Rogers">
 // Copyright (c) Brian Rogers. All rights reserved.
 // </copyright>
 
 namespace Adventure.Sample
 {
-    internal sealed class MainRoom : Room
+    internal sealed class AuxiliaryRoom : Room
     {
-        public MainRoom(MessageBus bus)
+        public AuxiliaryRoom(MessageBus bus)
             : base(bus)
         {
-            this.Add(Noun.Table, new Table(bus, this));
         }
 
-        protected override string Description => "You are in the main room. There is a doorway to the east.";
+        protected override string Description => "You are in the auxiliary room. There is a doorway to the west.";
 
         protected override void EnterCore()
         {

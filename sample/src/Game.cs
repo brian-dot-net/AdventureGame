@@ -34,6 +34,7 @@ namespace Adventure.Sample
         {
             Words w = new Words();
             w.Add(Verb.Drop, "throw");
+            w.Add(Verb.Go);
             w.Add(Verb.Greet, "hello", "hi");
             w.Add(Verb.Look);
             w.Add(Verb.Move);
@@ -43,7 +44,9 @@ namespace Adventure.Sample
             w.Add(Verb.Inventory, "inv");
 
             w.Add(Noun.Coin);
+            w.Add(Noun.East);
             w.Add(Noun.Table);
+            w.Add(Noun.West);
 
             return w;
         }
@@ -52,8 +55,14 @@ namespace Adventure.Sample
         {
             RoomMap map = new RoomMap(this.bus);
 
-            MainRoom mainRoom = new MainRoom(this.bus);
+            Room mainRoom = new MainRoom(this.bus);
             var mainRoomP = map.Add(mainRoom);
+
+            Room auxiliaryRoom = new AuxiliaryRoom(this.bus);
+            var auxiliaryRoomP = map.Add(auxiliaryRoom);
+
+            mainRoomP.ConnectTo(auxiliaryRoomP, Noun.East);
+            auxiliaryRoomP.ConnectTo(mainRoomP, Noun.West);
 
             map.Start(mainRoomP);
 

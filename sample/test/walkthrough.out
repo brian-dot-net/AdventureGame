@@ -1,7 +1,11 @@
-You are in the main room.
+You are in the main room. There is a doorway to the east.
 There is a table here.
 > You say, "Hello," to no one in particular. No one answers.
-> You are in the main room.
+> You are in the auxiliary room. There is a doorway to the west.
+> You say, "Hello," to no one in particular. No one answers.
+> You are in the main room. There is a doorway to the east.
+There is a table here.
+> You are in the main room. There is a doorway to the east.
 There is a table here.
 > > You can't do that.
 > You say, "Hello," to no one in particular. No one answers.
@@ -12,7 +16,7 @@ There is a table here.
 > You move the table slightly. Underneath you see a coin.
 > You can't do that.
 > Someone has already moved it.
-> You are in the main room.
+> You are in the main room. There is a doorway to the east.
 There is a table here.
 There is a coin here.
 > It is a small gold coin with an inscription on the edge.
