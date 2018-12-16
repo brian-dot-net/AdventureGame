@@ -1,4 +1,5 @@
 hello
+GO
 go east
 hello
 go west
@@ -26,5 +27,6 @@ THROW coin
 read coin
 take coin
 look coin
+go forth
 exit
 -- END --
