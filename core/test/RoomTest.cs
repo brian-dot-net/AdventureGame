@@ -206,6 +206,15 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void ProcessGo()
+        {
+            TestSend(
+                new Word("go", "GO"),
+                new Word(string.Empty, string.Empty),
+                "Where do you want to GO?");
+        }
+
+        [Fact]
         public void ProcessTake()
         {
             TestSend(

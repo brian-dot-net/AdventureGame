@@ -112,6 +112,14 @@ namespace Adventure
             }
         }
 
+        protected void Go(Word verb, Word noun)
+        {
+            if (noun.Actual.Length == 0)
+            {
+                this.Output($"Where do you want to {verb}?");
+            }
+        }
+
         protected void Take(Word verb, Word noun)
         {
             if (noun.Actual.Length == 0)
