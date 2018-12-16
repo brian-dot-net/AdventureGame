@@ -115,7 +115,13 @@ namespace Adventure
             {
                 if (!this.targets.TryGetValue(direction, out Point target))
                 {
-                    this.bus.Output($"You can't go {direction}.");
+                    string badDir = direction;
+                    if (string.IsNullOrEmpty(badDir))
+                    {
+                        badDir = "that way";
+                    }
+
+                    this.bus.Output($"You can't go {badDir}.");
                 }
 
                 return target;

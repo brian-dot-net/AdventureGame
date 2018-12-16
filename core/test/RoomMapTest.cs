@@ -237,12 +237,12 @@ namespace Adventure.Test
 
                 p1.ConnectTo(p1, "north");
                 map.Start(p1);
-                bus.Send(new GoMessage("south"));
+                bus.Send(new GoMessage(string.Empty));
                 bus.Send(new GoMessage("north"));
 
                 messages.Should().Equal(
                     "You are in a test room.",
-                    "You can't go south.",
+                    "You can't go that way.",
                     "You are in a test room.");
             }
         }
