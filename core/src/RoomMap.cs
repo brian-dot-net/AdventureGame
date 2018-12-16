@@ -69,7 +69,7 @@ namespace Adventure
 
         private void Next(Point next)
         {
-            if (this.current != next)
+            if (next != null)
             {
                 this.current?.Leave();
                 this.current = next;
@@ -116,7 +116,6 @@ namespace Adventure
                 if (!this.targets.TryGetValue(direction, out Point target))
                 {
                     this.bus.Output($"You can't go {direction}.");
-                    target = this;
                 }
 
                 return target;

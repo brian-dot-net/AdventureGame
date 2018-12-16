@@ -224,5 +224,27 @@ namespace Adventure.Test
                     .Which.ParamName.Should().Be("target");
             }
         }
+
+        [Fact]
+        public void ConnectRoomToItself()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            using (RoomMap map = new RoomMap(bus))
+            {
+                var p1 = map.Add(new TestRoom(bus));
+
+                p1.ConnectTo(p1, "north");
+                map.Start(p1);
+                bus.Send(new GoMessage("south"));
+                bus.Send(new GoMessage("north"));
+
+                messages.Should().Equal(
+                    "You are in a test room.",
+                    "You can't go south.",
+                    "You are in a test room.");
+            }
+        }
     }
 }
