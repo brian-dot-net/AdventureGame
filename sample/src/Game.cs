@@ -33,16 +33,8 @@ namespace Adventure.Sample
         private static Words InitializeWords()
         {
             Words w = new Words();
-            w.Add(Verb.Drop, "throw");
-            w.Add(Verb.Go);
-            w.Add(Verb.Greet, "hello", "hi");
-            w.Add(Verb.Look);
-            w.Add(Verb.Move);
-            w.Add(Verb.Quit, "exit");
-            w.Add(Verb.Read);
-            w.Add(Verb.Take, "get");
-            w.Add(Verb.Inventory, "inv");
 
+            Verb.Register(w);
             Noun.Register(w);
 
             return w;
