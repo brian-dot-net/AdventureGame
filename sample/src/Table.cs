@@ -22,7 +22,7 @@ namespace Adventure.Sample
 
         protected override bool TakeCore()
         {
-            this.Output("It is too heavy.");
+            this.Output("It is too heavy. It would take all your strength just to move it slightly.");
             return false;
         }
 
