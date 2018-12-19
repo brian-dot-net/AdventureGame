@@ -4,6 +4,8 @@
 
 namespace Adventure.Sample
 {
+    using System.Reflection;
+
     internal sealed class Noun
     {
         public static readonly Noun Coin = new Noun("coin");
@@ -19,5 +21,13 @@ namespace Adventure.Sample
         }
 
         public static implicit operator string(Noun n) => n.noun;
+
+        public static void Register(Words words)
+        {
+            foreach (FieldInfo fi in typeof(Noun).GetFields(BindingFlags.Static | BindingFlags.Public))
+            {
+                words.Add((Noun)fi.GetValue(null));
+            }
+        }
     }
 }

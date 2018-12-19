@@ -43,10 +43,7 @@ namespace Adventure.Sample
             w.Add(Verb.Take, "get");
             w.Add(Verb.Inventory, "inv");
 
-            w.Add(Noun.Coin);
-            w.Add(Noun.East);
-            w.Add(Noun.Table);
-            w.Add(Noun.West);
+            Noun.Register(w);
 
             return w;
         }
