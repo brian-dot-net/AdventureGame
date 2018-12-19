@@ -4,11 +4,20 @@
 
 namespace Adventure.Sample
 {
-    internal static class Noun
+    internal sealed class Noun
     {
-        public const string Coin = "coin";
-        public const string East = "east";
-        public const string Table = "table";
-        public const string West = "west";
+        public static readonly Noun Coin = new Noun("coin");
+        public static readonly Noun East = new Noun("east");
+        public static readonly Noun Table = new Noun("table");
+        public static readonly Noun West = new Noun("west");
+
+        private readonly string noun;
+
+        private Noun(string noun)
+        {
+            this.noun = noun;
+        }
+
+        public static implicit operator string(Noun n) => n.noun;
     }
 }
