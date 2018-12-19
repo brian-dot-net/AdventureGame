@@ -4,16 +4,25 @@
 
 namespace Adventure.Sample
 {
-    internal static class Verb
+    internal sealed class Verb
     {
-        public const string Drop = "drop";
-        public const string Go = "go";
-        public const string Greet = "greet";
-        public const string Inventory = "inventory";
-        public const string Look = "look";
-        public const string Move = "move";
-        public const string Take = "take";
-        public const string Quit = "quit";
-        public const string Read = "read";
+        public static readonly Verb Drop = new Verb("drop");
+        public static readonly Verb Go = new Verb("go");
+        public static readonly Verb Greet = new Verb("greet");
+        public static readonly Verb Inventory = new Verb("inventory");
+        public static readonly Verb Look = new Verb("look");
+        public static readonly Verb Move = new Verb("move");
+        public static readonly Verb Take = new Verb("take");
+        public static readonly Verb Quit = new Verb("quit");
+        public static readonly Verb Read = new Verb("read");
+
+        private readonly string verb;
+
+        private Verb(string verb)
+        {
+            this.verb = verb;
+        }
+
+        public static implicit operator string(Verb v) => v.verb;
     }
 }
