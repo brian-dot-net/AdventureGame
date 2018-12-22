@@ -41,6 +41,8 @@ namespace Adventure
             this.items.Add(key, item);
         }
 
+        public Item Remove(string key) => this.items.Remove(key);
+
         private void Show()
         {
             this.Output("You are carrying:");
