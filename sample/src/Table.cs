@@ -6,14 +6,11 @@ namespace Adventure.Sample
 {
     internal sealed class Table : Item
     {
-        private readonly Room parent;
-
         private bool tableMoved;
 
-        public Table(MessageBus bus, Room parent)
+        public Table(MessageBus bus)
             : base(bus)
         {
-            this.parent = parent;
         }
 
         public override string ShortDescription => "a table";
@@ -43,7 +40,7 @@ namespace Adventure.Sample
             {
                 this.tableMoved = true;
                 this.Output("You move the table slightly. Underneath you see a coin.");
-                this.parent.Add(Noun.Coin, new Coin(this.Bus));
+                this.SendRoom(r => r.Add(Noun.Coin, new Coin(this.Bus)));
             }
             else
             {

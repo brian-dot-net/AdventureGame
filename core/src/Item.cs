@@ -4,6 +4,7 @@
 
 namespace Adventure
 {
+    using System;
     using Adventure.Messages;
 
     public abstract class Item
@@ -46,5 +47,7 @@ namespace Adventure
         protected virtual bool DropCore() => true;
 
         protected void Output(string text) => this.Bus.Output(text);
+
+        protected void SendRoom(Action<Room> act) => this.Bus.Send(new RoomActionMessage(act));
     }
 }
