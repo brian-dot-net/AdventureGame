@@ -28,5 +28,7 @@ read coin
 take coin
 look coin
 go forth
+go east
+look wall
 exit
 -- END --

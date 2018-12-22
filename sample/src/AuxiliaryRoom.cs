@@ -11,7 +11,7 @@ namespace Adventure.Sample
         {
         }
 
-        protected override string Description => "You are in the auxiliary room. There is a doorway to the west. There is a cliff to the east.";
+        protected override string Description => "You are in the auxiliary room. There is a hole in the wall. There is a doorway to the west. There is a cliff to the east.";
 
         protected override bool GoCore(Word noun)
         {
@@ -22,6 +22,17 @@ namespace Adventure.Sample
             }
 
             return base.GoCore(noun);
+        }
+
+        protected override bool LookAtCore(Word noun)
+        {
+            if (noun.Primary == Noun.Wall)
+            {
+                this.Output("Above the hole you see the words, \"INSERT COIN.\"");
+                return true;
+            }
+
+            return base.LookAtCore(noun);
         }
     }
 }

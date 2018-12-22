@@ -11,6 +11,7 @@ namespace Adventure.Sample
         public static readonly Noun Coin = new Noun("coin");
         public static readonly Noun East = new Noun("east");
         public static readonly Noun Table = new Noun("table");
+        public static readonly Noun Wall = new Noun("wall");
         public static readonly Noun West = new Noun("west");
 
         private readonly string noun;
