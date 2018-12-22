@@ -19,6 +19,8 @@ namespace Adventure
 
         protected MessageBus Bus { get; }
 
+        protected bool Taken { get; private set; }
+
         public bool Do(Word verb, Word noun) => this.DoCore(verb, noun);
 
         public bool Take() => this.TakeCore();
