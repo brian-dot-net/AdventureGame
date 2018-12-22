@@ -23,6 +23,12 @@ namespace Adventure.Sample
                 return true;
             }
 
+            if (verb.Primary == Verb.Insert)
+            {
+                this.Insert(noun);
+                return true;
+            }
+
             return base.DoCore(verb, noun);
         }
 
@@ -35,6 +41,19 @@ namespace Adventure.Sample
             else
             {
                 this.Output("The writing is too small. You'd have to pick it up to see it better.");
+            }
+        }
+
+        private void Insert(Word noun)
+        {
+            if (this.Taken)
+            {
+                this.Output("You insert the coin into the hole. Nothing happens.");
+                this.SendInventory(i => i.Remove(noun.Primary));
+            }
+            else
+            {
+                this.Output("You'll have to get it first.");
             }
         }
     }

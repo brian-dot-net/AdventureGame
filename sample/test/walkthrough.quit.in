@@ -30,5 +30,10 @@ look coin
 go forth
 go east
 look wall
+drop coin
+insert coin
+get coin
+insert coin
+inv
 exit
 -- END --

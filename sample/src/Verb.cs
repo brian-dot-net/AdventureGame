@@ -11,12 +11,13 @@ namespace Adventure.Sample
         public static readonly Verb Drop = new Verb("drop", "throw");
         public static readonly Verb Go = new Verb("go");
         public static readonly Verb Greet = new Verb("greet", "hello", "hi");
+        public static readonly Verb Insert = new Verb("insert");
         public static readonly Verb Inventory = new Verb("inventory", "inv");
         public static readonly Verb Look = new Verb("look");
         public static readonly Verb Move = new Verb("move");
-        public static readonly Verb Take = new Verb("take", "get");
         public static readonly Verb Quit = new Verb("quit", "exit");
         public static readonly Verb Read = new Verb("read");
+        public static readonly Verb Take = new Verb("take", "get");
 
         private readonly string verb;
         private readonly string[] synonyms;
