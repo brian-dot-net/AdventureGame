@@ -301,6 +301,21 @@ namespace Adventure.Test
             }
         }
 
+        [Fact]
+        public void ProcessInventoryAction()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            using (Inventory inv = new Inventory(bus))
+            {
+                bus.Send(new InventoryActionMessage(i => i.Add("key", new TestItem(bus))));
+                bus.Send(new ShowInventoryMessage());
+
+                messages.Should().Equal("You are carrying:", "a key");
+            }
+        }
+
         private sealed class TestItem : Item
         {
             private readonly bool canDrop;

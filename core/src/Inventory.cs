@@ -14,6 +14,7 @@ namespace Adventure
         private readonly IDisposable take;
         private readonly IDisposable drop;
         private readonly IDisposable look;
+        private readonly IDisposable act;
         private readonly Items items;
 
         public Inventory(MessageBus bus)
@@ -23,6 +24,7 @@ namespace Adventure
             this.take = bus.Subscribe<TakeItemMessage>(m => this.Take(m.Verb, m.Noun, m.Item));
             this.drop = bus.Subscribe<DropItemMessage>(m => this.Drop(m.Verb, m.Noun, m.Items));
             this.look = bus.Subscribe<LookItemMessage>(m => this.Look(m.Noun));
+            this.act = bus.Subscribe<InventoryActionMessage>(m => m.Act(this));
             this.items = new Items(this.bus);
             this.items.Activate();
         }
