@@ -6,8 +6,6 @@ namespace Adventure.Sample
 {
     internal sealed class Coin : Item
     {
-        private bool taken;
-
         public Coin(MessageBus bus)
             : base(bus)
         {
@@ -16,18 +14,6 @@ namespace Adventure.Sample
         public override string ShortDescription => "a coin";
 
         public override string LongDescription => "It is a small gold coin with an inscription on the edge.";
-
-        protected override bool TakeCore()
-        {
-            this.taken = true;
-            return base.TakeCore();
-        }
-
-        protected override bool DropCore()
-        {
-            this.taken = false;
-            return base.DropCore();
-        }
 
         protected override bool DoCore(Word verb, Word noun)
         {
@@ -42,7 +28,7 @@ namespace Adventure.Sample
 
         private void Read()
         {
-            if (this.taken)
+            if (this.Taken)
             {
                 this.Output("The inscription reads: \"MCMXCIX\"");
             }
