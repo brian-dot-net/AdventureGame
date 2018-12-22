@@ -68,14 +68,31 @@ namespace Adventure.Test
             output.Should().ContainSingle().Which.Should().Be("You must take it to use it.");
         }
 
+        [Fact]
+        public void AttemptToDropButFail()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            bus.Subscribe<OutputMessage>(m => output.Add(m.Text));
+            Item item = new TestItem(bus, canDrop: false);
+
+            item.Take().Should().BeTrue();
+            item.Drop().Should().BeFalse();
+            item.Do(new Word("use", "USE"), new Word("item", "ITEM"));
+
+            output.Should().ContainSingle().Which.Should().Be("How useful!");
+        }
+
         private sealed class TestItem : Item
         {
             private readonly bool canTake;
+            private readonly bool canDrop;
 
-            public TestItem(MessageBus bus, bool canTake = true)
+            public TestItem(MessageBus bus, bool canTake = true, bool canDrop = true)
                 : base(bus)
             {
                 this.canTake = canTake;
+                this.canDrop = canDrop;
             }
 
             public override string ShortDescription => throw new NotImplementedException();
@@ -83,6 +100,8 @@ namespace Adventure.Test
             public override string LongDescription => throw new NotImplementedException();
 
             protected override bool TakeCore() => this.canTake;
+
+            protected override bool DropCore() => this.canDrop;
 
             protected override bool DoCore(Word verb, Word noun)
             {
