@@ -309,7 +309,7 @@ namespace Adventure.Test
             bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
             using (Inventory inv = new Inventory(bus))
             {
-                bus.Send(new InventoryActionMessage(i => i.Add("key", new TestItem(bus))));
+                bus.Send(new ActionMessage<Inventory>(i => i.Add("key", new TestItem(bus))));
                 bus.Send(new ShowInventoryMessage());
 
                 messages.Should().Equal("You are carrying:", "a key");
@@ -326,7 +326,7 @@ namespace Adventure.Test
             Inventory inv2 = null;
 
             inv.Dispose();
-            bus.Send(new InventoryActionMessage(i => inv2 = i));
+            bus.Send(new ActionMessage<Inventory>(i => inv2 = i));
 
             inv2.Should().BeNull();
         }

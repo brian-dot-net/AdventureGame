@@ -37,7 +37,7 @@ namespace Adventure
             this.items.Activate();
             this.process = this.bus.Subscribe<SentenceMessage>(m => this.Process(m));
             this.look = this.bus.Subscribe<LookItemMessage>(m => this.LookAt(m.Noun));
-            this.act = this.bus.Subscribe<RoomActionMessage>(m => m.Act(this));
+            this.act = this.bus.Subscribe<ActionMessage<Room>>(m => m.Act(this));
             this.EnterCore();
             this.Look(new Word(string.Empty, string.Empty));
         }

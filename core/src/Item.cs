@@ -48,6 +48,6 @@ namespace Adventure
 
         protected void Output(string text) => this.Bus.Output(text);
 
-        protected void SendRoom(Action<Room> act) => this.Bus.Send(new RoomActionMessage(act));
+        protected void SendRoom(Action<Room> act) => this.Bus.Send(new ActionMessage<Room>(act));
     }
 }

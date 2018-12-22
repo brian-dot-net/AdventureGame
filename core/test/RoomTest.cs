@@ -530,7 +530,7 @@ namespace Adventure.Test
             Room room = new TestRoom(bus);
 
             room.Enter();
-            bus.Send(new RoomActionMessage(r => r.Add("coin", new TestCoin(bus))));
+            bus.Send(new ActionMessage<Room>(r => r.Add("coin", new TestCoin(bus))));
             bus.Send(new SentenceMessage(new Word("look", "LOOK"), new Word(string.Empty, string.Empty)));
 
             output.Should().Equal(
@@ -549,7 +549,7 @@ namespace Adventure.Test
 
             room.Enter();
             room.Leave();
-            bus.Send(new RoomActionMessage(r => r.Add("coin", new TestCoin(bus))));
+            bus.Send(new ActionMessage<Room>(r => r.Add("coin", new TestCoin(bus))));
             room.Enter();
 
             output.Should().Equal(
