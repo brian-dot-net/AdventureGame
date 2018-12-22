@@ -76,7 +76,7 @@ namespace Adventure
             this.items.Add(name, item);
         }
 
-        public Item Take(string name)
+        public Item Remove(string name)
         {
             this.items.Remove(name, out Item item);
             return item;

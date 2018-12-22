@@ -156,7 +156,7 @@ namespace Adventure
 
         private void TakeItem(Word verb, Word noun)
         {
-            Item taken = this.items.Take(noun.Primary);
+            Item taken = this.items.Remove(noun.Primary);
             if (taken == null)
             {
                 this.Output($"You can't {verb} that.");

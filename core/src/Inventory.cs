@@ -59,7 +59,7 @@ namespace Adventure
 
         private void Drop(Word verb, Word noun, Items targetItems)
         {
-            Item item = this.items.Take(noun.Primary);
+            Item item = this.items.Remove(noun.Primary);
             if (item == null)
             {
                 this.Output($"You can't {verb} what you don't have.");

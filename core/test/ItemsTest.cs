@@ -36,7 +36,7 @@ namespace Adventure.Test
         }
 
         [Fact]
-        public void TakeOneOfTwoItems()
+        public void RemoveOneOfTwoItems()
         {
             MessageBus bus = new MessageBus();
             Items items = new Items(bus);
@@ -44,13 +44,13 @@ namespace Adventure.Test
             TestItem coin = new TestItem(bus);
             items.Add("coin", coin);
 
-            Item taken = items.Take("coin");
+            Item taken = items.Remove("coin");
 
             taken.Should().BeSameAs(coin);
         }
 
         [Fact]
-        public void TakeTwoItems()
+        public void RemoveTwoItems()
         {
             MessageBus bus = new MessageBus();
             Items items = new Items(bus);
@@ -59,38 +59,38 @@ namespace Adventure.Test
             TestItem coin = new TestItem(bus);
             items.Add("coin", coin);
 
-            Item takenCoin = items.Take("coin");
-            Item takenKey = items.Take("key");
+            Item takenCoin = items.Remove("coin");
+            Item takenKey = items.Remove("key");
 
             takenCoin.Should().BeSameAs(coin);
             takenKey.Should().BeSameAs(key);
         }
 
         [Fact]
-        public void TakeItemAlreadyTaken()
+        public void RemoveItemAlreadyRemoved()
         {
             MessageBus bus = new MessageBus();
             Items items = new Items(bus);
             items.Add("key", new TestItem(bus));
 
-            items.Take("key");
-            Item missing = items.Take("key");
+            items.Remove("key");
+            Item missing = items.Remove("key");
 
             missing.Should().BeNull();
         }
 
         [Fact]
-        public void TakeItemNotPresent()
+        public void RemoveItemNotPresent()
         {
             Items items = new Items(new MessageBus());
 
-            Item missing = items.Take("key");
+            Item missing = items.Remove("key");
 
             missing.Should().BeNull();
         }
 
         [Fact]
-        public void DropItemAlreadyExists()
+        public void AddItemAlreadyExists()
         {
             MessageBus bus = new MessageBus();
             Items items = new Items(bus);
