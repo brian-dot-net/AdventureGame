@@ -283,6 +283,24 @@ namespace Adventure.Test
             }
         }
 
+        [Fact]
+        public void RemoveMissingItem()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Items items = new Items(bus);
+            using (Inventory inv = new Inventory(bus))
+            {
+                Item removed = inv.Remove("key");
+                bus.Send(new ShowInventoryMessage());
+
+                messages.Should().Equal("You are carrying:", "(nothing)");
+                items.Look("{0}").Should().Be(0);
+                removed.Should().BeNull();
+            }
+        }
+
         private sealed class TestItem : Item
         {
             private readonly bool canDrop;
