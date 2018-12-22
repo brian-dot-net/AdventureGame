@@ -6,7 +6,7 @@ namespace Adventure.Messages
 {
     public sealed class EndOfGameMessage
     {
-        public EndOfGameMessage(string text)
+        public EndOfGameMessage(string text = null)
         {
             this.Text = text;
         }

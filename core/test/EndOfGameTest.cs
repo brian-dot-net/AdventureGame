@@ -15,7 +15,7 @@ namespace Adventure.Test
         {
             MessageBus bus = new MessageBus();
             string lastOutput = null;
-            bus.Subscribe<OutputMessage>(m => lastOutput = m.Text);
+            bus.Subscribe<OutputMessage>(m => lastOutput = "[" + m.Text + "]");
             using (EndOfGame end = new EndOfGame(bus))
             {
                 end.Token.IsCancellationRequested.Should().BeFalse();
@@ -23,7 +23,24 @@ namespace Adventure.Test
                 bus.Send(new EndOfGameMessage("It's over."));
 
                 end.Token.IsCancellationRequested.Should().BeTrue();
-                lastOutput.Should().Be("It's over.");
+                lastOutput.Should().Be("[It's over.]");
+            }
+        }
+
+        [Fact]
+        public void EndOfGameNoMessageSendsCancellationNoOutput()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            bus.Subscribe<OutputMessage>(m => lastOutput = "[" + m.Text + "]");
+            using (EndOfGame end = new EndOfGame(bus))
+            {
+                end.Token.IsCancellationRequested.Should().BeFalse();
+
+                bus.Send(new EndOfGameMessage());
+
+                end.Token.IsCancellationRequested.Should().BeTrue();
+                lastOutput.Should().BeNull();
             }
         }
     }

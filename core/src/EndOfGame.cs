@@ -27,7 +27,11 @@ namespace Adventure
 
         private void OnEnd(MessageBus bus, string text)
         {
-            bus.Output(text);
+            if (text != null)
+            {
+                bus.Output(text);
+            }
+
             this.cts.Cancel();
         }
     }
