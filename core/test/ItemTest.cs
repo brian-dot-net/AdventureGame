@@ -39,16 +39,35 @@ namespace Adventure.Test
             output.Should().ContainSingle().Which.Should().Be("How useful!");
         }
 
+        [Fact]
+        public void AttemptToTakeButFail()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            bus.Subscribe<OutputMessage>(m => output.Add(m.Text));
+            Item item = new TestItem(bus, false);
+
+            item.Take().Should().BeFalse();
+            item.Do(new Word("use", "USE"), new Word("item", "ITEM"));
+
+            output.Should().ContainSingle().Which.Should().Be("You must take it to use it.");
+        }
+
         private sealed class TestItem : Item
         {
-            public TestItem(MessageBus bus)
+            private readonly bool canTake;
+
+            public TestItem(MessageBus bus, bool canTake = true)
                 : base(bus)
             {
+                this.canTake = canTake;
             }
 
             public override string ShortDescription => throw new NotImplementedException();
 
             public override string LongDescription => throw new NotImplementedException();
+
+            protected override bool TakeCore() => this.canTake;
 
             protected override bool DoCore(Word verb, Word noun)
             {
