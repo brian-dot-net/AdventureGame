@@ -11,6 +11,17 @@ namespace Adventure.Sample
         {
         }
 
-        protected override string Description => "You are in the auxiliary room. There is a doorway to the west.";
+        protected override string Description => "You are in the auxiliary room. There is a doorway to the west. There is a cliff to the east.";
+
+        protected override bool GoCore(Word noun)
+        {
+            if (noun.Primary == Noun.East)
+            {
+                this.End("You fall off a cliff. Game over.");
+                return true;
+            }
+
+            return base.GoCore(noun);
+        }
     }
 }

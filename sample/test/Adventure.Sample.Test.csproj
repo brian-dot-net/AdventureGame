@@ -17,10 +17,16 @@
     <ProjectReference Include="..\src\Adventure.Sample.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="walkthrough.in">
+    <None Update="walkthrough.die.out">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="walkthrough.out">
+    <None Update="walkthrough.die.in">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="walkthrough.quit.in">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="walkthrough.quit.out">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
