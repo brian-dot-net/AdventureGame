@@ -316,6 +316,21 @@ namespace Adventure.Test
             }
         }
 
+        [Fact]
+        public void ProcessInventoryActionAfterDispose()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> messages = new List<string>();
+            bus.Subscribe<OutputMessage>(m => messages.Add(m.Text));
+            Inventory inv = new Inventory(bus);
+            Inventory inv2 = null;
+
+            inv.Dispose();
+            bus.Send(new InventoryActionMessage(i => inv2 = i));
+
+            inv2.Should().BeNull();
+        }
+
         private sealed class TestItem : Item
         {
             private readonly bool canDrop;
