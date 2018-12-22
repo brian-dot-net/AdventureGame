@@ -485,6 +485,24 @@ namespace Adventure.Test
             quitText.Should().Be("You quit. Game over.");
         }
 
+        [Fact]
+        public void ProcessRoomAction()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            bus.Subscribe<OutputMessage>(m => output.Add(m.Text));
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new RoomActionMessage(r => r.Add("coin", new TestCoin(bus))));
+            bus.Send(new SentenceMessage(new Word("look", "LOOK"), new Word(string.Empty, string.Empty)));
+
+            output.Should().Equal(
+                "You are in a test room.",
+                "You are in a test room.",
+                "There is a coin here.");
+        }
+
         private static void TestSend(Word verb, Word noun, string expectedOutput)
         {
             MessageBus bus = new MessageBus();
