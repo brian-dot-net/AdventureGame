@@ -25,6 +25,20 @@ namespace Adventure.Test
             output.Should().ContainSingle().Which.Should().Be("You must take it to use it.");
         }
 
+        [Fact]
+        public void Taken()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            bus.Subscribe<OutputMessage>(m => output.Add(m.Text));
+            Item item = new TestItem(bus);
+
+            item.Take().Should().BeTrue();
+            item.Do(new Word("use", "USE"), new Word("item", "ITEM"));
+
+            output.Should().ContainSingle().Which.Should().Be("How useful!");
+        }
+
         private sealed class TestItem : Item
         {
             public TestItem(MessageBus bus)
@@ -51,9 +65,11 @@ namespace Adventure.Test
                 if (!this.Taken)
                 {
                     this.Output("You must take it to use it.");
+                    return false;
                 }
 
-                return false;
+                this.Output("How useful!");
+                return true;
             }
         }
     }

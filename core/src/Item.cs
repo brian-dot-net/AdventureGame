@@ -23,7 +23,10 @@ namespace Adventure
 
         public bool Do(Word verb, Word noun) => this.DoCore(verb, noun);
 
-        public bool Take() => this.TakeCore();
+        public bool Take()
+        {
+            return this.Taken = this.TakeCore();
+        }
 
         public bool Drop() => this.DropCore();
 
