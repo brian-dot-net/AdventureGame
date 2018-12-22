@@ -21,12 +21,12 @@ namespace Adventure.Sample
         {
             using (new TextConsole(this.bus, reader, writer))
             using (new SentenceParser(this.bus, this.words))
-            using (QuitHandler quit = new QuitHandler(this.bus, Verb.Quit))
+            using (EndOfGame endOfGame = new EndOfGame(this.bus))
             using (InputLoop loop = new InputLoop(this.bus, ">"))
             using (new Inventory(this.bus))
             using (this.InitializeMap())
             {
-                loop.Run(quit.Token);
+                loop.Run(endOfGame.Token);
             }
         }
 

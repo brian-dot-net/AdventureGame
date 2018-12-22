@@ -59,7 +59,7 @@ namespace Adventure
             this.items.Add(name, item);
         }
 
-        public void End(string text)
+        public void End(string text = null)
         {
             this.bus.Send(new EndOfGameMessage(text));
         }
