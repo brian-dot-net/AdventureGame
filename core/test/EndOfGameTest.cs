@@ -43,5 +43,19 @@ namespace Adventure.Test
                 lastOutput.Should().BeNull();
             }
         }
+
+        [Fact]
+        public void SendAfterDisposeDoesNothing()
+        {
+            MessageBus bus = new MessageBus();
+            string lastOutput = null;
+            bus.Subscribe<OutputMessage>(m => lastOutput = "[" + m.Text + "]");
+            EndOfGame end = new EndOfGame(bus);
+
+            end.Dispose();
+            bus.Send(new EndOfGameMessage("It's not over."));
+
+            lastOutput.Should().BeNull();
+        }
     }
 }

@@ -23,6 +23,8 @@ namespace Adventure
 
         public void Dispose()
         {
+            this.cts.Dispose();
+            this.sub.Dispose();
         }
 
         private void OnEnd(MessageBus bus, string text)
