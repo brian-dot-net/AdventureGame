@@ -405,6 +405,25 @@ namespace Adventure.Test
         }
 
         [Fact]
+        public void RemoveOneItem()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            Action<OutputMessage> subscriber = m => output.Add(m.Text);
+            bus.Subscribe(subscriber);
+            TestRoom room = new TestRoom(bus);
+            Item expected = new TestKey(bus);
+            room.Add("key", expected);
+
+            Item removed = room.Remove("key");
+            room.Enter();
+
+            output.Should().Equal(
+                "You are in a test room.");
+            removed.Should().BeSameAs(expected);
+        }
+
+        [Fact]
         public void ProcessCustomItemAction()
         {
             MessageBus bus = new MessageBus();

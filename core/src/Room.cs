@@ -62,6 +62,8 @@ namespace Adventure
             this.items.Add(name, item);
         }
 
+        public Item Remove(string name) => this.items.Remove(name);
+
         public void End(string text = null)
         {
             this.bus.Send(new EndOfGameMessage(text));
