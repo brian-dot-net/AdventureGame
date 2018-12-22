@@ -28,7 +28,11 @@ namespace Adventure
             return this.Taken = this.TakeCore();
         }
 
-        public bool Drop() => this.DropCore();
+        public bool Drop()
+        {
+            this.Taken = false;
+            return this.DropCore();
+        }
 
         protected virtual bool DoCore(Word verb, Word noun) => false;
 

@@ -53,6 +53,21 @@ namespace Adventure.Test
             output.Should().ContainSingle().Which.Should().Be("You must take it to use it.");
         }
 
+        [Fact]
+        public void DropResetsTaken()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            bus.Subscribe<OutputMessage>(m => output.Add(m.Text));
+            Item item = new TestItem(bus);
+
+            item.Take().Should().BeTrue();
+            item.Drop().Should().BeTrue();
+            item.Do(new Word("use", "USE"), new Word("item", "ITEM"));
+
+            output.Should().ContainSingle().Which.Should().Be("You must take it to use it.");
+        }
+
         private sealed class TestItem : Item
         {
             private readonly bool canTake;
