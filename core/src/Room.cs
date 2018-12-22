@@ -59,6 +59,11 @@ namespace Adventure
             this.items.Add(name, item);
         }
 
+        public void End(string text)
+        {
+            this.bus.Send(new EndOfGameMessage(text));
+        }
+
         protected virtual void EnterCore()
         {
         }

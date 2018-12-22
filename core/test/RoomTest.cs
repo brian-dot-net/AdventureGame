@@ -470,6 +470,21 @@ namespace Adventure.Test
             inv.Should().Be(1);
         }
 
+        [Fact]
+        public void ProcessQuit()
+        {
+            MessageBus bus = new MessageBus();
+            string quitText = null;
+            Action<EndOfGameMessage> subscriber = m => quitText = m.Text;
+            bus.Subscribe(subscriber);
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            bus.Send(new SentenceMessage(new Word("quit", "QUIT"), new Word(string.Empty, string.Empty)));
+
+            quitText.Should().Be("You quit. Game over.");
+        }
+
         private static void TestSend(Word verb, Word noun, string expectedOutput)
         {
             MessageBus bus = new MessageBus();

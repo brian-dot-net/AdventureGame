@@ -46,6 +46,7 @@ namespace Adventure.Test
             this.Register("inventory", (_, __) => this.Inventory());
             this.Register("drop", this.Drop);
             this.Register("go", this.Go);
+            this.Register("quit", (_, __) => this.End("You quit. Game over."));
         }
 
         protected override bool LookAtCore(Word noun)
