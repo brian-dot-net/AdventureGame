@@ -503,6 +503,24 @@ namespace Adventure.Test
                 "There is a coin here.");
         }
 
+        [Fact]
+        public void ProcessRoomActionAfterLeave()
+        {
+            MessageBus bus = new MessageBus();
+            List<string> output = new List<string>();
+            bus.Subscribe<OutputMessage>(m => output.Add(m.Text));
+            Room room = new TestRoom(bus);
+
+            room.Enter();
+            room.Leave();
+            bus.Send(new RoomActionMessage(r => r.Add("coin", new TestCoin(bus))));
+            room.Enter();
+
+            output.Should().Equal(
+                "You are in a test room.",
+                "You are in a test room.");
+        }
+
         private static void TestSend(Word verb, Word noun, string expectedOutput)
         {
             MessageBus bus = new MessageBus();

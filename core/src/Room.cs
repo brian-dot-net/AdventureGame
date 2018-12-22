@@ -54,6 +54,7 @@ namespace Adventure
             this.process.Dispose();
             this.process = null;
             this.look.Dispose();
+            this.act.Dispose();
         }
 
         public void Add(string name, Item item)
